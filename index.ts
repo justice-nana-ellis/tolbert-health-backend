@@ -1,29 +1,28 @@
 import express, { Application } from 'express';
-
+import { controllers } from "./src/controllers";
+import cors from 'cors';
+import { db } from './config';
 import 'dotenv/config';
 
 const PORT = parseInt(<string>process.env.PORT);
 
-// export class Server {
-//     private app: express.Application;
-//     private port: number;
-//     pri
-// }
-
-// app.use(cors());
-//     app.use(express.json());
-//     app.use(express.urlencoded({ extended: true }));
+(async () => {
     
-//     app.use('/mui-project-service/api/v1', routes);
-
-// (async () => {
+    const app: Application = express();
     
-//     const app: Application = express();
+    await db();
+    app.use(cors());
+    app.use(express.json());
+    app.use(express.urlencoded({ extended: true }));
 
-//     app.listen(PORT, () => {
-//         //console.clear();
-//         console.log(`🚀 Server Running @ Port ${PORT} ⚡`);
-//     });
+    controllers.forEach(controller => {
+        app.use(controller.router);
+    });
 
-// })();
+    app.listen(PORT, () => {
+        //console.clear();
+        console.log(`🚀 Server Running @ Port ${PORT} ⚡`);
+    });
+
+})();
 
