@@ -4,9 +4,9 @@ POST http://localhost:9000/health-service/api/v1/signup
 Content-Type: application/json
 
 {
-    "email":     "Stringg",      
+    "email":     "Striiii@@#@gmail.com",      
   	"full_name": "String",
-  	"password":  "String"
+  	"password":  "554321Comid!"
 }
 
 ###

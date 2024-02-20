@@ -1,6 +1,8 @@
 
+import { getErrorMessages } from '../util'; 
+import { plainToClass } from 'class-transformer';
 import { PatientRepository } from "../repositories/patientRepository";
-import { RegisterPatientDTO } from '../dto/patient.dto'; 
+import { signupPatientDTO, signupPatientResponseDTO  } from '../dto/patient.dto'; 
 
 const timestamp = new Date().toISOString();
 
@@ -11,7 +13,9 @@ export class PatientService {
         this.patientRepository = new PatientRepository();
     }
 
-    async signup(patientData: RegisterPatientDTO) {
+    async signup(patientData: signupPatientDTO) {
+        //--validation
+        
         // business logic
         return this.patientRepository.signup(patientData);
     }
