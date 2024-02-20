@@ -14,7 +14,7 @@ export class PatientController {
     }
 
     private initializeRoutes() {
-        this.router.get(`${this.BASE_PATH}/signup`, this.signup.bind(this));
+        this.router.post(`${this.BASE_PATH}/signup`, this.signup.bind(this));
     }
 
     private async signup(req: Request, res: Response) {

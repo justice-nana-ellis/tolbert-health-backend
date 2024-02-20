@@ -1,5 +1,15 @@
 
 ###
+POST http://localhost:9000/health-service/api/v1/signup
+Content-Type: application/json
+
+{
+    "email":     "Stringg",      
+  	"full_name": "String",
+  	"password":  "String"
+}
+
+###
 # Create project
 POST  http://localhost:9000/mui-project-service/api/v1/projects
 Content-Type: application/json
