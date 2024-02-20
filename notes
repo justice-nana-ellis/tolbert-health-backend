@@ -1,0 +1,5 @@
+
+Swagger docs url: http://localhost:9000/api-docs/
+
+status: 'success'/'error'
+content: {}

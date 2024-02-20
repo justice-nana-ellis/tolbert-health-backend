@@ -1,0 +1,49 @@
+
+###
+# Create project
+POST  http://localhost:9000/mui-project-service/api/v1/projects
+Content-Type: application/json
+
+{
+    "user_id": "9c9a07e3-3b83-4a9b-b378-5e4dbbddfa94",
+	"project_name": "DONDAOO THREAD 999",
+	"description": "DONDA CONTENT"
+}
+
+###
+# update project
+PATCH  http://localhost:9000/mui-project-service/api/v1/projects/c828301b-2d77-440f-9ca6-396fb679d9d1
+Content-Type: application/json
+
+{
+    "user_id": "d970b214-0dd7-4855-86c4-2fda176dd432",
+	"project_name": "MOTHER 450",
+	"description": "MOTHER-22 CONTENT"
+}
+
+###
+# delete project
+DELETE  http://localhost:9000/mui-project-service/api/v1/projects/096f7718-0b98-40db-a50f-2f7cf70a2a8b
+
+###
+# fetch all projects
+GET  http://localhost:9000/mui-project-service/api/v1/projects
+Content-Type: application/json
+
+###
+# fetch all projects by ID
+GET  http://localhost:9000/mui-project-service/api/v1/projects/87913193-a649-4688-8fb8-53b507d19f32
+Content-Type: application/json
+
+###
+GET  http://localhost:9000/mui-project-service/api/v1/admin
+Content-Type: application/json
+# Authorization: 
+
+# {
+#     "ID": "6ba7b810-9dad-11d1-80b4-00c04fd430c8",
+# 	"title": "TOMBA THREAD",
+# 	"content": "TOMBA CONTENT"
+# }
+
+

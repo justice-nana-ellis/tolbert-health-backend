@@ -1,0 +1,17 @@
+# .gitignore
+
+# Node.js
+node_modules/
+
+# Environment variables
+.env
+
+# Log files
+logs/
+*.log
+
+# Dependency directories
+package-lock.json
+yarn.lock
+
+.idea/
