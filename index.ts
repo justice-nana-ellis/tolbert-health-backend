@@ -1,4 +1,4 @@
-import express, { Application } from 'express';
+import express, { Application, Response, Request } from 'express';
 import { controllers } from "./src/controllers";
 import cors from 'cors';
 import { db } from './config';
@@ -14,7 +14,9 @@ const PORT = parseInt(<string>process.env.PORT);
     app.use(cors());
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
-
+    app.get('/', (req: Request, res: Response) => {
+        res.send('TELBET HEALTH SERVICE WORKING 🫀!');
+    });
     controllers.forEach(controller => {
         app.use(controller.router);
     });
