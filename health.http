@@ -5,7 +5,7 @@ POST http://localhost:9000/api/v1/practitioner/signup
 Content-Type: application/json
 
 {
-    "email": "aaxxjgaa@gmail.com",
+    "email": "johndoee@gmail.com",
     "full_name": "John Doe",
     "password": "StrongPassword123!",
     "dob": "1990-01-01T00:00:00Z",
@@ -31,7 +31,7 @@ POST http://localhost:9000/api/v1/practitioner/signin
 Content-Type: application/json
 
 {
-    "email": "aaga@gmail.com",
+    "email": "johndoe@gmail.com",
     "password": "StrongPassword123!"
 }
 
@@ -44,8 +44,8 @@ POST http://localhost:9000/api/v1/patient/signup
 Content-Type: application/json
 
 {
-    "email":     "Sstriiiiieeeooia@gmail.com",      
-  	"full_name": "String",
+    "email":     "johndoe@gmail.com",      
+  	"full_name": "John Doe",
   	"password":  "5554321Acomid!"
 }
 
@@ -54,7 +54,7 @@ POST http://localhost:9000/api/v1/patient/signin
 Content-Type: application/json
 
 {
-    "email":     "Sstriiiiieeeooia@gmail.com",      
+    "email":     "johndoe@gmail.com",      
   	"password":  "5554321Acomid!"
 }
 

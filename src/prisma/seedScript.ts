@@ -1,4 +1,3 @@
-import { PrismaService } from '../../src/services';
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient;
 
