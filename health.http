@@ -5,7 +5,7 @@ POST http://localhost:9000/api/v1/practitioner/signup
 Content-Type: application/json
 
 {
-    "email": "aajgaa@gmail.com",
+    "email": "aaxxjgaa@gmail.com",
     "full_name": "John Doe",
     "password": "StrongPassword123!",
     "dob": "1990-01-01T00:00:00Z",
@@ -17,16 +17,12 @@ Content-Type: application/json
     "id_number": "1234567890",
     "qualification": "Doctor of Medicine",
     "licence_number": "123ABC",
-    # "specialisations": [ "e024f25e-88b0-400a-8b3f-327e08cca220"
-    #     , "e024f25e-88b0-400a-8b3f-327e08cca220"],
-    # "hospitals": [
-    #     { "connect": { "id": "hospital_id_1" } },
-    #     { "connect": { "id": "hospital_id_2" } }
-    # ],
-    # "appointments": [
-    #     { "connect": { "id": "appointment_id_1" } },
-    #     { "connect": { "id": "appointment_id_2" } }
-    # ],
+    "specialisations": [ "e024f25e-88b0-400a-8b3f-327e08cca220"
+        , "e024f25e-88b0-400a-8b3f-327e08cca220"],
+    "hospitals": [ "e024f25e-88b0-400a-8b3f-327e08cca220"
+        , "e024f25e-88b0-400a-8b3f-327e08cca220"],
+    "appointments": [ "e024f25e-88b0-400a-8b3f-327e08cca220"
+        , "e024f25e-88b0-400a-8b3f-327e08cca220"],
     "verified": true
 }
 

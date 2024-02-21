@@ -12,7 +12,8 @@ export class PractitionerRepository {
 
     async signup(practitionerData: signupPractitionerDTO) {
         return this.prisma.practitioner.create({
-            data: practitionerData
+        //@ts-ignore
+            data: practitionerData 
         }); 
     }
 

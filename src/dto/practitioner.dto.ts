@@ -5,7 +5,7 @@ export interface signupPractitionerDTO {
     email:     string;      
     full_name: string;
     password:  string;
-    dob:       Date;
+    dob:       string;
     pob:       string;
     img_url:   string;
     digital_address: string;
@@ -14,16 +14,10 @@ export interface signupPractitionerDTO {
     id_number:       string;
     qualification:   string;
     licence_number:  string;
-    specialisations: {
-        connect: { id: string }[]; 
-    };
-    hospitals: {
-        connect: { id: string }[]; 
-    };
-    appointments: {
-        connect: { id: string }[]; 
-    };
-    verified:          boolean;       
+    specialisations: string[]; 
+    hospitals:       string[];
+    appointments:    string[];
+    verified:        boolean;       
 }
 
 export interface signupPractitionerResponseDTO {
