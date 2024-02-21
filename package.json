@@ -6,6 +6,7 @@
   "author": "justicecoder <ellisjustice60@gmail.com>",
   "license": "MIT",
   "scripts": {
+    "build": "tsc --outDir public",
     "start": "nodemon index.ts",
     "dev": "nodemon index.ts",
     "prisma:generate": "npx prisma generate --schema=./src/prisma/schema.prisma",
