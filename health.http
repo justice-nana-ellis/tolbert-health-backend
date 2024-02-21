@@ -1,14 +1,160 @@
 
-###
-# Create project
-POST  http://localhost:9000/mui-project-service/api/v1/projects
+
+### | signup practitioners
+POST http://localhost:9000/api/v1/practitioner/signup
 Content-Type: application/json
 
 {
-    "user_id": "9c9a07e3-3b83-4a9b-b378-5e4dbbddfa94",
-	"project_name": "DONDAOO THREAD 999",
-	"description": "DONDA CONTENT"
+    "email": "johndoee@gmail.com",
+    "full_name": "John Doe",
+    "password": "StrongPassword123!",
+    "dob": "1990-01-01T00:00:00Z",
+    "pob": "New York",
+    "img_url": "",
+    "digital_address": "123 Main Street",
+    "contact": "123-456-7890",
+    "id_type": "GHANA_CARD",
+    "id_number": "1234567890",
+    "qualification": "Doctor of Medicine",
+    "licence_number": "123ABC",
+    "specialisations": [ "e024f25e-88b0-400a-8b3f-327e08cca220"
+        , "e024f25e-88b0-400a-8b3f-327e08cca220"],
+    "hospitals": [ "e024f25e-88b0-400a-8b3f-327e08cca220"
+        , "e024f25e-88b0-400a-8b3f-327e08cca220"],
+    "appointments": [ "e024f25e-88b0-400a-8b3f-327e08cca220"
+        , "e024f25e-88b0-400a-8b3f-327e08cca220"],
+    "verified": true
 }
+
+### | signin practitioner
+POST http://localhost:9000/api/v1/practitioner/signin
+Content-Type: application/json
+
+{
+    "email": "johndoe@gmail.com",
+    "password": "StrongPassword123!"
+}
+
+### | loggout practitioner
+POST http://localhost:9000/api/v1/practitioner/logout
+Content-Type: application/json
+
+### | signup patient
+POST http://localhost:9000/api/v1/patient/signup
+Content-Type: application/json
+
+{
+    "email":     "johndoe@gmail.com",      
+  	"full_name": "John Doe",
+  	"password":  "5554321Acomid!"
+}
+
+### | signin patient
+POST http://localhost:9000/api/v1/patient/signin
+Content-Type: application/json
+
+{
+    "email":     "johndoe@gmail.com",      
+  	"password":  "5554321Acomid!"
+}
+
+### | loggout patient
+POST http://localhost:9000/api/v1/patient/logout
+Content-Type: application/json
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ###
 # update project
