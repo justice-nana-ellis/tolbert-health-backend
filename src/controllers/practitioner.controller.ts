@@ -24,44 +24,47 @@ export class PractitionerController {
     }
 
     private async signup(req: Request, res: Response) {
-        const postData = req.body;
-
-        const errorMessages = await getErrorMessages(plainToClass(signupPractitionerValidationDto, req.body));
-     
-      if (errorMessages.length > 0) return res.status(400).json({
-        status: 'error',
-        content: { message: errorMessages }, 
-        timestamp: timestamp,
-      });
-
-        const response = await this.practitionerService.signup(postData);
-        res.json(response);
-       
-    }
-
-    private async signin(req: Request, res: Response) {
       try {
-        const postData: signinPractitionerDTO = req.body;
-
-        const errorMessages = await getErrorMessages(plainToClass(signinPractitionerValidationDto, req.body));
-    
+        const postData = req.body;
+        const errorMessages = await getErrorMessages(plainToClass(signupPractitionerValidationDto, req.body));
         if (errorMessages.length > 0) return res.status(400).json({
           status: 'error',
           content: { message: errorMessages }, 
           timestamp: timestamp,
         });
+        const response = await this.practitionerService.signup(postData);
+        res.json(response);
+      } catch (error) {
+        return res.status(500).json({
+          status: "error",
+          content: {
+            "message": "login failed"
+          }
+        });
+      }
+    }
 
+    private async signin(req: Request, res: Response) {
+      try {
+        const postData: signinPractitionerDTO = req.body;
+        const errorMessages = await getErrorMessages(plainToClass(signinPractitionerValidationDto, req.body));
+        if (errorMessages.length > 0) return res.status(400).json({
+          status: 'error',
+          content: { message: errorMessages }, 
+          timestamp: timestamp,
+        });
         const response = await this.practitionerService.signin(postData);
         res.clearCookie('Tolbert-Token');
         res.cookie('Tolbert-Token', response?.token, { httpOnly: true });
         res.json(response);
       } catch (error) {
         return res.status(500).json({
-          status: 'error',
-          content: 'login failed' 
+          status: "error",
+          content: {
+            "message": "signin failed"
+          }
         });
       }
-      
     }
 
     private async logout(req: Request, res: Response) {
@@ -71,10 +74,12 @@ export class PractitionerController {
         res.json(response);
       } catch (error) {
         return res.status(500).json({
-          status: 'error',
-          content: 'login failed' 
+          status: "error",
+          content: {
+            "message": "login failed"
+          }
         });
       }
-      
     }
+
 }
