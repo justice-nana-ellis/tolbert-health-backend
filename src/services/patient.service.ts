@@ -2,9 +2,9 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import cookieParser from 'cookie-parser';
-import { PatientRepository } from "../repositories/patientRepository";
+import { PatientRepository } from "../repositories/patient.repository";
 import { signupPatientDTO, signinPatientDTO, signinPatientResponseDTO,
-         logoutPatientResponseDTO  } from '../dto/patient.dto'; 
+         logoutPatientResponseDTO, signupPatientResponseDTO  } from '../dto/patient.dto'; 
 
 export class PatientService {
     private patientRepository: PatientRepository;
@@ -15,7 +15,34 @@ export class PatientService {
     }
 
     async signup(patientData: signupPatientDTO) {
-        return this.patientRepository.signup(patientData);  
+        try {
+            const salt = await bcrypt.genSalt(10);
+            const hash = await bcrypt.hash(patientData.password, salt);
+            const patient = {
+                ...patientData,
+                password: hash,
+                verified: false
+            }
+            const response = await this.patientRepository.signup(patient);  
+            return <signupPatientResponseDTO>{ 
+                status: 'success',
+                content: response
+            };
+            
+        } catch (error: any) {
+            if (error.code === 'P2002' && error.meta?.target?.includes('email')) {
+                return <signupPatientResponseDTO>{ 
+                  status: 'error',
+                  content: { message: 'Email already Taken' }
+                };
+              } else {
+                return <signupPatientResponseDTO>{ 
+                  status: 'error',
+                  content: { message: 'Internal server error' } 
+                };
+              }
+        }
+        
     }
 
     async signin(patientData: signinPatientDTO) {

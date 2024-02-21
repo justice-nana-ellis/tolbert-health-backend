@@ -1,26 +1,162 @@
 
-### | signup patient
-POST http://localhost:9000/health-service/api/v1/signup
+
+### | signup practitioners
+POST http://localhost:9000/api/v1/practitioner/signup
 Content-Type: application/json
 
 {
-    "email":     "Streiiiieeeeoooia@gmail.com",      
+    "email": "aajgaa@gmail.com",
+    "full_name": "John Doe",
+    "password": "StrongPassword123!",
+    "dob": "1990-01-01T00:00:00Z",
+    "pob": "New York",
+    "img_url": "",
+    "digital_address": "123 Main Street",
+    "contact": "123-456-7890",
+    "id_type": "GHANA_CARD",
+    "id_number": "1234567890",
+    "qualification": "Doctor of Medicine",
+    "licence_number": "123ABC",
+    # "specialisations": [ "e024f25e-88b0-400a-8b3f-327e08cca220"
+    #     , "e024f25e-88b0-400a-8b3f-327e08cca220"],
+    # "hospitals": [
+    #     { "connect": { "id": "hospital_id_1" } },
+    #     { "connect": { "id": "hospital_id_2" } }
+    # ],
+    # "appointments": [
+    #     { "connect": { "id": "appointment_id_1" } },
+    #     { "connect": { "id": "appointment_id_2" } }
+    # ],
+    "verified": true
+}
+
+### | signin practitioner
+POST http://localhost:9000/api/v1/practitioner/signin
+Content-Type: application/json
+
+{
+    "email": "aaga@gmail.com",
+    "password": "StrongPassword123!"
+}
+
+### | loggout practitioner
+POST http://localhost:9000/api/v1/practitioner/logout
+Content-Type: application/json
+
+### | signup patient
+POST http://localhost:9000/api/v1/patient/signup
+Content-Type: application/json
+
+{
+    "email":     "Sstriiiiieeeooia@gmail.com",      
   	"full_name": "String",
   	"password":  "5554321Acomid!"
 }
 
 ### | signin patient
-POST http://localhost:9000/health-service/api/v1/signin
+POST http://localhost:9000/api/v1/patient/signin
 Content-Type: application/json
 
 {
-    "email":     "Streiiiieeeeoooia@gmail.com",      
+    "email":     "Sstriiiiieeeooia@gmail.com",      
   	"password":  "5554321Acomid!"
 }
 
 ### | loggout patient
-POST http://localhost:9000/health-service/api/v1/logout
+POST http://localhost:9000/api/v1/patient/logout
 Content-Type: application/json
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
