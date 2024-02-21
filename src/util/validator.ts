@@ -12,4 +12,3 @@ export const getErrorMessages = async (project: any): Promise<string[]> => {
   return [];
 };
 
-

@@ -1,4 +1,4 @@
-import { createProjectDto, createProjectInput, createProjectResponse } from '../dto';
+// import { createProjectDto, createProjectInput, createProjectResponse } from '../dto';
 import { Request, Response, NextFunction, response } from "express";
 import { getErrorMessages } from '../util'; 
 import { plainToClass } from 'class-transformer';
@@ -9,13 +9,13 @@ const projectService = new ProjectService();
 
 export const createProject = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const errorMessages = await getErrorMessages(plainToClass(createProjectDto, req.body));
+      // const errorMessages = await getErrorMessages(plainToClass(createProjectDto, req.body));
      
-      if (errorMessages.length > 0) return res.status(400).json({
-        status: 'error',
-        content: { message: errorMessages }, 
-        timestamp: timestamp,
-      });
+      // if (errorMessages.length > 0) return res.status(400).json({
+      //   status: 'error',
+      //   content: { message: errorMessages }, 
+      //   timestamp: timestamp,
+      // });
       
       const project = projectService.create(req.body)
       
@@ -26,20 +26,22 @@ export const createProject = async (req: Request, res: Response, next: NextFunct
     } catch (error: any) {
       return res.status(500).json({
         status: 'error',
-        content: 'project creation failed' 
+        content: {
+          "message": "project creation failed"
+        }
       });
     }
   };
 
 export const updateProject = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const errorMessages = await getErrorMessages(plainToClass(createProjectDto, req.body));
+    // const errorMessages = await getErrorMessages(plainToClass(createProjectDto, req.body));
     
-    if (errorMessages.length > 0) return res.status(400).json({
-      status: 'error',
-      content: { message: errorMessages }, 
-      timestamp: timestamp,
-    });
+    // if (errorMessages.length > 0) return res.status(400).json({
+    //   status: 'error',
+    //   content: { message: errorMessages }, 
+    //   timestamp: timestamp,
+    // });
     
     const project = projectService.update(req.body, req.params.id)
     
