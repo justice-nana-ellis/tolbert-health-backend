@@ -1,24 +1,28 @@
 
-###
+### | signup patient
 POST http://localhost:9000/health-service/api/v1/signup
 Content-Type: application/json
 
 {
-    "email":     "Striiii@@#@gmail.com",      
+    "email":     "Streiiiieeeeoooia@gmail.com",      
   	"full_name": "String",
-  	"password":  "554321Comid!"
+  	"password":  "5554321Acomid!"
 }
 
-###
-# Create project
-POST  http://localhost:9000/mui-project-service/api/v1/projects
+### | signin patient
+POST http://localhost:9000/health-service/api/v1/signin
 Content-Type: application/json
 
 {
-    "user_id": "9c9a07e3-3b83-4a9b-b378-5e4dbbddfa94",
-	"project_name": "DONDAOO THREAD 999",
-	"description": "DONDA CONTENT"
+    "email":     "Streiiiieeeeoooia@gmail.com",      
+  	"password":  "5554321Acomid!"
 }
+
+### | loggout patient
+POST http://localhost:9000/health-service/api/v1/logout
+Content-Type: application/json
+
+
 
 ###
 # update project

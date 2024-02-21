@@ -24,8 +24,69 @@ model patient {
   email     String      @unique
   full_name String
   password  String
+  verified  Boolean     @default(false)
   createdAt    DateTime?  @default(now()) @map("created_at")
   updatedAt    DateTime?  @default(now()) @updatedAt @map("updated_at")
 }
 
+model practitioner  {
+  id        String      @id @unique @default(uuid())
+  email     String      @unique
+  full_name String
+  password  String
+  dob       DateTime
+  pob       DateTime
+  digital_address String
+  contact         String
+  id_type         indentity_card     @default(GHANA_CARD)
+  id_number       String
+  qualification   String
+  licence_number  String
+  specialisations   specialisation[]
+  hospitals         hospital[]
+  appointments appointment[]
+  verified  Boolean       @default(false)
+  createdAt    DateTime?  @default(now()) @map("created_at")
+  updatedAt    DateTime?  @default(now()) @updatedAt @map("updated_at")
+}
+
+model specialisation {
+  id  String      @id @unique @default(uuid())
+  name String     @unique
+  practitioners   practitioner[]
+}
+
+model hospital {
+  id  String      @id @unique @default(uuid())
+  name String     @unique
+  practitioners   practitioner[]
+}
+
+
+model appointment {
+  id   String     @id @unique @default(uuid())
+  title  String   @unique
+  date   DateTime
+  time   DateTime
+  practitioner   practitioner   @relation(fields: [practitionerId], references: [id])
+  practitionerId String 
+  service String
+  comment String
+  tc Boolean
+  payment_completed Boolean
+  status  status
+  expiry  DateTime
+}
+
+enum status {
+  payment_completed
+  rejected
+}
+
+enum indentity_card {
+  GHANA_CARD
+  VOTER_ID
+  PASSPORT
+  DRIVING_LICENCE
+}
 

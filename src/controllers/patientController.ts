@@ -1,6 +1,7 @@
 
 import express, { Request, Response } from 'express';
-import { signupPatientDTO, signupPatientResponseDTO,signupPatientValidationDto  } from '../dto/patient.dto'
+import { signupPatientDTO, signinPatientDTO, signupPatientValidationDto,
+         signinPatientValidationDto  } from '../dto/patient.dto'
 import { PatientService } from '../services/patientService';
 import { getErrorMessages } from '../util'; 
 import { plainToClass } from 'class-transformer';
@@ -11,7 +12,7 @@ const timestamp = new Date().toISOString();
 export class PatientController {
     public router = express.Router();
     private patientService: PatientService;
-    private readonly BASE_PATH = '/health-service/api/v1'
+    private readonly BASE_PATH = <string>process.env.BASE_PATH
 
     constructor() {
         this.patientService = new PatientService();
@@ -20,6 +21,8 @@ export class PatientController {
 
     private initializeRoutes() {
         this.router.post(`${this.BASE_PATH}/signup`, this.signup.bind(this));
+        this.router.post(`${this.BASE_PATH}/signin`, this.signin.bind(this));
+        this.router.post(`${this.BASE_PATH}/logout`, this.logout.bind(this));
     }
 
     private async signup(req: Request, res: Response) {
@@ -33,12 +36,31 @@ export class PatientController {
         timestamp: timestamp,
       });
 
-
         const response = await this.patientService.signup(postData);
         res.json(response);
-        // return <patientSignupResponseDTO> {
-        //     status: 'success',
-        //     response
-        //   }
+       
+    }
+
+    private async signin(req: Request, res: Response) {
+      const postData: signinPatientDTO = req.body;
+
+      const errorMessages = await getErrorMessages(plainToClass(signinPatientValidationDto, req.body));
+   
+      if (errorMessages.length > 0) return res.status(400).json({
+        status: 'error',
+        content: { message: errorMessages }, 
+        timestamp: timestamp,
+      });
+
+      const response = await this.patientService.signin(postData);
+      res.clearCookie('Tolbert-Token');
+      res.cookie('Tolbert-Token', response?.token, { httpOnly: true });
+      res.json(response);
+    }
+
+    private async logout(req: Request, res: Response) {
+      res.clearCookie('Tolbert-Token');
+      const response = await this.patientService.logout();
+      res.json(response);
     }
 }
