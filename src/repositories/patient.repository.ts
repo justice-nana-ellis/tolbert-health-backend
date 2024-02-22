@@ -1,6 +1,6 @@
 
 import { PrismaClient } from "@prisma/client";
-import { signupPatientDTO, signinPatientDTO  } from "../dto/patient.dto";
+import { signupPatientDTO, signinPatientDTO  } from "../dto";
 
 export class PatientRepository {
     private prisma: PrismaClient;

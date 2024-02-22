@@ -1,9 +1,9 @@
 
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { PractitionerRepository } from "../repositories/practitioner.repository";
+import { PractitionerRepository } from "../repositories";
 import { signupPractitionerDTO, signupPractitionerResponseDTO, logoutPractitionerResponseDTO,
-         signinPractitionerDTO, signinPractitionerResponseDTO  } from '../dto/practitioner.dto'; 
+         signinPractitionerDTO, signinPractitionerResponseDTO  } from '../dto'; 
 
 export class PractitionerService {
     private practitionerRepository: PractitionerRepository;

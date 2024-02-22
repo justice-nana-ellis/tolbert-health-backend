@@ -1,11 +1,30 @@
 
-
-### | signup practitioners
-POST https://tolbert-health.onrender.com/api/v1/practitioner/signup
+### | create hospital
+POST http://localhost:9000/api/v1/hospital
 Content-Type: application/json
 
 {
-    "email": "johndoeea@gmail.com",
+    "name": "Bethelio Hospital"
+}
+
+### | update hospital
+PATCH http://localhost:9000/api/v1/hospital/7e2efe82-d9ea-42ba-8474-125a780c25ed
+Content-Type: application/json
+
+{
+    "name": "Bel"
+}
+
+### | delete hospital
+DELETE http://localhost:9000/api/v1/hospital/47538705-3278-49e3-93d5-6ac36262ae5f
+
+
+### | signup practitioners
+POST http://localhost:9000/api/v1/practitioner/signup
+Content-Type: application/json
+
+{
+    "email": "johndoeeaa@gmail.com",
     "full_name": "John Doe",
     "password": "StrongPassword123!",
     "dob": "1990-01-01T00:00:00Z",
@@ -19,7 +38,7 @@ Content-Type: application/json
     "licence_number": "123ABC",
     "specialisations": [ "e024f25e-88b0-400a-8b3f-327e08cca220"
         , "e024f25e-88b0-400a-8b3f-327e08cca220"],
-    "hospitals": [ "e024f25e-88b0-400a-8b3f-327e08cca220"
+    "hospitals": [ "ff2c90da-f67c-491d-bb93-d041203230f6"
         , "e024f25e-88b0-400a-8b3f-327e08cca220"],
     "appointments": [ "e024f25e-88b0-400a-8b3f-327e08cca220"
         , "e024f25e-88b0-400a-8b3f-327e08cca220"],

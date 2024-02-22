@@ -1,5 +1,5 @@
 
-import { IsString, MinLength, IsOptional, IsUUID, IsNotEmpty, IsEmail, Matches } from 'class-validator';
+import { IsString, MinLength, IsOptional, IsNotEmpty, IsEmail, Matches } from 'class-validator';
 
 export interface signupPatientDTO {
     id?: string;

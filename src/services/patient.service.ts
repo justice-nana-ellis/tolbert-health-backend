@@ -1,10 +1,9 @@
 
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import cookieParser from 'cookie-parser';
-import { PatientRepository } from "../repositories/patient.repository";
+import { PatientRepository } from "../repositories";
 import { signupPatientDTO, signinPatientDTO, signinPatientResponseDTO,
-         logoutPatientResponseDTO, signupPatientResponseDTO  } from '../dto/patient.dto'; 
+         logoutPatientResponseDTO, signupPatientResponseDTO  } from '../dto'; 
 
 export class PatientService {
     private patientRepository: PatientRepository;
