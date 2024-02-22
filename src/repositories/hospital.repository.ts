@@ -31,4 +31,17 @@ export class HospitalRepository {
             }
         }); 
     }
+
+    async get() {
+        return this.prisma.hospital.findMany(); 
+    }
+
+    async getbyId(id: string) {
+        return this.prisma.hospital.findUnique({
+            where: {
+                id: id
+            }
+        }); 
+    }
+
 }

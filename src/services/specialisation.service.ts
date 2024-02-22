@@ -1,31 +1,31 @@
 
-import { HospitalRepository } from "../repositories";
-import { hospitalResponseDTO, hospitalDTO  } from '../dto'; 
+import { SpecialisationRepository } from "../repositories";
+import { specialisationResponseDTO, specialisationDTO  } from '../dto'; 
 
-export class HospitalService {
-    private hospitalRepository: HospitalRepository;
+export class SpecialisationService {
+    private specialisationRepository: SpecialisationRepository;
 
     constructor() {
-        this.hospitalRepository = new HospitalRepository();
+        this.specialisationRepository = new SpecialisationRepository();
     }
 
-    async create(hospitalData: hospitalDTO) {
+    async create(specialisationData: specialisationDTO) {
         try {
             
-            const response = await this.hospitalRepository.create(hospitalData);  
-            return <hospitalResponseDTO>{ 
+            const response = await this.specialisationRepository.create(specialisationData);  
+            return <specialisationResponseDTO>{ 
                 status: 'success',
                 content: response
             };
             
         } catch (error: any) {
             if (error.code === 'P2002' && error.meta?.target?.includes('name')) {
-                return <hospitalResponseDTO>{ 
+                return <specialisationResponseDTO>{ 
                   status: 'error',
                   content: { message: 'Name already Taken' }
                 };
               } else {
-                return <hospitalResponseDTO>{ 
+                return <specialisationResponseDTO>{ 
                   status: 'error',
                   content: { message: 'Internal server error' } 
                 };
@@ -34,32 +34,32 @@ export class HospitalService {
         
     }
 
-    async update(hospitalData: hospitalDTO, id: string) {
+    async update(specialisationData: specialisationDTO, id: string) {
         try {
             
-            const response = await this.hospitalRepository.update(hospitalData, id);  
-            return <hospitalResponseDTO>{ 
+            const response = await this.specialisationRepository.update(specialisationData, id);  
+            return <specialisationResponseDTO>{ 
                 status: 'success',
                 content: response
             };
             
         } catch (error: any) {
-            if (error.code === 'P2002' && error.meta?.modelName?.includes('hospital')) {
-                return <hospitalResponseDTO>{ 
+            if (error.code === 'P2002' && error.meta?.modelName?.includes('specialisation')) {
+                return <specialisationResponseDTO>{ 
                   status: 'error',
                   content: { message: 'Name already Taken' }
                 };
-              } else if(error.code === 'P2025' && error.meta?.modelName?.includes('hospital')){
-                return <hospitalResponseDTO>{ 
+              } else if(error.code === 'P2025' && error.meta?.modelName?.includes('specialisation')){
+                return <specialisationResponseDTO>{ 
                   status: 'error',
                   content: { message: 'Record not found' }
                 };
               } else {
-                return <hospitalResponseDTO>{ 
+                return <specialisationResponseDTO>{ 
                   status: 'error',
                   content: { message: 'Internal server error' } 
                 };
-              }
+            }
         }
         
     }
@@ -67,8 +67,8 @@ export class HospitalService {
     async delete(id: string) {
       try {
         
-          await this.hospitalRepository.delete(id);  
-          return <hospitalResponseDTO> {
+          await this.specialisationRepository.delete(id);  
+          return <specialisationResponseDTO> {
             status: "success",
             content: {
                 "message": "Record deleted successfully"
@@ -76,18 +76,19 @@ export class HospitalService {
          }
           
       } catch (error: any) {
-          if (error.code === 'P2002' && error.meta?.modelName?.includes('hospital')) {
-              return <hospitalResponseDTO>{ 
+          console.log(error);
+          if (error.code === 'P2002' && error.meta?.modelName?.includes('specialisation')) {
+              return <specialisationResponseDTO>{ 
                 status: 'error',
                 content: { message: 'Name already Taken' }
               };
-            } else if(error.code === 'P2025' && error.meta?.modelName?.includes('hospital')){
-              return <hospitalResponseDTO>{ 
+            } else if(error.code === 'P2025' && error.meta?.modelName?.includes('specialisation')){
+              return <specialisationResponseDTO>{ 
                 status: 'error',
                 content: { message: 'Record not found' }
               };
             } else {
-              return <hospitalResponseDTO>{ 
+              return <specialisationResponseDTO>{ 
                 status: 'error',
                 content: { message: 'Internal server error' } 
               };
@@ -99,25 +100,25 @@ export class HospitalService {
     async get() {
       try {
 
-          const response = await this.hospitalRepository.get();  
-          return <hospitalResponseDTO>{ 
+          const response = await this.specialisationRepository.get();  
+          return <specialisationResponseDTO>{ 
               status: 'success',
               content: response
           };
 
       } catch (error: any) {
           if (error.code === 'P2002' && error.meta?.modelName?.includes('hospital')) {
-              return <hospitalResponseDTO>{ 
+              return <specialisationResponseDTO>{ 
                 status: 'error',
                 content: { message: 'Name already Taken' }
               };
             } else if(error.code === 'P2025' && error.meta?.modelName?.includes('hospital')){
-              return <hospitalResponseDTO>{ 
+              return <specialisationResponseDTO>{ 
                 status: 'error',
                 content: { message: 'Record not found' }
               };
             } else {
-              return <hospitalResponseDTO>{ 
+              return <specialisationResponseDTO>{ 
                 status: 'error',
                 content: { message: 'Internal server error' } 
               };
@@ -129,32 +130,32 @@ export class HospitalService {
     async getbyId(id: string) {
       try {
           
-          const response = await this.hospitalRepository.getbyId(id);  
+          const response = await this.specialisationRepository.getbyId(id); 
           if (response === null) {
             let response:[] = []
-            return <hospitalResponseDTO>{ 
+            return <specialisationResponseDTO>{ 
               status: 'success',
               content: response
           };
           }
-          return <hospitalResponseDTO>{ 
+          return <specialisationResponseDTO>{ 
               status: 'success',
               content: response
           };
           
       } catch (error: any) {
           if (error.code === 'P2002' && error.meta?.modelName?.includes('hospital')) {
-              return <hospitalResponseDTO>{ 
+              return <specialisationResponseDTO>{ 
                 status: 'error',
                 content: { message: 'Name already Taken' }
               };
             } else if(error.code === 'P2025' && error.meta?.modelName?.includes('hospital')){
-              return <hospitalResponseDTO>{ 
+              return <specialisationResponseDTO>{ 
                 status: 'error',
                 content: { message: 'Record not found' }
               };
             } else {
-              return <hospitalResponseDTO>{ 
+              return <specialisationResponseDTO>{ 
                 status: 'error',
                 content: { message: 'Internal server error' } 
               };

@@ -1,6 +1,6 @@
 
 import express, { Request, Response } from 'express';
-import { hospitalDTO, hospitalResponseDTO, hospitalValidationDto  } from '../dto';
+import { hospitalDTO, hospitalValidationDto  } from '../dto';
 import { plainToClass } from 'class-transformer';
 import { HospitalService } from '../services';
 import { getErrorMessages } from '../util'; 
@@ -21,6 +21,8 @@ export class HospitalController {
         this.router.post(`${this.BASE_PATH}/hospital`, this.create.bind(this));
         this.router.patch(`${this.BASE_PATH}/hospital/:id`, this.update.bind(this));
         this.router.delete(`${this.BASE_PATH}/hospital/:id`, this.delete.bind(this));
+        this.router.get(`${this.BASE_PATH}/hospital`, this.get.bind(this));
+        this.router.get(`${this.BASE_PATH}/hospital/:id`, this.getbyId.bind(this));
     }
 
     private async create(req: Request, res: Response) {
@@ -53,6 +55,16 @@ export class HospitalController {
 
     private async delete(req: Request, res: Response) {
         const response = await this.hospitalService.delete(req.params.id);
+        res.json(response);
+    }
+
+    private async get(req: Request, res: Response) {
+        const response = await this.hospitalService.get();
+        res.json(response);
+    }
+
+    private async getbyId(req: Request, res: Response) {
+        const response = await this.hospitalService.getbyId(req.params.id);
         res.json(response);
     }
 

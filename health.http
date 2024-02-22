@@ -1,14 +1,41 @@
 
+### | create specialisation
+POST http://localhost:9000/api/v1/specialisation
+Content-Type: application/json
+
+{
+    "name": "Opticso Spectometry"
+}
+
+### | update specialisation
+PATCH http://localhost:9000/api/v1/specialisation/6b24e85e-a8b7-4db9-a56c-15185e796b21
+Content-Type: application/json
+
+{
+    "name": "Scan Spectrometry"
+}
+
+### | delete specialisation
+DELETE http://localhost:9000/api/v1/specialisation/08328d2d-19a5-4bc1-a8bb-c6467632bcd4
+
+### | get specialisations
+GET http://localhost:9000/api/v1/specialisation
+
+### | get specialisation by Id
+GET http://localhost:9000/api/v1/specialisation/8328d2d-19a5-4bc1-a8bb-c6467632bcd4
+
+#-----
+
 ### | create hospital
 POST http://localhost:9000/api/v1/hospital
 Content-Type: application/json
 
 {
-    "name": "Bethelio Hospital"
+    "name": "Bethelioin Hospital"
 }
 
 ### | update hospital
-PATCH http://localhost:9000/api/v1/hospital/7e2efe82-d9ea-42ba-8474-125a780c25ed
+PATCH http://localhost:9000/api/v1/hospital/e2997838-ca58-478a-a7c8-16643d48dda1
 Content-Type: application/json
 
 {
@@ -16,8 +43,15 @@ Content-Type: application/json
 }
 
 ### | delete hospital
-DELETE http://localhost:9000/api/v1/hospital/47538705-3278-49e3-93d5-6ac36262ae5f
+DELETE http://localhost:9000/api/v1/hospital/e2997838-ca58-478a-a7c8-16643d48dda1
 
+### | get hospitals
+GET http://localhost:9000/api/v1/hospital
+
+### | get hospital by Id
+GET http://localhost:9000/api/v1/hospital/d6d6b955-49e7-46a1-820e-2d12c9a71028
+
+#--------
 
 ### | signup practitioners
 POST http://localhost:9000/api/v1/practitioner/signup
