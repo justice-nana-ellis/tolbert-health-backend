@@ -1,4 +1,4 @@
-import { IsString, MinLength, IsOptional, IsUUID, IsNotEmpty, IsEmail, Matches, IsBoolean } from 'class-validator';
+import { IsString, MinLength, IsOptional, IsIn, IsNotEmpty, IsEmail, Matches, IsBoolean } from 'class-validator';
 
 export interface signupPractitionerDTO {
     id:        string;
@@ -12,6 +12,7 @@ export interface signupPractitionerDTO {
     contact:         string;
     id_type:         indentity_card;     
     id_number:       string;
+    status:          string;
     qualification:   string;
     licence_number:  string;
     specialisations: string[]; 
@@ -75,6 +76,7 @@ export class signupPractitionerValidationDto {
         this.contact = '';
         this.id_type = '';
         this.id_number = '';
+        this.status = '';
         this.qualification = '';
         this.licence_number = '';
         this.specialisations = [];
@@ -121,11 +123,18 @@ export class signupPractitionerValidationDto {
 
     @IsString({ message: 'ID Type must be a string' })
     @IsNotEmpty({ message: 'ID Type is a required field' })
+    @IsIn(['ghana_card', 'voter_id', 'passport', 'driving_license'], { message: 'ID Type must be one of: ghana_card, voter_id, passport, or driving_license' })
     id_type: string;
 
     @IsString({ message: 'ID Number must be a string' })
     @IsNotEmpty({ message: 'ID Number is a required field' })
+    @MinLength(5, { message: 'ID Number must be at least 5 characters long' })
     id_number: string;
+
+    //@IsString({ message: 'Status must be a string' })
+    //@IsNotEmpty({ message: 'Status is a required field' })
+    //@IsIn(['rejected', 'approved', 'pending'], { message: 'Status must be one of: rejected, approved, or pending' })
+    status: string;
 
     @IsString({ message: 'Qualification must be a string' })
     @IsNotEmpty({ message: 'Qualification is a required field' })

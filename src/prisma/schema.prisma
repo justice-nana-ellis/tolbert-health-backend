@@ -39,7 +39,7 @@ model practitioner {
   digital_address String
   contact         String
   id_type         indentity_card @default(ghana_card)
-  status          statuses @default(pending)
+  status          statuses? @default(pending)
   id_number       String
   qualification   String
   licence_number  String

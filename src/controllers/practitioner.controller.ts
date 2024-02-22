@@ -20,7 +20,7 @@ export class PractitionerController {
     private initializeRoutes() {
         this.router.post(`${this.BASE_PATH}/practitioner/signup`, this.signup.bind(this));
         this.router.post(`${this.BASE_PATH}/practitioner/signin`, this.signin.bind(this));
-        this.router.post(`${this.BASE_PATH}/practitioner/logout`, this.logout.bind(this));
+        this.router.post(`${this.BASE_PATH}/practitioner/logout/:id`, this.logout.bind(this));
     }
 
     private async signup(req: Request, res: Response) {
@@ -54,8 +54,8 @@ export class PractitionerController {
           timestamp: timestamp,
         });
         const response = await this.practitionerService.signin(postData);
-        res.clearCookie('Tolbert-Token');
-        res.cookie('Tolbert-Token', response?.token, { httpOnly: true });
+        res.clearCookie(`${response?.content?.id}`);
+        res.cookie(`${response?.content?.id}`, response?.token, { httpOnly: true });
         res.json(response);
       } catch (error) {
         return res.status(500).json({
@@ -69,8 +69,10 @@ export class PractitionerController {
 
     private async logout(req: Request, res: Response) {
       try {
-        res.clearCookie('Tolbert-Token');
-        const response = await this.practitionerService.logout();
+        const response: any = await this.practitionerService.logout(req.params.id);
+        if(response.status === 'success') {
+           res.clearCookie(req.params.id);
+        }
         res.json(response);
       } catch (error) {
         return res.status(500).json({

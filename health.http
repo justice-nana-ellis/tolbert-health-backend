@@ -58,7 +58,7 @@ POST http://localhost:9000/api/v1/practitioner/signup
 Content-Type: application/json
 
 {
-    "email": "johndoeeaa@gmail.com",
+    "email": "johndoeoo@gmail.com",
     "full_name": "John Doe",
     "password": "StrongPassword123!",
     "dob": "1990-01-01T00:00:00Z",
@@ -66,7 +66,7 @@ Content-Type: application/json
     "img_url": "",
     "digital_address": "123 Main Street",
     "contact": "123-456-7890",
-    "id_type": "GHANA_CARD",
+    "id_type": "ghana_card",
     "id_number": "1234567890",
     "qualification": "Doctor of Medicine",
     "licence_number": "123ABC",
@@ -84,12 +84,12 @@ POST http://localhost:9000/api/v1/practitioner/signin
 Content-Type: application/json
 
 {
-    "email": "johndoe@gmail.com",
+    "email": "johndoeoo@gmail.com",
     "password": "StrongPassword123!"
 }
 
-### | loggout practitioner
-POST http://localhost:9000/api/v1/practitioner/logout
+### | logout practitioner
+POST http://localhost:9000/api/v1/practitioner/logout/bd14bb53-dd0b-404d-98d0-98e058251d8e
 Content-Type: application/json
 
 ### | signup patient
@@ -111,8 +111,8 @@ Content-Type: application/json
   	"password":  "5554321Acomid!"
 }
 
-### | loggout patient
-POST http://localhost:9000/api/v1/patient/logout
+### | logout patient
+POST http://localhost:9000/api/v1/patient/logout/196f97cc-7fa3-4783-ab0b-74dd8a3c9753
 Content-Type: application/json
 
 
