@@ -38,7 +38,8 @@ model practitioner {
   img_url         String
   digital_address String
   contact         String
-  id_type         indentity_card @default(GHANA_CARD)
+  id_type         indentity_card @default(ghana_card)
+  status          statuses @default(pending)
   id_number       String
   qualification   String
   licence_number  String
@@ -74,18 +75,21 @@ model appointment {
   comment           String
   tc                Boolean
   payment_completed Boolean
-  status            status
+  status            statuses
   expiry            DateTime
 }
 
-enum status {
+enum statuses {
   approved
   rejected
+  pending
 }
 
 enum indentity_card {
-  GHANA_CARD
-  VOTER_ID
-  PASSPORT
-  DRIVING_LICENCE
+  ghana_card
+  voter_id
+  passprt
+  driving_license
 }
+
+

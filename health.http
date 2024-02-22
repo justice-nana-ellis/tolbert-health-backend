@@ -1,11 +1,64 @@
 
-
-### | signup practitioners
-POST https://tolbert-health.onrender.com/api/v1/practitioner/signup
+### | create specialisation
+POST http://localhost:9000/api/v1/specialisation
 Content-Type: application/json
 
 {
-    "email": "johndoeea@gmail.com",
+    "name": "Opticso Spectometry"
+}
+
+### | update specialisation
+PATCH http://localhost:9000/api/v1/specialisation/6b24e85e-a8b7-4db9-a56c-15185e796b21
+Content-Type: application/json
+
+{
+    "name": "Scan Spectrometry"
+}
+
+### | delete specialisation
+DELETE http://localhost:9000/api/v1/specialisation/08328d2d-19a5-4bc1-a8bb-c6467632bcd4
+
+### | get specialisations
+GET http://localhost:9000/api/v1/specialisation
+
+### | get specialisation by Id
+GET http://localhost:9000/api/v1/specialisation/8328d2d-19a5-4bc1-a8bb-c6467632bcd4
+
+#-----
+
+### | create hospital
+POST http://localhost:9000/api/v1/hospital
+Content-Type: application/json
+
+{
+    "name": "Bethelioin Hospital"
+}
+
+### | update hospital
+PATCH http://localhost:9000/api/v1/hospital/e2997838-ca58-478a-a7c8-16643d48dda1
+Content-Type: application/json
+
+{
+    "name": "Bel"
+}
+
+### | delete hospital
+DELETE http://localhost:9000/api/v1/hospital/e2997838-ca58-478a-a7c8-16643d48dda1
+
+### | get hospitals
+GET http://localhost:9000/api/v1/hospital
+
+### | get hospital by Id
+GET http://localhost:9000/api/v1/hospital/d6d6b955-49e7-46a1-820e-2d12c9a71028
+
+#--------
+
+### | signup practitioners
+POST http://localhost:9000/api/v1/practitioner/signup
+Content-Type: application/json
+
+{
+    "email": "johndoeeaa@gmail.com",
     "full_name": "John Doe",
     "password": "StrongPassword123!",
     "dob": "1990-01-01T00:00:00Z",
@@ -19,7 +72,7 @@ Content-Type: application/json
     "licence_number": "123ABC",
     "specialisations": [ "e024f25e-88b0-400a-8b3f-327e08cca220"
         , "e024f25e-88b0-400a-8b3f-327e08cca220"],
-    "hospitals": [ "e024f25e-88b0-400a-8b3f-327e08cca220"
+    "hospitals": [ "ff2c90da-f67c-491d-bb93-d041203230f6"
         , "e024f25e-88b0-400a-8b3f-327e08cca220"],
     "appointments": [ "e024f25e-88b0-400a-8b3f-327e08cca220"
         , "e024f25e-88b0-400a-8b3f-327e08cca220"],

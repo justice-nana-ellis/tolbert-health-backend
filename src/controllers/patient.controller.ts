@@ -1,10 +1,10 @@
 
 import express, { Request, Response } from 'express';
 import { signupPatientDTO, signinPatientDTO, signupPatientValidationDto,
-         signinPatientValidationDto  } from '../dto/patient.dto'
-import { PatientService } from '../services/patient.service';
-import { getErrorMessages } from '../util'; 
+         signinPatientValidationDto  } from '../dto';
 import { plainToClass } from 'class-transformer';
+import { PatientService } from '../services';
+import { getErrorMessages } from '../util'; 
 
 const timestamp = new Date().toISOString();
 
