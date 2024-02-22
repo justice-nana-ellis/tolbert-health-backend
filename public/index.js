@@ -24,6 +24,9 @@ const PORT = parseInt(process.env.PORT);
     app.use((0, cors_1.default)());
     app.use(express_1.default.json());
     app.use(express_1.default.urlencoded({ extended: true }));
+    app.get('/', (req, res) => {
+        res.send('TELBET HEALTH SERVICE WORKING 🫀!');
+    });
     controllers_1.controllers.forEach(controller => {
         app.use(controller.router);
     });
