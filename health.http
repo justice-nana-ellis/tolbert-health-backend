@@ -1,11 +1,11 @@
 
 
 ### | signup practitioners
-POST http://localhost:9000/api/v1/practitioner/signup
+POST https://tolbert-health.onrender.com/api/v1/practitioner/signup
 Content-Type: application/json
 
 {
-    "email": "johndoee@gmail.com",
+    "email": "johndoeea@gmail.com",
     "full_name": "John Doe",
     "password": "StrongPassword123!",
     "dob": "1990-01-01T00:00:00Z",

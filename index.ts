@@ -20,7 +20,7 @@ const PORT = parseInt(<string>process.env.PORT);
     controllers.forEach(controller => {
         app.use(controller.router);
     });
-
+    
     app.listen(PORT, () => {
         //console.clear();
         console.log(`🚀 Server Running @ Port ${PORT} ⚡`);
