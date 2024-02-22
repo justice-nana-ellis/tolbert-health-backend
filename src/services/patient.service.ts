@@ -61,7 +61,9 @@ export class PatientService {
                 //-- jwt
                 const payload = {
                     "iss": `TOLBERT_HEALTH_SERVICE`,
-                    ...response,
+                    "id": `${response.id}`,
+                    "email": `${response.email}`,
+                    "full_name": `${response.email}`
                 }
                 const Token = jwt.sign(payload, this.SECRET_KEY, { expiresIn: '1h' });
                 
@@ -83,12 +85,30 @@ export class PatientService {
         }
     }
 
-    async logout() {
-         return <logoutPatientResponseDTO> {
-            status: "success",
-            content: {
-                "message": "logged out successfully"
+    async logout(id: string) {
+        try {
+            const response = await this.patientRepository.logout(id)
+            if (response === null) {
+                return <logoutPatientResponseDTO> {
+                    status: "error",
+                    content: {
+                        "message": "Record not found"
+                    }
+                }
             }
-         }
+            return <logoutPatientResponseDTO> {
+                status: "success",
+                content: {
+                    "message": "logged out successfully"
+                }
+            }
+        } catch (error: any) {
+            if(error.code === 'P2025' && error.meta?.modelName?.includes('hospital')){
+                return <logoutPatientResponseDTO>{ 
+                  status: 'error',
+                  content: { message: 'Record not found' }
+                };
+            }
+        }
     }
 }

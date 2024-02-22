@@ -31,7 +31,11 @@ export class PractitionerRepository {
         
     }
 
-    async updatePatient() {
-
+    async logout(id: string) {
+        return this.prisma.practitioner.findUnique({
+            where: {
+                id: id
+            }
+        }); 
     }
 }

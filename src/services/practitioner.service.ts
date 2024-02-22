@@ -20,7 +20,8 @@ export class PractitionerService {
             const patient = {
                 ...patientData,
                 password: hash,
-                verified: false
+                verified: false,
+                status: 'pending'
             }
             const response = await this.practitionerRepository.signup(patient);  
             return <signupPractitionerResponseDTO>{ 
@@ -61,7 +62,9 @@ export class PractitionerService {
                 //-- jwt
                 const payload = {
                     "iss": `TOLBERT_HEALTH_SERVICE`,
-                    ...response,
+                    "id": `${response.id}`,
+                    "email": `${response.email}`,
+                    "full_name": `${response.email}`
                 }
                 const Token = jwt.sign(payload, this.SECRET_KEY, { expiresIn: '1h' });
                 
@@ -83,12 +86,25 @@ export class PractitionerService {
         }
     }
 
-    async logout() {
-         return <logoutPractitionerResponseDTO> {
-            status: "success",
-            content: {
-                "message": "logged out successfully"
+    async logout(id: string) {
+        try {
+            const response = await this.practitionerRepository.logout(id);
+            if (response === null) {
+                return <logoutPractitionerResponseDTO> {
+                    status: "error",
+                    content: {
+                        "message": "Record not found"
+                    }
+                }
             }
-         }
+            return <logoutPractitionerResponseDTO> {
+                status: "success",
+                content: {
+                    "message": "logged out successfully"
+                }
+            }
+        } catch (error: any) {
+            
+        }
     }
 }

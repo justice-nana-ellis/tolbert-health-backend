@@ -23,7 +23,11 @@ export class PatientRepository {
         }); 
     }
 
-    async updatePatient() {
-
+    async logout(id: string) {
+        return this.prisma.patient.findUnique({
+            where: {
+                id: id
+            }
+        }); 
     }
 }
