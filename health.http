@@ -105,7 +105,7 @@ POST http://localhost:9000/api/v1/practitioner/signup
 Content-Type: application/json
 
 {
-    "email": "johndoeoio@gmail.com",
+    "email": "johndoiieioiio@gmail.com",
     "full_name": "John Doe",
     "password": "StrongPassword123!",
     "dob": "1990-01-01T00:00:00Z",
@@ -120,8 +120,6 @@ Content-Type: application/json
     "specialisations": [ "e024f25e-88b0-400a-8b3f-327e08cca220"
         , "e024f25e-88b0-400a-8b3f-327e08cca220"],
     "hospitals": [ "ff2c90da-f67c-491d-bb93-d041203230f6"
-        , "e024f25e-88b0-400a-8b3f-327e08cca220"],
-    "appointments": [ "e024f25e-88b0-400a-8b3f-327e08cca220"
         , "e024f25e-88b0-400a-8b3f-327e08cca220"],
     "verified": true
 }

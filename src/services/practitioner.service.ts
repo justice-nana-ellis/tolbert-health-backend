@@ -23,7 +23,7 @@ export class PractitionerService {
                 verified: false,
                 status: 'pending'
             }
-            const response = await this.practitionerRepository.signup(patient);  
+            const response: any = await this.practitionerRepository.signup(patient);    
             return <signupPractitionerResponseDTO>{ 
                 status: 'success',
                 content: response
