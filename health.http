@@ -1,4 +1,51 @@
 
+
+### | create appointment
+POST http://localhost:9000/api/v1/appointment
+Content-Type: application/json
+
+{
+  "title": "Appointment for Checkup 2bkdi",
+  "date": "2024-02-23T00:00:00Z",
+  "time": "2024-02-23T10:30:00Z",
+  "service": "General Consultation",
+  "comment": "Patient complains of mild headaches.",
+  "practitioner": "7aa6fe4e-e3da-4f18-850d-8135359a60ac",
+  "tc": true,
+  "payment_completed": false,
+  "status": "pending",
+  "expiry": "2024-02-23T12:00:00Z"
+}
+
+
+### | update appointment
+PATCH http://localhost:9000/api/v1/appointment/224d3cc4-031b-45ad-9e7f-343c3f948492
+Content-Type: application/json
+
+{
+  "title": "Appointment for OOOOOOOO",
+  "date": "2024-02-23T00:00:00Z",
+  "time": "2024-02-23T10:30:00Z",
+  "service": "General Consultation",
+  "comment": "Patient complains of mild headaches.",
+  "practitioner": "7aa6fe4e-e3da-4f18-850d-8135359a60ac",
+  "tc": true,
+  "payment_completed": false,
+  "status": "pending",
+  "expiry": "2024-02-23T12:00:00Z"
+}
+
+### | delete appointment
+DELETE http://localhost:9000/api/v1/appointment/224d3cc4-031b-45ad-9e7f-343c3f948492
+
+### | get appointment
+GET http://localhost:9000/api/v1/appointment
+
+### | get appointment by Id
+GET http://localhost:9000/api/v1/appointment/0370c436-aa8e-4919-8f4e-2c9e47da8d11
+
+#-----
+
 ### | create specialisation
 POST http://localhost:9000/api/v1/specialisation
 Content-Type: application/json
@@ -58,7 +105,7 @@ POST http://localhost:9000/api/v1/practitioner/signup
 Content-Type: application/json
 
 {
-    "email": "johndoeoo@gmail.com",
+    "email": "johndoeoio@gmail.com",
     "full_name": "John Doe",
     "password": "StrongPassword123!",
     "dob": "1990-01-01T00:00:00Z",
