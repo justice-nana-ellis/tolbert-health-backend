@@ -38,4 +38,30 @@ export class PractitionerRepository {
             }
         }); 
     }
+
+    async hospitalExists(hospitals: string[]) {
+        return this.prisma.hospital.findMany({
+            where: {
+              id: {
+                in: hospitals,
+              },
+            },
+            select: {
+              id: true,
+            },
+          });
+    }
+
+    async specialisationExists(specialisations: string[]) {
+        return this.prisma.specialisation.findMany({
+            where: {
+              id: {
+                in: specialisations,
+              },
+            },
+            select: {
+              id: true,
+            },
+          });
+    }
 }
