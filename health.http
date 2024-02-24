@@ -4,16 +4,16 @@ POST http://localhost:9000/api/v1/service
 Content-Type: application/json
 
 {
-    "name": "Sidocal Service",
+    "name": "Nasal Service",
     "price": 20.70
 }
 
 ### | update service
-PATCH http://localhost:9000/api/v1/service/bfd4446a-d44b-427c-b227-d1325a58996d
+PATCH http://localhost:9000/api/v1/service/677e603a-6d5f-4e85-9e63-ae42d5d6f9fc
 Content-Type: application/json
 
 {
-    "name": "GONALITIC Service",
+    "name": "Viral Service",
     "price": 20.90
 }
 
