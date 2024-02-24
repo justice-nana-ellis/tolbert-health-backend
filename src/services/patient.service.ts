@@ -25,7 +25,9 @@ export class PatientService {
             const response = await this.patientRepository.signup(patient);  
             return <signupPatientResponseDTO>{ 
                 status: 'success',
-                content: response
+                content:  {
+                    "message": response
+                }
             };
             
         } catch (error: any) {

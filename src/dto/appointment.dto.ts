@@ -5,7 +5,8 @@ export interface appointmentDTO {
     title:     string;
     date:      string;
     time:              string;
-    practitioner:      string[];
+    practitionerId:      string;
+    patientId: string;
     service:           string;
     comment:           string;
     tc:                Boolean
@@ -28,6 +29,7 @@ export class appointmentValidationDto {
         this.date   =            '';
         this.time   =            '';
         this.practitionerId =      '';
+        this.patientId = '';
         this.service      =      '';
         this.comment      =      '';
         this.tc;           
@@ -52,10 +54,14 @@ export class appointmentValidationDto {
     @IsString({ message: 'Time must be a string' })
     time: string;
 
-    //@IsNotEmpty({ message: 'Practitioner is a required field' })
+    @IsNotEmpty({ message: 'Practitioner is a required field' })
     //@IsString({ message: 'Practitioner must be a string' })
-    @IsOptional()
+    //@IsOptional()
     practitionerId: string;
+
+    //@IsNotEmpty({ message: 'Practitioner is a required field' })
+    @IsOptional()
+    patientId: string;
 
     @IsNotEmpty({ message: 'Service is a required field' })
     @IsString({ message: 'Service must be a string' })

@@ -1,38 +1,68 @@
 
+### | create service
+POST http://localhost:9000/api/v1/service
+Content-Type: application/json
+
+{
+    "name": "Sidocal Service",
+    "price": 20.70
+}
+
+### | update service
+PATCH http://localhost:9000/api/v1/service/bfd4446a-d44b-427c-b227-d1325a58996d
+Content-Type: application/json
+
+{
+    "name": "GONALITIC Service",
+    "price": 20.90
+}
+
+### | delete service
+DELETE http://localhost:9000/api/v1/service/bfd4446a-d44b-427c-b227-d1325a58996d
+
+### | get service
+GET http://localhost:9000/api/v1/service
+
+### | get service by Id
+GET http://localhost:9000/api/v1/service/1fa14fa3-6bb1-4a69-87ec-2caab217b006
+
+#--------
 
 ### | create appointment
 POST http://localhost:9000/api/v1/appointment
 Content-Type: application/json
 
 {
-  "title": "Appointment for Checkup 2bkdi",
-  "date": "2024-02-23T00:00:00Z",
-  "time": "2024-02-23T10:30:00Z",
-  "service": "General Consultation",
-  "comment": "Patient complains of mild headaches.",
-  "practitioner": "7aa6fe4e-e3da-4f18-850d-8135359a60ac",
+  "title": "Annual Checkup 2024",
+  "date": "2024-02-28T10:30:00Z",
+  "time": "2024-02-28T11:00:00Z",
+  "practitionerId": "70f3b6e8-3958-462f-a82c-69d2de928995",
+  "patientId": "4d80a0fb-539f-4191-85ac-c3390c43483d",
+  "service": "General Health Assessment",
+  "comment": "Patient requests a thorough checkup, including blood work and physical exam.",
   "tc": true,
   "payment_completed": false,
   "status": "pending",
-  "expiry": "2024-02-23T12:00:00Z"
+  "expiry": "2024-02-28T12:30:00Z"
 }
 
 
 ### | update appointment
-PATCH http://localhost:9000/api/v1/appointment/224d3cc4-031b-45ad-9e7f-343c3f948492
+PATCH http://localhost:9000/api/v1/appointment/8b4965e7-55d0-4732-aacf-7a6ecb3c3e17
 Content-Type: application/json
 
 {
-  "title": "Appointment for OOOOOOOO",
-  "date": "2024-02-23T00:00:00Z",
-  "time": "2024-02-23T10:30:00Z",
-  "service": "General Consultation",
-  "comment": "Patient complains of mild headaches.",
-  "practitioner": "7aa6fe4e-e3da-4f18-850d-8135359a60ac",
+  "title": "Annual Checkup 2025",
+  "date": "2024-02-28T10:30:00Z",
+  "time": "2024-02-28T11:00:00Z",
+  "practitionerId": "70f3b6e8-3958-462f-a82c-69d2de928995",
+  "patientId": "10239a7f-a8bb-4ace-aaec-1b267ffcba98",
+  "service": "General Health Assessment",
+  "comment": "Patient requests a thorough checkup, including blood work and physical exam.",
   "tc": true,
   "payment_completed": false,
   "status": "pending",
-  "expiry": "2024-02-23T12:00:00Z"
+  "expiry": "2024-02-28T12:30:00Z"
 }
 
 ### | delete appointment
@@ -42,7 +72,7 @@ DELETE http://localhost:9000/api/v1/appointment/224d3cc4-031b-45ad-9e7f-343c3f94
 GET http://localhost:9000/api/v1/appointment
 
 ### | get appointment by Id
-GET http://localhost:9000/api/v1/appointment/0370c436-aa8e-4919-8f4e-2c9e47da8d11
+GET http://localhost:9000/api/v1/appointment/8b4965e7-55d0-4732-aacf-7a6ecb3c3e17
 
 #-----
 
@@ -51,11 +81,11 @@ POST http://localhost:9000/api/v1/specialisation
 Content-Type: application/json
 
 {
-    "name": "Opticso Spectometry"
+    "name": "Nasal Spectometry"
 }
 
 ### | update specialisation
-PATCH http://localhost:9000/api/v1/specialisation/6b24e85e-a8b7-4db9-a56c-15185e796b21
+PATCH http://localhost:9000/api/v1/specialisation/1821254-234f-45c7-9e7c-4100ec8efcc0
 Content-Type: application/json
 
 {
@@ -78,11 +108,11 @@ POST http://localhost:9000/api/v1/hospital
 Content-Type: application/json
 
 {
-    "name": "Bethelioin Hospital"
+    "name": "Bethel-1 Hospital"
 }
 
 ### | update hospital
-PATCH http://localhost:9000/api/v1/hospital/e2997838-ca58-478a-a7c8-16643d48dda1
+PATCH http://localhost:9000/api/v1/hospital/f710f2a8-0a31-4874-9c2d-dc37bdfefc38
 Content-Type: application/json
 
 {
@@ -105,7 +135,7 @@ POST http://localhost:9000/api/v1/practitioner/signup
 Content-Type: application/json
 
 {
-    "email": "johndoeoio@gmail.com",
+    "email": "johndociiioxxvovxxriibcifeioiio@gmail.com",
     "full_name": "John Doe",
     "password": "StrongPassword123!",
     "dob": "1990-01-01T00:00:00Z",
@@ -117,12 +147,8 @@ Content-Type: application/json
     "id_number": "1234567890",
     "qualification": "Doctor of Medicine",
     "licence_number": "123ABC",
-    "specialisations": [ "e024f25e-88b0-400a-8b3f-327e08cca220"
-        , "e024f25e-88b0-400a-8b3f-327e08cca220"],
-    "hospitals": [ "ff2c90da-f67c-491d-bb93-d041203230f6"
-        , "e024f25e-88b0-400a-8b3f-327e08cca220"],
-    "appointments": [ "e024f25e-88b0-400a-8b3f-327e08cca220"
-        , "e024f25e-88b0-400a-8b3f-327e08cca220"],
+    "specialisations": [ "07da2a00-1a30-444f-b173-4734538a85fc"],
+    "hospitals": [ "328478f6-30ec-4cff-80a6-1e66f66135d3"],
     "verified": true
 }
 
@@ -144,7 +170,7 @@ POST http://localhost:9000/api/v1/patient/signup
 Content-Type: application/json
 
 {
-    "email":     "johndoe@gmail.com",      
+    "email":     "johndoeiv@gmail.com",      
   	"full_name": "John Doe",
   	"password":  "5554321Acomid!"
 }
