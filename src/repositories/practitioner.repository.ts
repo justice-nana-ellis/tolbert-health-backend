@@ -95,20 +95,20 @@ export class PractitionerRepository {
         });
     }
 
-    async docInfo(practitioner: array) {
-        return this.prisma.practitioner.findUnique({
-            //@ts-ignore
-            where: {
-                //@ts-ignore
-                full_name: practitioner[0]
-            },
-            select: {
-                id: true,
-                full_name: true,
-                img_url: true
-            }
-        });
-    }
+    // async docInfo(practitioner: array) {
+    //     return this.prisma.practitioner.findUnique({
+    //         //@ts-ignore
+    //         where: {
+    //             //@ts-ignore
+    //             full_name: practitioner[0]
+    //         },
+    //         select: {
+    //             id: true,
+    //             full_name: true,
+    //             img_url: true
+    //         }
+    //     });
+    // }
 
     async hospitalExists(hospitals: string[]) {
         return this.prisma.hospital.findMany({
