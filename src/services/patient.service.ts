@@ -27,7 +27,9 @@ export class PatientService {
             delete response.password
             return <signupPatientResponseDTO>{ 
                 status: 'success',
-                content: response
+                content:  {
+                    "message": response
+                }
             };
             
         } catch (error: any) {

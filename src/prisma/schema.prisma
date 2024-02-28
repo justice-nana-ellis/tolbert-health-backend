@@ -70,6 +70,14 @@ model hospital {
   updatedAt DateTime? @default(now()) @updatedAt @map("updated_at")
 }
 
+model service {
+  id        String    @id @unique @default(uuid())
+  name      String    @unique
+  price     Float
+  createdAt DateTime? @default(now()) @map("created_at")
+  updatedAt DateTime? @default(now()) @updatedAt @map("updated_at")
+}
+
 model appointment {
   id                String       @id @unique @default(uuid())
   title             String       @unique
@@ -90,14 +98,6 @@ model appointment {
 
   @@index([practitionerId], name: "appointment_practitionerId_index")
   @@index([patientId], name: "appointment_patientId_index")
-}
-
-model service {
-  id        String    @id @unique @default(uuid())
-  name      String    @unique
-  price     Float
-  createdAt DateTime? @default(now()) @map("created_at")
-  updatedAt DateTime? @default(now()) @updatedAt @map("updated_at")
 }
 
 enum access {
