@@ -24,9 +24,8 @@ export class PractitionerService {
                 verified: false,
                 status: 'pending'
             }
-            const response: any = await this.practitionerRepository.signup(patient);    
-            delete response.password;
-
+            //const response: any = await this.practitionerRepository.signup(patient);    
+        
             const hospitalExists = await this.practitionerRepository.hospitalExists(practitionerData.hospitals);
             const specialisationExists = await this.practitionerRepository.specialisationExists(practitionerData.specialisations);
             
@@ -43,12 +42,14 @@ export class PractitionerService {
                 };
             }
             const response: any = await this.practitionerRepository.signup(practitioner);    
+            delete response.password;
             return <signupPractitionerResponseDTO>{ 
                 status: 'success',
                 content:  response
             };
             
         } catch (error: any) {
+            
             if (error.code === 'P2002' && error.meta?.target?.includes('email')) {
                 return <signupPractitionerResponseDTO>{ 
                   status: 'error',

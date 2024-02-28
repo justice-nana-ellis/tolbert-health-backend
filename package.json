@@ -15,7 +15,7 @@
     "prisma:studio": "npx prisma studio --schema=./src/prisma/schema.prisma",
     "prisma:format": "npx prisma format --schema=./src/prisma/schema.prisma",
     "prisma:seed": "ts-node prisma/seedScript.ts",
-    "prisma:reset": "prisma migrate reset --force",
+    "prisma:reset": "prisma migrate reset --force --schema=./src/prisma/schema.prisma",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
