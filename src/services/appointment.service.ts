@@ -12,13 +12,14 @@ export class AppointmentService {
     async create(appointmentData: appointmentDTO) {
         try {
             //@ts-ignore
-            const findDoc = await this.appointmentRepository.findDoc(appointmentData.practitioner);  
-            if(findDoc === null) {
-                return <appointmentResponseDTO>{ 
-                    status: 'error',
-                    content: { message: 'Practitioner not Found' }
-                  };
-            }
+            // const findDoc = await this.appointmentRepository.findDoc(appointmentData.practitionerId);  
+            // console.log(findDoc)
+            // if(findDoc === null) {
+            //     return <appointmentResponseDTO>{ 
+            //         status: 'error',
+            //         content: { message: 'Practitioner not Found' }
+            //       };
+            // }
             const response = await this.appointmentRepository.create(appointmentData);  
             return <appointmentResponseDTO>{ 
                 status: 'successs',
@@ -26,11 +27,20 @@ export class AppointmentService {
             };
             
         } catch (error: any) {
-            console.log(error);
             if (error.code === 'P2002' && error.meta?.target?.includes('title')) {
                 return <appointmentResponseDTO>{ 
                   status: 'error',
                   content: { message: 'Title already Taken' }
+                };
+              } else if(error.code === 'P2003' && error.meta?.field_name?.includes('appointment_patientId_fkey')) {
+                return <appointmentResponseDTO>{ 
+                  status: 'error',
+                  content: { message: 'Patient not found' }
+                };
+              } else if(error.code === 'P2003' && error.meta?.field_name?.includes('appointment_practitionerId_fkey')) {
+                return <appointmentResponseDTO>{ 
+                  status: 'error',
+                  content: { message: 'Practitioner not found' }
                 };
               } else {
                 return <appointmentResponseDTO>{ 
@@ -44,30 +54,38 @@ export class AppointmentService {
 
     async update(appointmentData: appointmentDTO, id: string) {
         try {
-            
             const response = await this.appointmentRepository.update(appointmentData, id);  
             return <appointmentResponseDTO>{ 
                 status: 'success',
                 content: response
             };
-            
         } catch (error: any) {
-            if (error.code === 'P2002' && error.meta?.modelName?.includes('hospital')) {
-                return <appointmentResponseDTO>{ 
-                  status: 'error',
-                  content: { message: 'Name already Taken' }
-                };
-              } else if(error.code === 'P2025' && error.meta?.modelName?.includes('hospital')){
-                return <appointmentResponseDTO>{ 
-                  status: 'error',
-                  content: { message: 'Record not found' }
-                };
-              } else {
-                return <appointmentResponseDTO>{ 
-                  status: 'error',
-                  content: { message: 'Internal server error' } 
-                };
-              }
+            if (error.code === 'P2002' && error.meta?.target?.includes('title')) {
+              return <appointmentResponseDTO>{ 
+                status: 'error',
+                content: { message: 'Title already Taken' }
+              };
+            } else if(error.code === 'P2003' && error.meta?.field_name?.includes('appointment_patientId_fkey')) {
+              return <appointmentResponseDTO>{ 
+                status: 'error',
+                content: { message: 'Patient not found' }
+              };
+            } else if(error.code === 'P2003' && error.meta?.field_name?.includes('appointment_practitionerId_fkey')) {
+              return <appointmentResponseDTO>{ 
+                status: 'error',
+                content: { message: 'Practitioner not found' }
+              };
+            } else if(error.code === 'P2025' && error.meta?.cause?.includes('Record to update not found')) {
+              return <appointmentResponseDTO>{ 
+                status: 'error',
+                content: { message: 'Record not found' }
+              };
+            } else {
+              return <appointmentResponseDTO>{ 
+                status: 'error',
+                content: { message: 'Internal server error' } 
+              };
+            }
         }
         
     }

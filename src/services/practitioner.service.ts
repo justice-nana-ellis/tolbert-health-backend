@@ -14,21 +14,38 @@ export class PractitionerService {
         this.practitionerRepository = new PractitionerRepository();
     }
 
-    async signup(patientData: signupPractitionerDTO) {
+    async signup(practitionerData: signupPractitionerDTO) {
         try {
             const salt = await bcrypt.genSalt(10);
-            const hash = await bcrypt.hash(patientData.password, salt);
-            const patient = {
-                ...patientData,
+            const hash = await bcrypt.hash(practitionerData.password, salt);
+            const practitioner = {
+                ...practitionerData,
                 password: hash,
                 verified: false,
                 status: 'pending'
             }
             const response: any = await this.practitionerRepository.signup(patient);    
             delete response.password;
+
+            const hospitalExists = await this.practitionerRepository.hospitalExists(practitionerData.hospitals);
+            const specialisationExists = await this.practitionerRepository.specialisationExists(practitionerData.specialisations);
+            
+            if (hospitalExists.length !== practitionerData.hospitals.length) {
+                return <signupPractitionerResponseDTO>{ 
+                    status: 'error',
+                    content: { message: 'Invalid hospital IDs provided' }
+                };
+            }
+            if (specialisationExists.length !== practitionerData.specialisations.length) {
+                return <signupPractitionerResponseDTO>{ 
+                    status: 'error',
+                    content: { message: 'Invalid specialistion IDs provided' }
+                };
+            }
+            const response: any = await this.practitionerRepository.signup(practitioner);    
             return <signupPractitionerResponseDTO>{ 
                 status: 'success',
-                content: response
+                content:  response
             };
             
         } catch (error: any) {

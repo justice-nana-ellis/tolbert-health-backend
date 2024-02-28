@@ -1,6 +1,7 @@
 
 export * from "./patient.service";
 export * from "./hospital.service";
+export * from "./service.service";
 export * from "./appointment.service";
 export * from "./admin.service";
 export * from "./practitioner.service";
