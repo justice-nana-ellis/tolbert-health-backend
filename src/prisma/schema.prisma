@@ -9,14 +9,27 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model admin {
+  id           String    @id @unique @default(uuid())
+  email        String    @unique
+  full_name    String
+  password     String
+  access_level access?   @default(admin)
+  verified     Boolean   @default(false)
+  createdAt    DateTime? @default(now()) @map("created_at")
+  updatedAt    DateTime? @default(now()) @updatedAt @map("updated_at")
+}
+
 model patient {
-  id        String    @id @unique @default(uuid())
-  email     String    @unique
-  full_name String
-  password  String
-  verified  Boolean   @default(false)
-  createdAt DateTime? @default(now()) @map("created_at")
-  updatedAt DateTime? @default(now()) @updatedAt @map("updated_at")
+  id           String        @id @unique @default(uuid())
+  email        String        @unique
+  full_name    String
+  password     String
+  verified     Boolean       @default(false)
+  access_level access?       @default(patient)
+  createdAt    DateTime?     @default(now()) @map("created_at")
+  updatedAt    DateTime?     @default(now()) @updatedAt @map("updated_at")
+  appointment  appointment[]
 }
 
 model practitioner {
@@ -30,31 +43,31 @@ model practitioner {
   digital_address String
   contact         String
   id_type         indentity_card @default(ghana_card)
-  status          statuses? @default(pending)
+  status          statuses?      @default(pending)
   id_number       String
   qualification   String
   licence_number  String
   specialisations String[]
   hospitals       String[]
+  access_level    access?        @default(practitioner)
   verified        Boolean        @default(false)
   createdAt       DateTime?      @default(now()) @map("created_at")
   updatedAt       DateTime?      @default(now()) @updatedAt @map("updated_at")
+  appointment     appointment[]
 }
 
 model specialisation {
-  id            String   @id @unique @default(uuid())
-  name          String   @unique
-  practitioners String[]
-  createdAt     DateTime?      @default(now()) @map("created_at")
-  updatedAt     DateTime?      @default(now()) @updatedAt @map("updated_at")
+  id        String    @id @unique @default(uuid())
+  name      String    @unique
+  createdAt DateTime? @default(now()) @map("created_at")
+  updatedAt DateTime? @default(now()) @updatedAt @map("updated_at")
 }
 
 model hospital {
-  id            String   @id @unique @default(uuid())
-  name          String   @unique
-  practitioners String[]
-  createdAt     DateTime?      @default(now()) @map("created_at")
-  updatedAt     DateTime?      @default(now()) @updatedAt @map("updated_at")
+  id        String    @id @unique @default(uuid())
+  name      String    @unique
+  createdAt DateTime? @default(now()) @map("created_at")
+  updatedAt DateTime? @default(now()) @updatedAt @map("updated_at")
 }
 
 model appointment {
@@ -62,7 +75,10 @@ model appointment {
   title             String       @unique
   date              DateTime
   time              DateTime
-  practitioner      String       // Store practitioner ID directly as a string
+  practitioner      practitioner @relation(fields: [practitionerId], references: [id])
+  practitionerId    String
+  patient           patient      @relation(fields: [patientId], references: [id])
+  patientId         String
   service           String
   comment           String
   tc                Boolean
@@ -72,11 +88,24 @@ model appointment {
   createdAt         DateTime?    @default(now()) @map("created_at")
   updatedAt         DateTime?    @default(now()) @updatedAt @map("updated_at")
 
-  // Define the foreign key constraint
-  @@index([practitioner], name: "appointment_practitioner_index")
+  @@index([practitionerId], name: "appointment_practitionerId_index")
+  @@index([patientId], name: "appointment_patientId_index")
 }
 
+model service {
+  id        String    @id @unique @default(uuid())
+  name      String    @unique
+  price     Float
+  createdAt DateTime? @default(now()) @map("created_at")
+  updatedAt DateTime? @default(now()) @updatedAt @map("updated_at")
+}
 
+enum access {
+  super_admin
+  admin
+  patient
+  practitioner
+}
 
 enum statuses {
   approved
@@ -90,5 +119,3 @@ enum indentity_card {
   passprt
   driving_license
 }
-
-

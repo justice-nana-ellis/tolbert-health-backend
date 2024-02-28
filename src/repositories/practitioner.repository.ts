@@ -2,6 +2,7 @@
 import bcrypt from 'bcrypt';
 import { PrismaClient } from "@prisma/client";
 import { signupPractitionerDTO, signinPractitionerDTO } from "../dto"
+import { array } from '@sap/cds';
 
 export class PractitionerRepository {
     private prisma: PrismaClient;
@@ -37,5 +38,77 @@ export class PractitionerRepository {
                 id: id
             }
         }); 
+    }
+    
+    async getallPractitioners(skipped: number, taken: number): Promise<any[]> {
+        const skip = Number(skipped)
+        const take = Number(taken)
+        return this.prisma.practitioner.findMany({
+            skip,
+            //@ts-ignore
+             take,
+            select: {
+                //@ts-ignore
+                id: true,
+                full_name: true,
+                dob: true,
+                pob: true,
+                img_url: true,
+                digital_address: true,
+                contact: true,
+                status: true,
+                id_number: true,
+                licence_number: true,
+                hospitals: true,
+                specialisations: true,
+                password: false,
+            }
+        });
+    }
+
+    async getRandomPractitioners(count: number): Promise<any[]> {
+        return this.prisma.practitioner.findMany({
+            take: count, 
+            select: {
+                id: true,
+                full_name: true,
+                img_url: true
+            
+            },
+            orderBy: {
+                //@ts-ignore
+                _random: true 
+            }
+        });
+    }
+
+    async findPractitionersByName(name: string): Promise<any[]> {
+        return this.prisma.practitioner.findMany({
+            where: {
+                full_name: {
+                    contains: name
+                }
+            },
+            select: {
+                id: true,
+                full_name: true,
+                img_url: true
+            }
+        });
+    }
+
+    async docInfo(practitioner: array) {
+        return this.prisma.practitioner.findUnique({
+            //@ts-ignore
+            where: {
+                //@ts-ignore
+                full_name: practitioner[0]
+            },
+            select: {
+                id: true,
+                full_name: true,
+                img_url: true
+            }
+        });
     }
 }

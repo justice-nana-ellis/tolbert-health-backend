@@ -19,6 +19,7 @@ export class PatientController {
     }
 
     private initializeRoutes() {
+      this.router.get(`${this.BASE_PATH}/patient/search`, this.getAll.bind(this));
         this.router.post(`${this.BASE_PATH}/patient/signup`, this.signup.bind(this));
         this.router.post(`${this.BASE_PATH}/patient/signin`, this.signin.bind(this));
         this.router.post(`${this.BASE_PATH}/patient/logout/:id`, this.logout.bind(this));
@@ -78,7 +79,15 @@ export class PatientController {
           content: 'login failed' 
         });
       }
-      
+    }
+
+    private async getAll(req: Request, res: Response) {
+      const skip = req?.query?.skip;
+      const take = req?.query?.take;
+
+      //@ts-ignore
+      const response = await this.patientService.getAll(skip, take);
+      res.json(response);
     }
 }
 

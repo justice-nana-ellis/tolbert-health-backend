@@ -1,40 +1,42 @@
 import express, { Request, Response } from 'express';
-import { signupPractitionerDTO, signupPractitionerValidationDto, signinPractitionerValidationDto,
-         signinPractitionerDTO  } from '../dto'
-import { PractitionerService } from '../services/practitioner.service';
+import { adminDTO, signinAdminDTO, signupAdminResponseDTO, 
+         signinAdminValidationDto, signupAdminValidationDto  } from '../dto'
+import { AdminService } from '../services';
 import { getErrorMessages } from '../util'; 
 import { plainToClass } from 'class-transformer';
 
 const timestamp = new Date().toISOString();
 
-export class PractitionerController {
+export class AdminController {
     public router = express.Router();
-    private practitionerService: PractitionerService;
+    private adminService: AdminService;
     private readonly BASE_PATH = <string>process.env.BASE_PATH
 
     constructor() {
-        this.practitionerService = new PractitionerService();
+        this.adminService = new AdminService();
         this.initializeRoutes();
     }
 
     private initializeRoutes() {
-        this.router.get(`${this.BASE_PATH}/practitioner/search`, this.getAll.bind(this));
-        this.router.post(`${this.BASE_PATH}/practitioner/signup`, this.signup.bind(this));
-        this.router.post(`${this.BASE_PATH}/practitioner/signin`, this.signin.bind(this));
-        this.router.post(`${this.BASE_PATH}/practitioner/logout/:id`, this.logout.bind(this));
-        
+        this.router.get(`${this.BASE_PATH}/admin`, this.get.bind(this));
+        this.router.get(`${this.BASE_PATH}/appointment/:id`, this.getbyId.bind(this));
+        this.router.post(`${this.BASE_PATH}/admin/signup`, this.signup.bind(this));
+        this.router.post(`${this.BASE_PATH}/admin/signin`, this.signin.bind(this));
+        this.router.post(`${this.BASE_PATH}/admin/logout/:id`, this.logout.bind(this));
+        this.router.post(`${this.BASE_PATH}/admin/status/:id`, this.changeStatus.bind(this));
+        this.router.post(`${this.BASE_PATH}/admin/signup`, this.signup.bind(this));
     }
   
     private async signup(req: Request, res: Response) {
       try {
         const postData = req.body;
-        const errorMessages = await getErrorMessages(plainToClass(signupPractitionerValidationDto, req.body));
+        const errorMessages = await getErrorMessages(plainToClass(signupAdminValidationDto, req.body));
         if (errorMessages.length > 0) return res.status(400).json({
           status: 'error',
           content: { message: errorMessages }, 
           timestamp: timestamp,
         });
-        const response = await this.practitionerService.signup(postData);
+        const response = await this.adminService.signup(postData);
         res.json(response);
       } catch (error) {
         return res.status(500).json({
@@ -48,15 +50,16 @@ export class PractitionerController {
 
     private async signin(req: Request, res: Response) {
       try {
-        const postData: signinPractitionerDTO = req.body;
-        const errorMessages = await getErrorMessages(plainToClass(signinPractitionerValidationDto, req.body));
+        const postData: signinAdminDTO = req.body;
+        const errorMessages = await getErrorMessages(plainToClass(signinAdminValidationDto, req.body));
         if (errorMessages.length > 0) return res.status(400).json({
           status: 'error',
           content: { message: errorMessages }, 
           timestamp: timestamp,
         });
-        const response = await this.practitionerService.signin(postData);
+        const response = await this.adminService.signin(postData);
         res.clearCookie(`${response?.content?.id}`);
+        //@ts-ignore
         res.cookie(`${response?.content?.id}`, response?.token, { httpOnly: true });
         res.json(response);
       } catch (error) {
@@ -71,7 +74,7 @@ export class PractitionerController {
 
     private async logout(req: Request, res: Response) {
       try {
-        const response: any = await this.practitionerService.logout(req.params.id);
+        const response: any = await this.adminService.logout(req.params.id);
         if(response.status === 'success') {
            res.clearCookie(req.params.id);
         }
@@ -86,20 +89,19 @@ export class PractitionerController {
       }
     }
 
-    private async getAll(req: Request, res: Response) {
-      const skip = req?.query?.skip;
-      const take = req?.query?.take;
-
-      //@ts-ignore
-      const response = await this.practitionerService.getAll(skip, take);
-      res.json(response);
+    private async changeStatus(req: Request, res: Response) {
+        const response = await this.adminService.changeStatus(req.params.id, req.body.status);
+        res.json(response);
     }
 
-    private async search(req: Request, res: Response) {
-      //const { name } = req.query.name;
-      //@ts-ignore
-      const response = await this.practitionerService.search(req.query.name);
-      res.json(response);
+    private async get(req: Request, res: Response) {
+        const response = await this.adminService.get();
+        res.json(response);
+    }
+
+    private async getbyId(req: Request, res: Response) {
+        const response = await this.adminService.getbyId(req.params.id);
+        res.json(response);
     }
 
 }

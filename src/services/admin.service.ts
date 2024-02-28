@@ -1,44 +1,41 @@
 
 import bcrypt from 'bcrypt';
-import Fuse from 'fuse.js';
 import jwt from 'jsonwebtoken';
-import { PractitionerRepository } from "../repositories";
-import { signupPractitionerDTO, signupPractitionerResponseDTO, logoutPractitionerResponseDTO,
-         signinPractitionerDTO, signinPractitionerResponseDTO  } from '../dto'; 
+import { AdminRepository } from "../repositories";
+import { signupAdminDTO, signinAdminResponseDTO, logoutAdminResponseDTO,
+         signupAdminResponseDTO, adminDTO, signinAdminDTO  } from '../dto'; 
 
-export class PractitionerService {
-    private practitionerRepository: PractitionerRepository;
+export class AdminService {
+    private adminRepository: AdminRepository;
     private readonly SECRET_KEY = <string>process.env.SECRET_KEY
 
     constructor() {
-        this.practitionerRepository = new PractitionerRepository();
+        this.adminRepository = new AdminRepository();
     }
 
-    async signup(patientData: signupPractitionerDTO) {
+    async signup(adminData: signupAdminDTO) {
         try {
             const salt = await bcrypt.genSalt(10);
-            const hash = await bcrypt.hash(patientData.password, salt);
-            const patient = {
-                ...patientData,
+            const hash = await bcrypt.hash(adminData.password, salt);
+            const admin = {
+                ...adminData,
                 password: hash,
-                verified: false,
-                status: 'pending'
             }
-            const response: any = await this.practitionerRepository.signup(patient);    
+            const response: any = await this.adminRepository.signup(admin);    
             delete response.password;
-            return <signupPractitionerResponseDTO>{ 
+            return <signupAdminResponseDTO>{ 
                 status: 'success',
                 content: response
             };
             
         } catch (error: any) {
             if (error.code === 'P2002' && error.meta?.target?.includes('email')) {
-                return <signupPractitionerResponseDTO>{ 
+                return <signupAdminResponseDTO>{ 
                   status: 'error',
                   content: { message: 'Email already Taken' }
                 };
               } else {
-                return <signupPractitionerResponseDTO>{ 
+                return <signupAdminResponseDTO>{ 
                   status: 'error',
                   content: { message: 'Internal server error' } 
                 };
@@ -47,11 +44,11 @@ export class PractitionerService {
         
     }
 
-    async signin(patientData: signinPractitionerDTO) {
+    async signin(patientData: signinAdminDTO) {
         try {
-            const response: any = await this.practitionerRepository.signin(patientData); 
+            const response: any = await this.adminRepository.signin(patientData); 
             if(response === null) { 
-                return <signinPractitionerResponseDTO>{
+                return <signinAdminResponseDTO>{
                     status: "error",
                     content: {
                         "message": "invalid credentials"
@@ -71,13 +68,13 @@ export class PractitionerService {
                 }
                 const Token = jwt.sign(payload, this.SECRET_KEY, { expiresIn: '1h' });
                 delete response.password;
-                return <signinPractitionerResponseDTO>{
+                return <signupAdminResponseDTO>{
                     status: "success",
                     content: response,
                     token: Token
                 };
             } else {
-                return <signinPractitionerResponseDTO>{
+                return <signupAdminResponseDTO>{
                     status: "error",
                     content: {
                         "message": "invalid credentials"
@@ -91,16 +88,16 @@ export class PractitionerService {
 
     async logout(id: string) {
         try {
-            const response = await this.practitionerRepository.logout(id);
+            const response = await this.adminRepository.logout(id);
             if (response === null) {
-                return <logoutPractitionerResponseDTO> {
+                return <logoutAdminResponseDTO> {
                     status: "error",
                     content: {
                         "message": "Record not found"
                     }
                 }
             }
-            return <logoutPractitionerResponseDTO> {
+            return <logoutAdminResponseDTO> {
                 status: "success",
                 content: {
                     "message": "logged out successfully"
@@ -111,14 +108,65 @@ export class PractitionerService {
         }
     }
 
-    async getAll(skip: number, take: number) {
+    async get() {
         try {
-            const response = await this.practitionerRepository.getallPractitioners(skip, take);
+            const response = await this.adminRepository.get();
             response.forEach(obj => {
                 //@ts-ignore
                 delete obj.password;
               });
-            return <signinPractitionerResponseDTO>{
+            return <signinAdminResponseDTO>{
+                status: "success",
+                content: response
+            };
+        } catch (error: any) {
+            
+        }
+    }
+
+    async getbyId(id: string) {
+        try {
+            
+            const response = await this.adminRepository.getbyId(id);  
+            if (response === null) {
+              let response:[] = []
+              return <adminDTO>{ 
+                status: 'success',
+                content: response
+            };
+            }
+            return <adminDTO>{ 
+                status: 'success',
+                content: response
+            };
+            
+        } catch (error: any) {
+            if (error.code === 'P2002' && error.meta?.modelName?.includes('admin')) {
+                return <adminDTO>{ 
+                  status: 'error',
+                  content: { message: 'Name already Taken' }
+                };
+              } else if(error.code === 'P2025' && error.meta?.modelName?.includes('hospital')){
+                return <adminDTO>{ 
+                  status: 'error',
+                  content: { message: 'Record not found' }
+                };
+              } else {
+                return <adminDTO>{ 
+                  status: 'error',
+                  content: { message: 'Internal server error' } 
+                };
+              }
+        }
+        
+    }
+
+    async changeStatus(id: string, status: string) {
+        try {
+            const response = await this.adminRepository.changeStatus(id, status);
+            //@ts-ignore
+            delete response.password;
+            return <signinAdminResponseDTO>{
                 status: "success",
                 content: response
             };
