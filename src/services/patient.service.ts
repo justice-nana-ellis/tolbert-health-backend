@@ -23,6 +23,8 @@ export class PatientService {
                 verified: false
             }
             const response = await this.patientRepository.signup(patient);  
+            //@ts-ignore
+            delete response.password
             return <signupPatientResponseDTO>{ 
                 status: 'success',
                 content:  {
@@ -65,10 +67,12 @@ export class PatientService {
                     "iss": `TOLBERT_HEALTH_SERVICE`,
                     "id": `${response.id}`,
                     "email": `${response.email}`,
-                    "full_name": `${response.email}`
+                    "full_name": `${response.email}`,
+                    "access_level": `${response?.access_level}` 
                 }
                 const Token = jwt.sign(payload, this.SECRET_KEY, { expiresIn: '1h' });
-                
+                //@ts-ignore
+                delete response.password
                 return <signinPatientResponseDTO>{
                     status: "success",
                     content: response,
@@ -111,6 +115,25 @@ export class PatientService {
                   content: { message: 'Record not found' }
                 };
             }
+        }
+    }
+
+    async getAll(skip: number, take: number) {
+        try {
+            const response = await this.patientRepository.getallPatients(skip, take);
+            response.forEach(obj => {
+                //@ts-ignore
+                delete obj.password;
+              });
+            return <signinPatientResponseDTO>{
+                status: "success",
+                content: response
+            };
+        } catch (error: any) {
+            return error ? <signupPatientResponseDTO>{ 
+                status: 'error',
+                content: { message: 'Internal server error' } 
+              } : 0
         }
     }
 }

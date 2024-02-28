@@ -9,7 +9,7 @@ export const seed = async() => {
           id: 'c828301b-2d77-440f-9ca6-396fb679d9d1',
           full_name: 'Admin',
           password: 'password',
-          email: 'admin@example.com',
+          email: 'admin@example.com'
       },
       });
       console.log('Seeded admin: ', admin);

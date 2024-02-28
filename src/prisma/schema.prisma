@@ -9,15 +9,27 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model admin {
+  id           String    @id @unique @default(uuid())
+  email        String    @unique
+  full_name    String
+  password     String
+  access_level access?   @default(admin)
+  verified     Boolean   @default(false)
+  createdAt    DateTime? @default(now()) @map("created_at")
+  updatedAt    DateTime? @default(now()) @updatedAt @map("updated_at")
+}
+
 model patient {
-  id          String        @id @unique @default(uuid())
-  email       String        @unique
-  full_name   String
-  password    String
-  verified    Boolean       @default(false)
-  createdAt   DateTime?     @default(now()) @map("created_at")
-  updatedAt   DateTime?     @default(now()) @updatedAt @map("updated_at")
-  appointment appointment[]
+  id           String        @id @unique @default(uuid())
+  email        String        @unique
+  full_name    String
+  password     String
+  verified     Boolean       @default(false)
+  access_level access?       @default(patient)
+  createdAt    DateTime?     @default(now()) @map("created_at")
+  updatedAt    DateTime?     @default(now()) @updatedAt @map("updated_at")
+  appointment  appointment[]
 }
 
 model practitioner {
@@ -37,6 +49,7 @@ model practitioner {
   licence_number  String
   specialisations String[]
   hospitals       String[]
+  access_level    access?        @default(practitioner)
   verified        Boolean        @default(false)
   createdAt       DateTime?      @default(now()) @map("created_at")
   updatedAt       DateTime?      @default(now()) @updatedAt @map("updated_at")
@@ -83,9 +96,15 @@ model appointment {
   createdAt         DateTime?    @default(now()) @map("created_at")
   updatedAt         DateTime?    @default(now()) @updatedAt @map("updated_at")
 
-  // Define the foreign key constraints
   @@index([practitionerId], name: "appointment_practitionerId_index")
   @@index([patientId], name: "appointment_patientId_index")
+}
+
+enum access {
+  super_admin
+  admin
+  patient
+  practitioner
 }
 
 enum statuses {

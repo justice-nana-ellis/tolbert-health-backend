@@ -30,4 +30,20 @@ export class PatientRepository {
             }
         }); 
     }
+
+    async getallPatients(skipped: number, taken: number): Promise<any[]> {
+        const skip = Number(skipped)
+        const take = Number(taken)
+        return this.prisma.patient.findMany({
+            skip,
+            //@ts-ignore
+             take,
+            select: {
+                //@ts-ignore
+                id: true,
+                full_name: true,
+                email: true
+            }
+        });
+    }
 }

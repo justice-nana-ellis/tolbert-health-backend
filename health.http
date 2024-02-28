@@ -28,6 +28,51 @@ GET http://localhost:9000/api/v1/service/1fa14fa3-6bb1-4a69-87ec-2caab217b006
 
 #--------
 
+//-------------
+### | signup admin
+POST http://localhost:9000/api/v1/admin/signup
+Content-Type: application/json
+
+{
+    "email":     "johndoeiiioi@gmail.com",      
+  	"full_name": "John Doe",
+  	"password":  "5554321Acomid!"
+}
+
+### | signin admin
+POST http://localhost:9000/api/v1/admin/signin
+Content-Type: application/json
+
+{
+    "email":     "johndoe@gmail.com",      
+  	"password":  "5554321Acomid!"
+}
+
+### | change practitioner status
+POST http://localhost:9000/api/v1/admin/status/fbb1ea28-69ae-4f77-93de-6a487560ceef
+Content-Type: application/json
+
+{
+    "status": "approved"     
+}
+
+### | logout admin
+POST http://localhost:9000/api/v1/admin/logout/196f97cc-7fa3-4783-ab0b-74dd8a3c9753
+Content-Type: application/json
+
+### | all admin
+GET http://localhost:9000/api/v1/admin
+
+
+// ------------- //
+
+### | Search Patient
+GET http://localhost:9000/api/v1/patient/search?skip=2&take=2
+
+
+### | Search Practitioners
+GET http://localhost:9000/api/v1/practitioner/search?skip=0&take=2
+
 ### | create appointment
 POST http://localhost:9000/api/v1/appointment
 Content-Type: application/json
@@ -135,8 +180,8 @@ POST http://localhost:9000/api/v1/practitioner/signup
 Content-Type: application/json
 
 {
-    "email": "johndociiioxxvovxxriibcifeioiio@gmail.com",
-    "full_name": "John Doe",
+    "email": "johntdoiviiiiiiiiirieeioiio@gmail.com",
+    "full_name": "xoi vin",
     "password": "StrongPassword123!",
     "dob": "1990-01-01T00:00:00Z",
     "pob": "New York",
@@ -157,7 +202,7 @@ POST http://localhost:9000/api/v1/practitioner/signin
 Content-Type: application/json
 
 {
-    "email": "johndoeoo@gmail.com",
+    "email": "johntdoiviiiiiiiiirieeioiio@gmail.com",
     "password": "StrongPassword123!"
 }
 
@@ -187,9 +232,6 @@ Content-Type: application/json
 ### | logout patient
 POST http://localhost:9000/api/v1/patient/logout/196f97cc-7fa3-4783-ab0b-74dd8a3c9753
 Content-Type: application/json
-
-
-
 
 
 
