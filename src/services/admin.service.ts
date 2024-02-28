@@ -112,10 +112,10 @@ export class AdminService {
         try {
             const response = await this.adminRepository.get();
             //@ts-ignore
-            response.forEach(obj => {
-                //@ts-ignore
-                delete obj.password;
-              });
+            // response.forEach(obj => {
+            //     //@ts-ignore
+            //     delete obj.password;
+            //   });
             return <signinAdminResponseDTO>{
                 status: "success",
                 content: response

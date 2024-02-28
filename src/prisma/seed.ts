@@ -1,16 +1,13 @@
-import { PrismaClient } from '@prisma/client';
+const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient;
 
-export const seed = async() => {
+const seed = async() => {
   try {
       await db();
-      const admin = await prisma.patient.create({
-      data: {
-          id: 'c828301b-2d77-440f-9ca6-396fb679d9d1',
-          full_name: 'Admin',
-          password: 'password',
-          email: 'admin@example.com'
-      },
+      const admin = await prisma.admin.delete({
+        where: {
+            id: '00000000-0000-0000-0000-000000000000',
+        }
       });
       console.log('Seeded admin: ', admin);
   } catch (ex) {
@@ -21,7 +18,8 @@ export const seed = async() => {
   }   
 }
 
-export const db = async() => {
+
+const db = async() => {
     try {
         await prisma.$connect();
         console.log('🔌 Database connected..');
@@ -30,7 +28,7 @@ export const db = async() => {
     }    
 }
 
-export const disconnect = async() => {
+const disconnect = async() => {
     try {
       await prisma.$disconnect();
       console.log('🔌 Database Disconnected..');
@@ -39,4 +37,5 @@ export const disconnect = async() => {
     }
 }
 
+seed();
 
