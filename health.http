@@ -150,7 +150,7 @@ POST http://localhost:9000/api/v1/practitioner/signup
 Content-Type: application/json
 
 {
-    "email": "johntdoiviiiiiiiiirieeioiio@gmail.com",
+    "email": "johntdoiviiiiyiiiiirieeioiio@gmail.com",
     "full_name": "xoi vin",
     "password": "StrongPassword123!",
     "dob": "1990-01-01T00:00:00Z",
