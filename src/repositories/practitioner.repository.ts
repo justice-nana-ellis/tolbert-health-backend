@@ -110,6 +110,7 @@ export class PractitionerRepository {
                 img_url: true
             }
         });
+    }
 
     async hospitalExists(hospitals: string[]) {
         return this.prisma.hospital.findMany({

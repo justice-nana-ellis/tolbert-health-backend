@@ -34,7 +34,7 @@ POST http://localhost:9000/api/v1/admin/signup
 Content-Type: application/json
 
 {
-    "email":     "johndoeiiioi@gmail.com",      
+    "email":     "johndoeiiiioi@gmail.com",      
   	"full_name": "John Doe",
   	"password":  "5554321Acomid!"
 }
@@ -180,7 +180,7 @@ POST http://localhost:9000/api/v1/practitioner/signup
 Content-Type: application/json
 
 {
-    "email": "johntdoiviiiiyiiiiirieeioiio@gmail.com",
+    "email": "johndoe@gmail.com",
     "full_name": "xoi vin",
     "password": "StrongPassword123!",
     "dob": "1990-01-01T00:00:00Z",
@@ -192,8 +192,8 @@ Content-Type: application/json
     "id_number": "1234567890",
     "qualification": "Doctor of Medicine",
     "licence_number": "123ABC",
-    "specialisations": [ "07da2a00-1a30-444f-b173-4734538a85fc"],
-    "hospitals": [ "328478f6-30ec-4cff-80a6-1e66f66135d3"],
+    "specialisations": [ "f1e42054-2e19-48e3-b199-f7d006af78ba"],
+    "hospitals": [ "5c1c5a9f-a570-432b-b79d-195a4e2b13cd"],
     "verified": true
 }
 
