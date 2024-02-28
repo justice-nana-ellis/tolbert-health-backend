@@ -111,6 +111,7 @@ export class AdminService {
     async get() {
         try {
             const response = await this.adminRepository.get();
+            //@ts-ignore
             response.forEach(obj => {
                 //@ts-ignore
                 delete obj.password;

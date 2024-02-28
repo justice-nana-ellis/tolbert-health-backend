@@ -12,38 +12,23 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PractitionerService = void 0;
+exports.AdminService = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const repositories_1 = require("../repositories");
-class PractitionerService {
+class AdminService {
     constructor() {
         this.SECRET_KEY = process.env.SECRET_KEY;
-        this.practitionerRepository = new repositories_1.PractitionerRepository();
+        this.adminRepository = new repositories_1.AdminRepository();
     }
-    signup(practitionerData) {
+    signup(adminData) {
         var _a, _b;
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const salt = yield bcrypt_1.default.genSalt(10);
-                const hash = yield bcrypt_1.default.hash(practitionerData.password, salt);
-                const practitioner = Object.assign(Object.assign({}, practitionerData), { password: hash, verified: false, status: 'pending' });
-                //const response: any = await this.practitionerRepository.signup(patient);    
-                const hospitalExists = yield this.practitionerRepository.hospitalExists(practitionerData.hospitals);
-                const specialisationExists = yield this.practitionerRepository.specialisationExists(practitionerData.specialisations);
-                if (hospitalExists.length !== practitionerData.hospitals.length) {
-                    return {
-                        status: 'error',
-                        content: { message: 'Invalid hospital IDs provided' }
-                    };
-                }
-                if (specialisationExists.length !== practitionerData.specialisations.length) {
-                    return {
-                        status: 'error',
-                        content: { message: 'Invalid specialistion IDs provided' }
-                    };
-                }
-                const response = yield this.practitionerRepository.signup(practitioner);
+                const hash = yield bcrypt_1.default.hash(adminData.password, salt);
+                const admin = Object.assign(Object.assign({}, adminData), { password: hash });
+                const response = yield this.adminRepository.signup(admin);
                 delete response.password;
                 return {
                     status: 'success',
@@ -69,7 +54,7 @@ class PractitionerService {
     signin(patientData) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const response = yield this.practitionerRepository.signin(patientData);
+                const response = yield this.adminRepository.signin(patientData);
                 if (response === null) {
                     return {
                         status: "error",
@@ -112,7 +97,7 @@ class PractitionerService {
     logout(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const response = yield this.practitionerRepository.logout(id);
+                const response = yield this.adminRepository.logout(id);
                 if (response === null) {
                     return {
                         status: "error",
@@ -132,10 +117,11 @@ class PractitionerService {
             }
         });
     }
-    getAll(skip, take) {
+    get() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const response = yield this.practitionerRepository.getallPractitioners(skip, take);
+                const response = yield this.adminRepository.get();
+                //@ts-ignore
                 response.forEach(obj => {
                     //@ts-ignore
                     delete obj.password;
@@ -149,5 +135,59 @@ class PractitionerService {
             }
         });
     }
+    getbyId(id) {
+        var _a, _b, _c, _d;
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const response = yield this.adminRepository.getbyId(id);
+                if (response === null) {
+                    let response = [];
+                    return {
+                        status: 'success',
+                        content: response
+                    };
+                }
+                return {
+                    status: 'success',
+                    content: response
+                };
+            }
+            catch (error) {
+                if (error.code === 'P2002' && ((_b = (_a = error.meta) === null || _a === void 0 ? void 0 : _a.modelName) === null || _b === void 0 ? void 0 : _b.includes('admin'))) {
+                    return {
+                        status: 'error',
+                        content: { message: 'Name already Taken' }
+                    };
+                }
+                else if (error.code === 'P2025' && ((_d = (_c = error.meta) === null || _c === void 0 ? void 0 : _c.modelName) === null || _d === void 0 ? void 0 : _d.includes('hospital'))) {
+                    return {
+                        status: 'error',
+                        content: { message: 'Record not found' }
+                    };
+                }
+                else {
+                    return {
+                        status: 'error',
+                        content: { message: 'Internal server error' }
+                    };
+                }
+            }
+        });
+    }
+    changeStatus(id, status) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const response = yield this.adminRepository.changeStatus(id, status);
+                //@ts-ignore
+                delete response.password;
+                return {
+                    status: "success",
+                    content: response
+                };
+            }
+            catch (error) {
+            }
+        });
+    }
 }
-exports.PractitionerService = PractitionerService;
+exports.AdminService = AdminService;

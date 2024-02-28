@@ -31,8 +31,30 @@ class PatientRepository {
             });
         });
     }
-    updatePatient() {
+    logout(id) {
         return __awaiter(this, void 0, void 0, function* () {
+            return this.prisma.patient.findUnique({
+                where: {
+                    id: id
+                }
+            });
+        });
+    }
+    getallPatients(skipped, taken) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const skip = Number(skipped);
+            const take = Number(taken);
+            return this.prisma.patient.findMany({
+                skip,
+                //@ts-ignore
+                take,
+                select: {
+                    //@ts-ignore
+                    id: true,
+                    full_name: true,
+                    email: true
+                }
+            });
         });
     }
 }

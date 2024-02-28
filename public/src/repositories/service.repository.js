@@ -9,33 +9,34 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SpecialisationRepository = void 0;
+exports.ServiceRepository = void 0;
 const client_1 = require("@prisma/client");
-class SpecialisationRepository {
+class ServiceRepository {
     constructor() {
         this.prisma = new client_1.PrismaClient();
     }
-    create(specialisationData) {
+    create(serviceData) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.prisma.specialisation.create({
-                data: specialisationData
+            return this.prisma.service.create({
+                //@ts-ignore
+                data: serviceData
             });
         });
     }
-    update(specialisationData, id) {
+    update(serviceData, id) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.prisma.specialisation.update({
+            return this.prisma.service.update({
                 where: {
                     id: id
                 }, data: {
-                    name: specialisationData.name
+                    name: serviceData.name
                 }
             });
         });
     }
     delete(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.prisma.specialisation.delete({
+            return this.prisma.service.delete({
                 where: {
                     id: id
                 }
@@ -44,12 +45,12 @@ class SpecialisationRepository {
     }
     get() {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.prisma.specialisation.findMany();
+            return this.prisma.service.findMany();
         });
     }
     getbyId(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.prisma.specialisation.findUnique({
+            return this.prisma.service.findUnique({
                 where: {
                     id: id
                 }
@@ -57,4 +58,4 @@ class SpecialisationRepository {
         });
     }
 }
-exports.SpecialisationRepository = SpecialisationRepository;
+exports.ServiceRepository = ServiceRepository;

@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PractitionerController = void 0;
 const express_1 = __importDefault(require("express"));
-const practitioner_dto_1 = require("../dto/practitioner.dto");
+const dto_1 = require("../dto");
 const practitioner_service_1 = require("../services/practitioner.service");
 const util_1 = require("../util");
 const class_transformer_1 = require("class-transformer");
@@ -27,15 +27,16 @@ class PractitionerController {
         this.initializeRoutes();
     }
     initializeRoutes() {
+        this.router.get(`${this.BASE_PATH}/practitioner/search`, this.getAll.bind(this));
         this.router.post(`${this.BASE_PATH}/practitioner/signup`, this.signup.bind(this));
         this.router.post(`${this.BASE_PATH}/practitioner/signin`, this.signin.bind(this));
-        this.router.post(`${this.BASE_PATH}/practitioner/logout`, this.logout.bind(this));
+        this.router.post(`${this.BASE_PATH}/practitioner/logout/:id`, this.logout.bind(this));
     }
     signup(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const postData = req.body;
-                const errorMessages = yield (0, util_1.getErrorMessages)((0, class_transformer_1.plainToClass)(practitioner_dto_1.signupPractitionerValidationDto, req.body));
+                const errorMessages = yield (0, util_1.getErrorMessages)((0, class_transformer_1.plainToClass)(dto_1.signupPractitionerValidationDto, req.body));
                 if (errorMessages.length > 0)
                     return res.status(400).json({
                         status: 'error',
@@ -56,10 +57,11 @@ class PractitionerController {
         });
     }
     signin(req, res) {
+        var _a, _b;
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const postData = req.body;
-                const errorMessages = yield (0, util_1.getErrorMessages)((0, class_transformer_1.plainToClass)(practitioner_dto_1.signinPractitionerValidationDto, req.body));
+                const errorMessages = yield (0, util_1.getErrorMessages)((0, class_transformer_1.plainToClass)(dto_1.signinPractitionerValidationDto, req.body));
                 if (errorMessages.length > 0)
                     return res.status(400).json({
                         status: 'error',
@@ -67,8 +69,8 @@ class PractitionerController {
                         timestamp: timestamp,
                     });
                 const response = yield this.practitionerService.signin(postData);
-                res.clearCookie('Tolbert-Token');
-                res.cookie('Tolbert-Token', response === null || response === void 0 ? void 0 : response.token, { httpOnly: true });
+                res.clearCookie(`${(_a = response === null || response === void 0 ? void 0 : response.content) === null || _a === void 0 ? void 0 : _a.id}`);
+                res.cookie(`${(_b = response === null || response === void 0 ? void 0 : response.content) === null || _b === void 0 ? void 0 : _b.id}`, response === null || response === void 0 ? void 0 : response.token, { httpOnly: true });
                 res.json(response);
             }
             catch (error) {
@@ -84,8 +86,10 @@ class PractitionerController {
     logout(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                res.clearCookie('Tolbert-Token');
-                const response = yield this.practitionerService.logout();
+                const response = yield this.practitionerService.logout(req.params.id);
+                if (response.status === 'success') {
+                    res.clearCookie(req.params.id);
+                }
                 res.json(response);
             }
             catch (error) {
@@ -96,6 +100,24 @@ class PractitionerController {
                     }
                 });
             }
+        });
+    }
+    getAll(req, res) {
+        var _a, _b;
+        return __awaiter(this, void 0, void 0, function* () {
+            const skip = (_a = req === null || req === void 0 ? void 0 : req.query) === null || _a === void 0 ? void 0 : _a.skip;
+            const take = (_b = req === null || req === void 0 ? void 0 : req.query) === null || _b === void 0 ? void 0 : _b.take;
+            //@ts-ignore
+            const response = yield this.practitionerService.getAll(skip, take);
+            res.json(response);
+        });
+    }
+    search(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            //const { name } = req.query.name;
+            //@ts-ignore
+            const response = yield this.practitionerService.search(req.query.name);
+            res.json(response);
         });
     }
 }

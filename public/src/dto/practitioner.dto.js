@@ -31,6 +31,7 @@ class signupPractitionerValidationDto {
         this.contact = '';
         this.id_type = '';
         this.id_number = '';
+        this.status = '';
         this.qualification = '';
         this.licence_number = '';
         this.specialisations = [];
@@ -85,11 +86,13 @@ __decorate([
 __decorate([
     (0, class_validator_1.IsString)({ message: 'ID Type must be a string' }),
     (0, class_validator_1.IsNotEmpty)({ message: 'ID Type is a required field' }),
+    (0, class_validator_1.IsIn)(['ghana_card', 'voter_id', 'passport', 'driving_license'], { message: 'ID Type must be one of: ghana_card, voter_id, passport, or driving_license' }),
     __metadata("design:type", String)
 ], signupPractitionerValidationDto.prototype, "id_type", void 0);
 __decorate([
     (0, class_validator_1.IsString)({ message: 'ID Number must be a string' }),
     (0, class_validator_1.IsNotEmpty)({ message: 'ID Number is a required field' }),
+    (0, class_validator_1.MinLength)(5, { message: 'ID Number must be at least 5 characters long' }),
     __metadata("design:type", String)
 ], signupPractitionerValidationDto.prototype, "id_number", void 0);
 __decorate([

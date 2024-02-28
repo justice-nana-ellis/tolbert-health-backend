@@ -36,8 +36,116 @@ class PractitionerRepository {
             }
         });
     }
-    updatePatient() {
+    logout(id) {
         return __awaiter(this, void 0, void 0, function* () {
+            return this.prisma.practitioner.findUnique({
+                where: {
+                    id: id
+                }
+            });
+        });
+    }
+    getallPractitioners(skipped, taken) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const skip = Number(skipped);
+            const take = Number(taken);
+            return this.prisma.practitioner.findMany({
+                skip,
+                //@ts-ignore
+                take,
+                select: {
+                    //@ts-ignore
+                    id: true,
+                    full_name: true,
+                    dob: true,
+                    pob: true,
+                    img_url: true,
+                    digital_address: true,
+                    contact: true,
+                    status: true,
+                    id_number: true,
+                    licence_number: true,
+                    hospitals: true,
+                    specialisations: true,
+                    password: false,
+                }
+            });
+        });
+    }
+    getRandomPractitioners(count) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.prisma.practitioner.findMany({
+                take: count,
+                select: {
+                    id: true,
+                    full_name: true,
+                    img_url: true
+                },
+                orderBy: {
+                    //@ts-ignore
+                    _random: true
+                }
+            });
+        });
+    }
+    findPractitionersByName(name) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.prisma.practitioner.findMany({
+                where: {
+                    full_name: {
+                        contains: name
+                    }
+                },
+                select: {
+                    id: true,
+                    full_name: true,
+                    img_url: true
+                }
+            });
+        });
+    }
+    docInfo(practitioner) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.prisma.practitioner.findUnique({
+                //@ts-ignore
+                where: {
+                    //@ts-ignore
+                    full_name: practitioner[0]
+                },
+                select: {
+                    id: true,
+                    full_name: true,
+                    img_url: true
+                }
+            });
+        });
+    }
+    hospitalExists(hospitals) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.prisma.hospital.findMany({
+                where: {
+                    id: {
+                        in: hospitals,
+                    },
+                },
+                select: {
+                    id: true,
+                },
+            });
+        });
+    }
+    specialisationExists(specialisations) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.prisma.specialisation.findMany({
+                where: {
+                    id: {
+                        in: specialisations,
+                    },
+                },
+                select: {
+                    id: true,
+                },
+            });
         });
     }
 }

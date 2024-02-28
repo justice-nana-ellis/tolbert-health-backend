@@ -1,6 +1,5 @@
 
 import bcrypt from 'bcrypt';
-import Fuse from 'fuse.js';
 import jwt from 'jsonwebtoken';
 import { PractitionerRepository } from "../repositories";
 import { signupPractitionerDTO, signupPractitionerResponseDTO, logoutPractitionerResponseDTO,

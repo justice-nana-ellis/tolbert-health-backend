@@ -5,7 +5,7 @@ CREATE TYPE "access" AS ENUM ('super_admin', 'admin', 'patient', 'practitioner')
 CREATE TYPE "statuses" AS ENUM ('approved', 'rejected', 'pending');
 
 -- CreateEnum
-CREATE TYPE "indentity_card" AS ENUM ('ghana_card', 'voter_id', 'passprt', 'driving_license');
+CREATE TYPE "indentity_card" AS ENUM ('ghana_card', 'voter_id', 'passport', 'driving_license');
 
 -- CreateTable
 CREATE TABLE "admin" (

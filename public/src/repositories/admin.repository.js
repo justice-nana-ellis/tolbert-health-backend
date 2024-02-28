@@ -9,33 +9,36 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SpecialisationRepository = void 0;
+exports.AdminRepository = void 0;
 const client_1 = require("@prisma/client");
-class SpecialisationRepository {
+class AdminRepository {
     constructor() {
         this.prisma = new client_1.PrismaClient();
     }
-    create(specialisationData) {
+    signup(adminData) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.prisma.specialisation.create({
-                data: specialisationData
+            return this.prisma.admin.create({
+                //@ts-ignore
+                data: adminData
             });
         });
     }
-    update(specialisationData, id) {
+    signin(adminData) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.prisma.specialisation.update({
-                where: {
-                    id: id
-                }, data: {
-                    name: specialisationData.name
-                }
-            });
+            try {
+                return this.prisma.admin.findUnique({
+                    where: {
+                        email: adminData.email
+                    }
+                });
+            }
+            catch (error) {
+            }
         });
     }
-    delete(id) {
+    logout(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.prisma.specialisation.delete({
+            return this.prisma.admin.findUnique({
                 where: {
                     id: id
                 }
@@ -44,17 +47,30 @@ class SpecialisationRepository {
     }
     get() {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.prisma.specialisation.findMany();
+            return this.prisma.admin.findMany();
         });
     }
     getbyId(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.prisma.specialisation.findUnique({
+            return this.prisma.admin.findUnique({
                 where: {
                     id: id
                 }
             });
         });
     }
+    changeStatus(id, status) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.prisma.practitioner.update({
+                where: {
+                    id: id
+                },
+                data: {
+                    //@ts-ignore
+                    status: status
+                }
+            });
+        });
+    }
 }
-exports.SpecialisationRepository = SpecialisationRepository;
+exports.AdminRepository = AdminRepository;
