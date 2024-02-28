@@ -1,8 +1,6 @@
 
-import bcrypt from 'bcrypt';
 import { PrismaClient } from "@prisma/client";
 import { signupPractitionerDTO, signinPractitionerDTO } from "../dto"
-import { array } from '@sap/cds';
 
 export class PractitionerRepository {
     private prisma: PrismaClient;
