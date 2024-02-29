@@ -1,16 +1,20 @@
 
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { PatientRepository } from "../repositories";
+import randomstring from 'randomstring';
+import { PatientRepository, GenericRepository } from "../repositories";
 import { signupPatientDTO, signinPatientDTO, signinPatientResponseDTO,
-         logoutPatientResponseDTO, signupPatientResponseDTO  } from '../dto'; 
+         logoutPatientResponseDTO, signupPatientResponseDTO, otpDTO  } from '../dto'; 
+import { sendEmail, verifyEmailTemplate } from '../util';
 
 export class PatientService {
     private patientRepository: PatientRepository;
-    private readonly SECRET_KEY = <string>process.env.SECRET_KEY
+    private genericRepository: GenericRepository;
+    private readonly SECRET_KEY = <string>process.env.SECRET_KEY;
 
     constructor() {
         this.patientRepository = new PatientRepository();
+        this.genericRepository = new GenericRepository();
     }
 
     async signup(patientData: signupPatientDTO) {
@@ -24,11 +28,19 @@ export class PatientService {
             }
             const response = await this.patientRepository.signup(patient);  
             //@ts-ignore
-            delete response.password
+            //delete response.password
+            const otp = randomstring.generate({ length: 4, charset: 'numeric' });
+            const otpData: otpDTO = {
+                otp_code: otp,
+                user_id: response.id,
+                email: response.email
+            } 
+            const sendOTP = await this.genericRepository.sendOTP(otpData);
+            await sendEmail(verifyEmailTemplate(otp), response.email, `Email Verification`);
             return <signupPatientResponseDTO>{ 
                 status: 'success',
                 content:  {
-                    "message": response
+                    "message": "OTP sent to your E-Mail - Enter to activate your account",
                 }
             };
             
