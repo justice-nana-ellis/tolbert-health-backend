@@ -60,6 +60,8 @@ export class PractitionerRepository {
                 hospitals: true,
                 specialisations: true,
                 password: false,
+                createdAt: true,
+                updatedAt: true,
             }
         });
     }
@@ -80,22 +82,7 @@ export class PractitionerRepository {
         });
     }
 
-    async findPractitionersByName(name: string): Promise<any[]> {
-        return this.prisma.practitioner.findMany({
-            where: {
-                full_name: {
-                    contains: name
-                }
-            },
-            select: {
-                id: true,
-                full_name: true,
-                img_url: true
-            }
-        });
-    }
-
-    async searchPractitioner(queryString: string, limit: number) {
+    async searchPractitioner(queryString: string, limit: Number){
         return this.prisma.practitioner.findMany({
             where: {
                 OR: [
@@ -117,7 +104,7 @@ export class PractitionerRepository {
                 img_url: true,
                 qualification: true
             },
-            take: limit
+            take: Number(limit)
         });
     }
     

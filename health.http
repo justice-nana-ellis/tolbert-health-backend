@@ -1,6 +1,6 @@
 
 ### | search practitioners
-GET http://localhost:9000/api/v1/practitioner/search?name=s&limit=3
+GET http://localhost:9000/api/v1/practitioner/search?name=&limit=6
 
 ### | create service
 POST http://localhost:9000/api/v1/service
