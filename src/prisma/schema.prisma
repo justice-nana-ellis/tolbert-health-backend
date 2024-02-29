@@ -25,6 +25,9 @@ model patient {
   email        String        @unique
   full_name    String
   password     String
+  country      String?
+  img_url      String?
+  active       Boolean       @default(false)
   verified     Boolean       @default(false)
   access_level access?       @default(patient)
   createdAt    DateTime?     @default(now()) @map("created_at")
@@ -33,41 +36,47 @@ model patient {
 }
 
 model practitioner {
-  id              String         @id @unique @default(uuid())
-  email           String         @unique
-  full_name       String
-  password        String
-  dob             DateTime
-  pob             String
-  img_url         String
-  digital_address String
-  contact         String
-  id_type         indentity_card @default(ghana_card)
-  status          statuses?      @default(pending)
-  id_number       String
-  qualification   String
-  licence_number  String
-  specialisations String[]
-  hospitals       String[]
-  access_level    access?        @default(practitioner)
-  verified        Boolean        @default(false)
-  createdAt       DateTime?      @default(now()) @map("created_at")
-  updatedAt       DateTime?      @default(now()) @updatedAt @map("updated_at")
-  appointment     appointment[]
+  id               String         @id @unique @default(uuid())
+  email            String         @unique
+  full_name        String
+  password         String
+  dob              DateTime
+  pob              String
+  country          String?
+  img_url          String
+  digital_address  String
+  contact          String
+  id_type          indentity_card @default(ghana_card)
+  status           statuses?      @default(pending)
+  id_number        String
+  qualification    String
+  licence_number   String
+  specialisation   specialisation @relation(fields: [specialisationId], references: [id]) // Define one-to-one relationship
+  hospital         hospital?      @relation(fields: [hospitalId], references: [id]) // Define one-to-one relationship
+  access_level     access?        @default(practitioner)
+  active           Boolean        @default(false)
+  verified         Boolean        @default(false)
+  createdAt        DateTime?      @default(now()) @map("created_at")
+  updatedAt        DateTime?      @default(now()) @updatedAt @map("updated_at")
+  appointment      appointment[]
+  specialisationId String
+  hospitalId       String
 }
 
 model specialisation {
-  id        String    @id @unique @default(uuid())
-  name      String    @unique
-  createdAt DateTime? @default(now()) @map("created_at")
-  updatedAt DateTime? @default(now()) @updatedAt @map("updated_at")
+  id           String         @id @unique @default(uuid())
+  name         String         @unique
+  createdAt    DateTime?      @default(now()) @map("created_at")
+  updatedAt    DateTime?      @default(now()) @updatedAt @map("updated_at")
+  practitioner practitioner[]
 }
 
 model hospital {
-  id        String    @id @unique @default(uuid())
-  name      String    @unique
-  createdAt DateTime? @default(now()) @map("created_at")
-  updatedAt DateTime? @default(now()) @updatedAt @map("updated_at")
+  id           String         @id @unique @default(uuid())
+  name         String         @unique
+  createdAt    DateTime?      @default(now()) @map("created_at")
+  updatedAt    DateTime?      @default(now()) @updatedAt @map("updated_at")
+  practitioner practitioner[]
 }
 
 model appointment {
@@ -101,10 +110,10 @@ model service {
 }
 
 model otp {
-  id       String    @id @unique @default(uuid())
-  user_id  String    @unique 
-  email   String?
-  otp_code String
+  id        String    @id @unique @default(uuid())
+  user_id   String    @unique
+  email     String?
+  otp_code  String
   createdAt DateTime? @default(now()) @map("created_at")
   updatedAt DateTime? @default(now()) @updatedAt @map("updated_at")
 }

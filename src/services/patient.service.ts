@@ -27,23 +27,22 @@ export class PatientService {
                 verified: false
             }
             const response = await this.patientRepository.signup(patient);  
-            //@ts-ignore
-            //delete response.password
             const otp = randomstring.generate({ length: 4, charset: 'numeric' });
             const otpData: otpDTO = {
                 otp_code: otp,
                 user_id: response.id,
                 email: response.email
             } 
-            const sendOTP = await this.genericRepository.sendOTP(otpData);
-            await sendEmail(verifyEmailTemplate(otp), response.email, `Email Verification`);
-            return <signupPatientResponseDTO>{ 
-                status: 'success',
-                content:  {
-                    "message": "OTP sent to your E-Mail - Enter to activate your account",
-                }
-            };
-            
+            const otpGone = await this.genericRepository.sendOTP(otpData);
+            if(otpGone) {
+                sendEmail(verifyEmailTemplate(otp), response.email, `Email Verification`);
+                return <signupPatientResponseDTO>{ 
+                    status: 'success',
+                    content:  {
+                        "message": "OTP sent to your E-Mail - Enter to activate your account",
+                    }
+                };
+            }
         } catch (error: any) {
             if (error.code === 'P2002' && error.meta?.target?.includes('email')) {
                 return <signupPatientResponseDTO>{ 
@@ -133,6 +132,8 @@ export class PatientService {
     async getAll(skip: number, take: number) {
         try {
             const response = await this.patientRepository.getallPatients(skip, take);
+            console.log(response);
+            
             response.forEach(obj => {
                 //@ts-ignore
                 delete obj.password;
@@ -145,7 +146,22 @@ export class PatientService {
             return error ? <signupPatientResponseDTO>{ 
                 status: 'error',
                 content: { message: 'Internal server error' } 
-              } : 0
+            } : 0
         }
     }
+
+    async search(name: string, limit: number) {
+        try {
+            
+            const response = await this.patientRepository.searchPatient(name, limit);
+            return <signinPatientResponseDTO>{
+                status: "success",
+                content: response
+            };
+
+        } catch (error: any) {
+            
+        }
+    }
+    
 }

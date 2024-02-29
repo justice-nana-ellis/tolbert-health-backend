@@ -1,16 +1,21 @@
 
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { PractitionerRepository } from "../repositories";
+import randomstring from 'randomstring';
+import { GenericRepository, PractitionerRepository } from "../repositories";
 import { signupPractitionerDTO, signupPractitionerResponseDTO, logoutPractitionerResponseDTO,
-         signinPractitionerDTO, signinPractitionerResponseDTO  } from '../dto'; 
+         signinPractitionerDTO, signinPractitionerResponseDTO,otpDTO  } from '../dto'; 
+import { sendEmail, verifyEmailTemplate } from '../util';
 
 export class PractitionerService {
     private practitionerRepository: PractitionerRepository;
+    private genericRepository: GenericRepository;
     private readonly SECRET_KEY = <string>process.env.SECRET_KEY
+    
 
     constructor() {
         this.practitionerRepository = new PractitionerRepository();
+        this.genericRepository = new GenericRepository();
     }
 
     async signup(practitionerData: signupPractitionerDTO) {
@@ -23,29 +28,39 @@ export class PractitionerService {
                 verified: false,
                 status: 'pending'
             }
-            //const response: any = await this.practitionerRepository.signup(patient);    
-        
-            const hospitalExists = await this.practitionerRepository.hospitalExists(practitionerData.hospitals);
-            const specialisationExists = await this.practitionerRepository.specialisationExists(practitionerData.specialisations);
-            
-            if (hospitalExists.length !== practitionerData.hospitals.length) {
+           
+            const hospitalExists = await this.practitionerRepository.hospitalExists(practitionerData.hospital);
+            const specialisationExists = await this.practitionerRepository.specialisationExists(practitionerData.specialisation);
+    
+            if (hospitalExists === null) {
                 return <signupPractitionerResponseDTO>{ 
                     status: 'error',
-                    content: { message: 'Invalid hospital IDs provided' }
+                    content: { message: 'Hospital not found' }
                 };
             }
-            if (specialisationExists.length !== practitionerData.specialisations.length) {
+            if (specialisationExists === null) {
                 return <signupPractitionerResponseDTO>{ 
                     status: 'error',
-                    content: { message: 'Invalid specialistion IDs provided' }
+                    content: { message: 'Specialistion not found' }
                 };
             }
             const response: any = await this.practitionerRepository.signup(practitioner);    
-            delete response.password;
-            return <signupPractitionerResponseDTO>{ 
-                status: 'success',
-                content:  response
-            };
+            const otp = randomstring.generate({ length: 4, charset: 'numeric' });
+            const otpData: otpDTO = {
+                otp_code: otp,
+                user_id: response.id,
+                email: response.email
+            } 
+            const otpGone = await this.genericRepository.sendOTP(otpData);
+            if(otpGone) {
+                sendEmail(verifyEmailTemplate(otp), response.email, `Email Verification`);
+                return <signupPractitionerResponseDTO>{ 
+                    status: 'success',
+                    content:  {
+                        "message": "OTP sent to your E-Mail - Enter to activate your account",
+                    }
+                };
+            }
             
         } catch (error: any) {
             
@@ -84,7 +99,8 @@ export class PractitionerService {
                     "id": `${response?.id}`,
                     "email": `${response?.email}`,
                     "full_name": `${response?.email}`,
-                    "access_level": `${response?.access_level}` 
+                    "access_level": `${response?.access_level}`,
+                    "active": `${response?.active}` 
                 }
                 const Token = jwt.sign(payload, this.SECRET_KEY, { expiresIn: '1h' });
                 delete response.password;
@@ -148,7 +164,6 @@ export class PractitionerService {
         try {
             
             const response = await this.practitionerRepository.searchPractitioner(name, limit);
-            console.log(response)
             return <signinPractitionerResponseDTO>{
                 status: "success",
                 content: response

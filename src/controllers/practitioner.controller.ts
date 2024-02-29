@@ -18,7 +18,7 @@ export class PractitionerController {
     }
 
     private initializeRoutes() {
-      this.router.get(`${this.BASE_PATH}/practitioner/search`, this.search.bind(this));
+        this.router.get(`${this.BASE_PATH}/practitioner/search`, this.search.bind(this));
         this.router.get(`${this.BASE_PATH}/practitioner/`, this.getAll.bind(this));
         this.router.post(`${this.BASE_PATH}/practitioner/signup`, this.signup.bind(this));
         this.router.post(`${this.BASE_PATH}/practitioner/signin`, this.signin.bind(this));
@@ -90,14 +90,12 @@ export class PractitionerController {
     private async getAll(req: Request, res: Response) {
       const skip = req?.query?.skip;
       const take = req?.query?.take;
-
       //@ts-ignore
       const response = await this.practitionerService.getAll(skip, take);
       res.json(response);
     }
 
     private async search(req: Request, res: Response) {
-      console.log(req.query.limit)
       //@ts-ignore
       const response = await this.practitionerService.search(req.query.name, req.query.limit);
       res.json(response);

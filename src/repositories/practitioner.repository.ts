@@ -11,8 +11,33 @@ export class PractitionerRepository {
 
     async signup(practitionerData: signupPractitionerDTO) {
         return this.prisma.practitioner.create({
-        //@ts-ignore
-            data: practitionerData 
+            
+            data: {
+                email: practitionerData.email,
+                full_name: practitionerData.full_name,
+                password: practitionerData.password,
+                dob: practitionerData.dob,
+                pob: practitionerData.pob,
+                img_url: practitionerData.img_url,
+                digital_address: practitionerData.digital_address,
+                contact: practitionerData.contact,
+                //@ts-ignore
+                id_type: practitionerData.id_type,
+                id_number: practitionerData.id_number,
+                qualification: practitionerData.qualification,
+                licence_number: practitionerData.licence_number,
+                specialisation: {
+                    //@ts-ignore
+                    connect: { id: practitionerData.specialisation }
+                },
+                hospital: {
+                    //@ts-ignore
+                    connect: { id: practitionerData.hospital }
+                },
+                verified: practitionerData.verified,
+                //@ts-ignore
+                status: practitionerData.status
+            }
         }); 
     }
 
@@ -53,31 +78,17 @@ export class PractitionerRepository {
                 pob: true,
                 img_url: true,
                 digital_address: true,
+                country: true,
                 contact: true,
                 status: true,
                 id_number: true,
+                active: true,
                 licence_number: true,
-                hospitals: true,
-                specialisations: true,
+                hospital: true,
+                specialisation: true,
                 password: false,
                 createdAt: true,
                 updatedAt: true,
-            }
-        });
-    }
-
-    async getRandomPractitioners(count: number): Promise<any[]> {
-        return this.prisma.practitioner.findMany({
-            take: count, 
-            select: {
-                id: true,
-                full_name: true,
-                img_url: true
-            
-            },
-            orderBy: {
-                //@ts-ignore
-                _random: true 
             }
         });
     }
@@ -102,37 +113,26 @@ export class PractitionerRepository {
                 id: true,
                 full_name: true,
                 img_url: true,
-                qualification: true
+                qualification: true,
+                active: true
             },
             take: Number(limit)
         });
-    }
-    
-    
+    } 
 
-    async hospitalExists(hospitals: string[]) {
-        return this.prisma.hospital.findMany({
+    async hospitalExists(id: string) {
+        return this.prisma.hospital.findUnique({
             where: {
-              id: {
-                in: hospitals,
-              },
-            },
-            select: {
-              id: true,
-            },
+              id: id
+            }
           });
     }
 
-    async specialisationExists(specialisations: string[]) {
-        return this.prisma.specialisation.findMany({
+    async specialisationExists(id: string) {
+        return this.prisma.specialisation.findUnique({
             where: {
-              id: {
-                in: specialisations,
-              },
-            },
-            select: {
-              id: true,
-            },
+                id: id
+              }
           });
     }
 }

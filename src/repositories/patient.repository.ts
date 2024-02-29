@@ -42,8 +42,34 @@ export class PatientRepository {
                 //@ts-ignore
                 id: true,
                 full_name: true,
-                email: true
+                email: true,
+                active: true,
+                country: true,
+                createdAt: true,
+                updatedAt: true,
             }
+        });
+    }
+
+    async searchPatient(queryString: string, limit: Number){
+        return this.prisma.patient.findMany({
+            where: {
+                OR: [
+                    {
+                        full_name: {
+                            contains: queryString
+                        }
+                    }
+                ]
+            },
+            select: {
+                id: true,
+                full_name: true,
+                img_url: true,
+                active: true
+                
+            },
+            take: Number(limit)
         });
     }
 }
