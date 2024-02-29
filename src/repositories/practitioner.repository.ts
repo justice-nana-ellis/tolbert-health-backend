@@ -114,7 +114,9 @@ export class PractitionerRepository {
                 full_name: true,
                 img_url: true,
                 qualification: true,
-                active: true
+                active: true,
+                specialisation: true,
+                hospital: true
             },
             take: Number(limit)
         });
