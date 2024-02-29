@@ -95,20 +95,33 @@ export class PractitionerRepository {
         });
     }
 
-    // async docInfo(practitioner: array) {
-    //     return this.prisma.practitioner.findUnique({
-    //         //@ts-ignore
-    //         where: {
-    //             //@ts-ignore
-    //             full_name: practitioner[0]
-    //         },
-    //         select: {
-    //             id: true,
-    //             full_name: true,
-    //             img_url: true
-    //         }
-    //     });
-    // }
+    async searchPractitioner(queryString: string, limit: number) {
+        return this.prisma.practitioner.findMany({
+            where: {
+                OR: [
+                    {
+                        full_name: {
+                            contains: queryString
+                        }
+                    },
+                    {
+                        qualification: {
+                            contains: queryString
+                        }
+                    }
+                ]
+            },
+            select: {
+                id: true,
+                full_name: true,
+                img_url: true,
+                qualification: true
+            },
+            take: limit
+        });
+    }
+    
+    
 
     async hospitalExists(hospitals: string[]) {
         return this.prisma.hospital.findMany({

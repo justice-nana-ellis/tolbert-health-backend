@@ -144,43 +144,18 @@ export class PractitionerService {
         }
     }
 
-    // async search(name: string) {
-    //     try {
+    async search(name: string, limit: number) {
+        try {
             
-    //         console.log(name === `yes`);
-            
-    //         //console.log( "RANDOM",await this.practitionerRepository.getRandomPractitioners(10));
-    //         if(name) {
-    //             const response = await this.practitionerRepository.getRandomPractitioners(10);
-    //             console.log(name);
-    //             console.log("heey!!!!");
-    //             return <signinPractitionerResponseDTO>{
-    //                 status: "success",
-    //                 content: response
-    //             };
-                
-    //         }
-    //         const practitioners = await this.practitionerRepository.findPractitionersByName(name);
-    //         const options = {
-    //             keys: ['full_name'], 
-    //             includeScore: true 
-    //         };
+            const response = await this.practitionerRepository.searchPractitioner(name, limit);
+            console.log(response)
+            return <signinPractitionerResponseDTO>{
+                status: "success",
+                content: response
+            };
 
-    //         const fuse = new Fuse(practitioners, options);
-    //         const searchResults = fuse.search(name.toString());
-    //         const similarPractitioners = searchResults.map((result: any) => ({
-    //             id: result.item.id,
-    //             full_name: result.item.full_name,
-    //             img_url: result.item.img_url
-    //         }));
-    //         //console.log(similarPractitioners)
-    //         return <signinPractitionerResponseDTO>{
-    //             status: "success",
-    //             content: similarPractitioners
-    //         };
-
-    //     } catch (error: any) {
+        } catch (error: any) {
             
-    //     }
-    // }
+        }
+    }
 }
