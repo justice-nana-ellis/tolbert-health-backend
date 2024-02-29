@@ -67,7 +67,6 @@ export class PatientRepository {
                 full_name: true,
                 img_url: true,
                 active: true
-                
             },
             take: Number(limit)
         });
