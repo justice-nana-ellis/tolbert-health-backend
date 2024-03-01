@@ -31,6 +31,14 @@ export class PatientRepository {
         }); 
     }
 
+    async getbyId(id: string) {
+        return this.prisma.patient.findUnique({
+            where: {
+                id: id
+            }
+        }); 
+    }
+
     async getallPatients(skipped: number, taken: number): Promise<any[]> {
         const skip = Number(skipped)
         const take = Number(taken)
@@ -57,7 +65,8 @@ export class PatientRepository {
                 OR: [
                     {
                         full_name: {
-                            contains: queryString
+                            contains: queryString.toLowerCase(),
+                            mode: 'insensitive',
                         }
                     }
                 ]
@@ -66,9 +75,18 @@ export class PatientRepository {
                 id: true,
                 full_name: true,
                 img_url: true,
-                active: true
+                country: true,
+                city: true,
+                zip: true,
+                access_level: true,
+                active: true,
+                verified: true
             },
             take: Number(limit)
         });
+    }
+
+    async count() {
+        return this.prisma.patient.count();
     }
 }

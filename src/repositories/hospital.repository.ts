@@ -8,8 +8,9 @@ export class HospitalRepository {
         this.prisma = new PrismaClient();
     }
 
-    async create(hospitalData: hospitalDTO) {
+    async create(hospitalData: hospitalDTO){
         return this.prisma.hospital.create({
+            //@ts-ignore
             data: hospitalData
         }); 
     }

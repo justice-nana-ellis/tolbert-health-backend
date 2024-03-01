@@ -24,14 +24,13 @@ export class PractitionerService {
             const hash = await bcrypt.hash(practitionerData.password, salt);
             const practitioner = {
                 ...practitionerData,
+                dob: practitionerData.dob.split('T')[0],
                 password: hash,
                 verified: false,
                 status: 'pending'
             }
-           
-            const hospitalExists = await this.practitionerRepository.hospitalExists(practitionerData.hospital);
-            const specialisationExists = await this.practitionerRepository.specialisationExists(practitionerData.specialisation);
-    
+            const hospitalExists = await this.practitionerRepository.hospitalExists(practitionerData.hospitalId);
+            const specialisationExists = await this.practitionerRepository.specialisationExists(practitionerData.specialisationId);
             if (hospitalExists === null) {
                 return <signupPractitionerResponseDTO>{ 
                     status: 'error',
@@ -45,6 +44,7 @@ export class PractitionerService {
                 };
             }
             const response: any = await this.practitionerRepository.signup(practitioner);    
+            await this.practitionerRepository.association(response)
             const otp = randomstring.generate({ length: 4, charset: 'numeric' });
             const otpData: otpDTO = {
                 otp_code: otp,
@@ -61,9 +61,7 @@ export class PractitionerService {
                     }
                 };
             }
-            
         } catch (error: any) {
-            
             if (error.code === 'P2002' && error.meta?.target?.includes('email')) {
                 return <signupPractitionerResponseDTO>{ 
                   status: 'error',
@@ -164,11 +162,56 @@ export class PractitionerService {
         try {
             
             const response = await this.practitionerRepository.searchPractitioner(name, limit);
+            console.log(response);
+            
             return <signinPractitionerResponseDTO>{
                 status: "success",
                 content: response
             };
 
+        } catch (error: any) {
+            console.log(error);
+            
+        }
+    }
+
+    async pendingPractitioners(limit: number) {
+        try {
+            const response = await this.practitionerRepository.pending(limit);
+            response.forEach(obj => {
+                //@ts-ignore
+                delete obj.password;
+              });
+            return <signinPractitionerResponseDTO>{
+                status: "success",
+                content: response
+            };
+        } catch (error: any) {
+            
+        }
+    }
+
+    async count() {
+        try {
+            const response = await this.practitionerRepository.count();
+            return <signinPractitionerResponseDTO>{
+                status: "success",
+                content: response
+            };
+        } catch (error: any) {
+            
+        }
+    }
+
+    async getbyId(id: string) {
+        try {
+            const response = await this.practitionerRepository.getbyId(id);
+            //@ts-ignore
+            delete response?.password
+            return <signinPractitionerResponseDTO>{
+                status: "success",
+                content: response
+            };
         } catch (error: any) {
             
         }

@@ -26,6 +26,8 @@ model patient {
   full_name    String
   password     String
   country      String?
+  zip          String?
+  city         String? 
   img_url      String?
   active       Boolean       @default(false)
   verified     Boolean       @default(false)
@@ -40,9 +42,11 @@ model practitioner {
   email            String         @unique
   full_name        String
   password         String
-  dob              DateTime
+  dob              String
   pob              String
   country          String?
+  zip              String?
+  city             String?  
   img_url          String
   digital_address  String
   contact          String
@@ -51,32 +55,51 @@ model practitioner {
   id_number        String
   qualification    String
   licence_number   String
-  specialisation   specialisation @relation(fields: [specialisationId], references: [id]) // Define one-to-one relationship
-  hospital         hospital?      @relation(fields: [hospitalId], references: [id]) // Define one-to-one relationship
+  specialisation   specialisation? @relation(fields: [specialisationId], references: [id])
+  specialisationId String?
+  hospital         hospital?       @relation(fields: [hospitalId], references: [id])
+  hospitalId       String?
   access_level     access?        @default(practitioner)
   active           Boolean        @default(false)
   verified         Boolean        @default(false)
   createdAt        DateTime?      @default(now()) @map("created_at")
-  updatedAt        DateTime?      @default(now()) @updatedAt @map("updated_at")
+  updatedAt        DateTime?      @updatedAt @map("updated_at")
   appointment      appointment[]
-  specialisationId String
-  hospitalId       String
+  practitionerhospitalspecialisation practitionerhospitalspecialisation[]
 }
 
 model specialisation {
-  id           String         @id @unique @default(uuid())
-  name         String         @unique
-  createdAt    DateTime?      @default(now()) @map("created_at")
-  updatedAt    DateTime?      @default(now()) @updatedAt @map("updated_at")
+  id           String        @id @unique @default(uuid())
+  name         String        @unique
+  createdAt    DateTime      @default(now()) @map("created_at")
+  updatedAt    DateTime      @updatedAt @map("updated_at")
   practitioner practitioner[]
+  practitionerhospitalspecialisation practitionerhospitalspecialisation[]
 }
 
 model hospital {
   id           String         @id @unique @default(uuid())
   name         String         @unique
+  city         String
+  zip          String
+  street       String
+  country      String
   createdAt    DateTime?      @default(now()) @map("created_at")
-  updatedAt    DateTime?      @default(now()) @updatedAt @map("updated_at")
+  updatedAt    DateTime      @updatedAt @map("updated_at") 
   practitioner practitioner[]
+  appointment  appointment[]
+  practitionerhospitalspecialisation practitionerhospitalspecialisation[]
+}
+
+model practitionerhospitalspecialisation {
+  practitionerId   String
+  practitioner     practitioner?  @relation(fields: [practitionerId], references: [id])
+  hospitalId       String
+  hospital         hospital?  @relation(fields: [hospitalId], references: [id])
+  specialisationId       String
+  specialisation         specialisation?  @relation(fields: [specialisationId], references: [id])
+
+  @@id([practitionerId, hospitalId, specialisationId])
 }
 
 model appointment {
@@ -84,21 +107,21 @@ model appointment {
   title             String       @unique
   date              DateTime
   time              DateTime
-  practitioner      practitioner @relation(fields: [practitionerId], references: [id])
-  practitionerId    String
-  patient           patient      @relation(fields: [patientId], references: [id])
-  patientId         String
-  service           String
+  practitioner      practitioner? @relation(fields: [practitionerId], references: [id])
+  practitionerId    String?
+  patient           patient?      @relation(fields: [patientId], references: [id])
+  patientId         String?
+  hospital          hospital?      @relation(fields: [hospitalId], references: [id])
+  hospitalId        String?
+  service           service?      @relation(fields: [serviceId], references: [id])
+  serviceId         String?
   comment           String
   tc                Boolean
   payment_completed Boolean
   status            statuses?    @default(pending)
   expiry            DateTime
   createdAt         DateTime?    @default(now()) @map("created_at")
-  updatedAt         DateTime?    @default(now()) @updatedAt @map("updated_at")
-
-  @@index([practitionerId], name: "appointment_practitionerId_index")
-  @@index([patientId], name: "appointment_patientId_index")
+  updatedAt         DateTime?    @updatedAt @map("updated_at")
 }
 
 model service {
@@ -106,7 +129,8 @@ model service {
   name      String    @unique
   price     Float
   createdAt DateTime? @default(now()) @map("created_at")
-  updatedAt DateTime? @default(now()) @updatedAt @map("updated_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+  appointment appointment[]
 }
 
 model otp {
@@ -136,4 +160,14 @@ enum indentity_card {
   voter_id
   passport
   driving_license
+}
+
+enum days {
+  monday
+  tuesday
+  wednesday
+  thursday
+  friday
+  saturday
+  sunday
 }

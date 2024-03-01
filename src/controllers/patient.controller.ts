@@ -20,7 +20,9 @@ export class PatientController {
 
     private initializeRoutes() {
         this.router.get(`${this.BASE_PATH}/patient/search`, this.search.bind(this));
+        this.router.get(`${this.BASE_PATH}/patient/count`, this.count.bind(this));
         this.router.get(`${this.BASE_PATH}/patient`, this.getAll.bind(this));
+        this.router.get(`${this.BASE_PATH}/patient/:id`, this.getbyId.bind(this));
         this.router.post(`${this.BASE_PATH}/patient/signup`, this.signup.bind(this));
         this.router.post(`${this.BASE_PATH}/patient/signin`, this.signin.bind(this));
         this.router.post(`${this.BASE_PATH}/patient/logout/:id`, this.logout.bind(this));
@@ -96,5 +98,16 @@ export class PatientController {
       const response = await this.patientService.search(req.query.name, req.query.limit);
       res.json(response);
     }
+
+    private async count(req: Request, res: Response) {
+      const response = await this.patientService.count();
+      res.json(response);
+    }
+
+    private async getbyId(req: Request, res: Response) {
+      const response = await this.patientService.getbyId(req.params.id);
+      res.json(response);
+    }
+
 }
 

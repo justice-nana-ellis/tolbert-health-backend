@@ -18,8 +18,11 @@ export class PractitionerController {
     }
 
     private initializeRoutes() {
+        this.router.get(`${this.BASE_PATH}/practitioner/pending`, this.pending.bind(this));
         this.router.get(`${this.BASE_PATH}/practitioner/search`, this.search.bind(this));
+        this.router.get(`${this.BASE_PATH}/practitioner/count`, this.count.bind(this));
         this.router.get(`${this.BASE_PATH}/practitioner/`, this.getAll.bind(this));
+        this.router.get(`${this.BASE_PATH}/practitioner/:id`, this.getbyid.bind(this));
         this.router.post(`${this.BASE_PATH}/practitioner/signup`, this.signup.bind(this));
         this.router.post(`${this.BASE_PATH}/practitioner/signin`, this.signin.bind(this));
         this.router.post(`${this.BASE_PATH}/practitioner/logout/:id`, this.logout.bind(this));
@@ -98,6 +101,22 @@ export class PractitionerController {
     private async search(req: Request, res: Response) {
       //@ts-ignore
       const response = await this.practitionerService.search(req.query.name, req.query.limit);
+      res.json(response);
+    }
+
+    private async pending(req: Request, res: Response) {
+      //@ts-ignore
+      const response = await this.practitionerService.pending(req.query.limit);
+      res.json(response);
+    }
+
+    private async count(req: Request, res: Response) {
+      const response = await this.practitionerService.count();
+      res.json(response);
+    }
+
+    private async getbyid(req: Request, res: Response) {
+      const response = await this.practitionerService.getbyId(req.params.id);
       res.json(response);
     }
 

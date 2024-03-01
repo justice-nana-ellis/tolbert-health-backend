@@ -163,5 +163,31 @@ export class PatientService {
             
         }
     }
+
+    async count() {
+        try {
+            const response = await this.patientRepository.count();
+            return <signinPatientResponseDTO>{
+                status: "success",
+                content: response
+            };
+        } catch (error: any) {
+            
+        }
+    }
+
+    async getbyId(id: string) {
+        try {
+            const response = await this.patientRepository.getbyId(id);
+            //@ts-ignore
+            delete response?.password;
+            return <signinPatientResponseDTO>{
+                status: "success",
+                content: response
+            };
+        } catch (error: any) {
+            
+        }
+    }
     
 }
