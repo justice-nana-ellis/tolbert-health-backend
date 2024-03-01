@@ -170,12 +170,12 @@ export class PractitionerService {
             };
 
         } catch (error: any) {
-            console.log(error);
+            
             
         }
     }
 
-    async pendingPractitioners(limit: number) {
+    async pending(limit: number) {
         try {
             const response = await this.practitionerRepository.pending(limit);
             response.forEach(obj => {
@@ -187,8 +187,17 @@ export class PractitionerService {
                 content: response
             };
         } catch (error: any) {
+           if (error) {
             
-        }
+                return <logoutPractitionerResponseDTO> {
+                    status: "error",
+                    content: {
+                        "message": "Internal server error"
+                    }
+                }
+            }
+        } 
+        
     }
 
     async count() {
