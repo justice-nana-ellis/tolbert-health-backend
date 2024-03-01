@@ -8,17 +8,26 @@ export class AppointmentRepository {
         this.prisma = new PrismaClient();
     }
 
-    async findDoc(id: string){
-        return await this.prisma.practitioner.findUnique({
-            where: { id: id }
-        });
-    }
+    // async findDoc(id: string){
+    //     return await this.prisma.practitioner.findUnique({
+    //         where: { id: id }
+    //     });
+    // }
     
     async create(appointmentData: appointmentDTO) {
+        console.log(appointmentData);
+        
         return this.prisma.appointment.create({
             //@ts-ignore
-            data: appointmentData
-        }); 
+            data: {...appointmentData,
+                practitioner: {
+                    connect: { id: appointmentData.practitioner }},
+                patient: {
+                    connect: { id: appointmentData.patient }},
+                service: {
+                        connect: { id: appointmentData.service }}
+            }
+        });
     }
 
     async update(appointmentData: appointmentDTO, id: string) {

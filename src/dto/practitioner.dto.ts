@@ -15,8 +15,8 @@ export interface signupPractitionerDTO {
     status:          string;
     qualification:   string;
     licence_number:  string;
-    specialisation: string; 
-    hospital:       string;
+    specialisationId: string; 
+    hospitalId:       string;
     appointments:    string[];
     verified:        boolean;       
 }

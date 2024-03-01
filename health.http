@@ -199,8 +199,8 @@ Content-Type: application/json
     "id_number": "1234567890",
     "qualification": "Doctor of Medicine",
     "licence_number": "123ABC",
-    "specialisations": [ "e3cc9f3c-acd9-4042-bf83-14e2a1871e66"],
-    "hospitals": [ "390ada57-692a-40dd-b507-c4401f49d598"],
+    "specialisationId": "e3cc9f3c-acd9-4042-bf83-14e2a1871e66",
+    "hospitalId": "390ada57-692a-40dd-b507-c4401f49d598",
     "verified": true
 }
 
