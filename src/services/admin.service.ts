@@ -184,11 +184,14 @@ export class AdminService {
     async changeStatus(id: string, status: string) {
         try {
             const response = await this.adminRepository.changeStatus(id, status);
+            
             //@ts-ignore
             delete response.password;
             return <signinAdminResponseDTO>{
                 status: "success",
-                content: response
+                content: {
+                    message: `Status changed successfully`
+                }
             };
         } catch (error: any) {
             
