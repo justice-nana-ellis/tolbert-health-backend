@@ -162,16 +162,12 @@ export class PractitionerService {
         try {
             
             const response = await this.practitionerRepository.searchPractitioner(name, limit);
-            console.log(response);
-            
             return <signinPractitionerResponseDTO>{
                 status: "success",
                 content: response
             };
-
         } catch (error: any) {
-            
-            
+              
         }
     }
 
@@ -188,7 +184,6 @@ export class PractitionerService {
             };
         } catch (error: any) {
            if (error) {
-            
                 return <logoutPractitionerResponseDTO> {
                     status: "error",
                     content: {

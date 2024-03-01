@@ -19,8 +19,6 @@ export class HospitalService {
             };
             
         } catch (error: any) {
-            console.log(error);
-          
             if (error.code === 'P2002' && error.meta?.target?.includes('name')) {
                 return <hospitalResponseDTO>{ 
                   status: 'error',

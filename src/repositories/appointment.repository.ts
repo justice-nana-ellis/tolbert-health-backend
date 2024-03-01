@@ -7,16 +7,8 @@ export class AppointmentRepository {
     constructor() {
         this.prisma = new PrismaClient();
     }
-
-    // async findDoc(id: string){
-    //     return await this.prisma.practitioner.findUnique({
-    //         where: { id: id }
-    //     });
-    // }
     
-    async create(appointmentData: appointmentDTO) {
-        console.log(appointmentData);
-        
+    async create(appointmentData: appointmentDTO) { 
         return this.prisma.appointment.create({
             //@ts-ignore
             data: {...appointmentData,

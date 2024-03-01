@@ -131,9 +131,7 @@ export class PatientService {
 
     async getAll(skip: number, take: number) {
         try {
-            const response = await this.patientRepository.getallPatients(skip, take);
-            console.log(response);
-            
+            const response = await this.patientRepository.getallPatients(skip, take); 
             response.forEach(obj => {
                 //@ts-ignore
                 delete obj.password;
