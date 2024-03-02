@@ -1,12 +1,15 @@
 
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { AdminRepository } from "../repositories";
+import randomstring from 'randomstring';
+import { AdminRepository, GenericRepository } from "../repositories";
 import { signupAdminDTO, signinAdminResponseDTO, logoutAdminResponseDTO,
-         signupAdminResponseDTO, adminDTO, signinAdminDTO  } from '../dto'; 
+         signupAdminResponseDTO, adminDTO, signinAdminDTO, otpDTO  } from '../dto'; 
+import { sendEmail, verifyEmailTemplate } from '../util';
 
 export class AdminService {
-    private adminRepository: AdminRepository;
+    private genericRepository: GenericRepository = new GenericRepository;
+    private adminRepository: AdminRepository = new AdminRepository;
     private readonly SECRET_KEY = <string>process.env.SECRET_KEY
 
     constructor() {
@@ -22,7 +25,23 @@ export class AdminService {
                 password: hash,
             }
             const response: any = await this.adminRepository.signup(admin);    
-            delete response.password;
+            //delete response.password;
+            const otp = randomstring.generate({ length: 4, charset: 'numeric' });
+            const otpData: otpDTO = {
+                otp_code: otp,
+                user_id: response.id,
+                email: response.email
+            } 
+            const otpGone = await this.genericRepository.sendOTP(otpData);
+            if(otpGone) {
+                sendEmail(verifyEmailTemplate(otp), response.email, `Email Verification`);
+                return <signupAdminResponseDTO>{ 
+                    status: 'success',
+                    content:  {
+                        "message": "OTP sent to your E-Mail - Enter to activate your account",
+                    }
+                };
+            }
             return <signupAdminResponseDTO>{ 
                 status: 'success',
                 content: response
@@ -165,54 +184,18 @@ export class AdminService {
     async changeStatus(id: string, status: string) {
         try {
             const response = await this.adminRepository.changeStatus(id, status);
+            
             //@ts-ignore
             delete response.password;
             return <signinAdminResponseDTO>{
                 status: "success",
-                content: response
+                content: {
+                    message: `Status changed successfully`
+                }
             };
         } catch (error: any) {
             
         }
     }
 
-    // async search(name: string) {
-    //     try {
-            
-    //         console.log(name === `yes`);
-            
-    //         //console.log( "RANDOM",await this.practitionerRepository.getRandomPractitioners(10));
-    //         if(name) {
-    //             const response = await this.practitionerRepository.getRandomPractitioners(10);
-    //             console.log(name);
-    //             console.log("heey!!!!");
-    //             return <signinPractitionerResponseDTO>{
-    //                 status: "success",
-    //                 content: response
-    //             };
-                
-    //         }
-    //         const practitioners = await this.practitionerRepository.findPractitionersByName(name);
-    //         const options = {
-    //             keys: ['full_name'], 
-    //             includeScore: true 
-    //         };
-
-    //         const fuse = new Fuse(practitioners, options);
-    //         const searchResults = fuse.search(name.toString());
-    //         const similarPractitioners = searchResults.map((result: any) => ({
-    //             id: result.item.id,
-    //             full_name: result.item.full_name,
-    //             img_url: result.item.img_url
-    //         }));
-    //         //console.log(similarPractitioners)
-    //         return <signinPractitionerResponseDTO>{
-    //             status: "success",
-    //             content: similarPractitioners
-    //         };
-
-    //     } catch (error: any) {
-            
-    //     }
-    // }
 }

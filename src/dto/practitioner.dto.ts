@@ -15,8 +15,8 @@ export interface signupPractitionerDTO {
     status:          string;
     qualification:   string;
     licence_number:  string;
-    specialisations: string[]; 
-    hospitals:       string[];
+    specialisationId: string; 
+    hospitalId:       string;
     appointments:    string[];
     verified:        boolean;       
 }
@@ -79,8 +79,8 @@ export class signupPractitionerValidationDto {
         this.status = '';
         this.qualification = '';
         this.licence_number = '';
-        this.specialisations = [];
-        this.hospitals = [];
+        this.specialisation = '';
+        this.hospital = '';
         this.appointments = [];
         this.verified;
     }
@@ -145,10 +145,10 @@ export class signupPractitionerValidationDto {
     licence_number: string;
 
     @IsOptional()
-    specialisations: string[];
+    specialisation: string;
 
     @IsOptional()
-    hospitals: string[];
+    hospital: string;
 
     @IsOptional()
     appointments: string[];

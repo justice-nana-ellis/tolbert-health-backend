@@ -1,4 +1,11 @@
 
+### | search patient
+GET http://localhost:9000/api/v1/patient/search?name=&limit=6
+
+
+### | search practitioners
+GET http://localhost:9000/api/v1/practitioner/search?name=&limit=6
+
 ### | create service
 POST http://localhost:9000/api/v1/service
 Content-Type: application/json
@@ -180,8 +187,8 @@ POST http://localhost:9000/api/v1/practitioner/signup
 Content-Type: application/json
 
 {
-    "email": "johndoe@gmail.com",
-    "full_name": "xoi vin",
+    "email": "markzooo@gmail.com",
+    "full_name": "mark zoo",
     "password": "StrongPassword123!",
     "dob": "1990-01-01T00:00:00Z",
     "pob": "New York",
@@ -192,8 +199,8 @@ Content-Type: application/json
     "id_number": "1234567890",
     "qualification": "Doctor of Medicine",
     "licence_number": "123ABC",
-    "specialisations": [ "f1e42054-2e19-48e3-b199-f7d006af78ba"],
-    "hospitals": [ "5c1c5a9f-a570-432b-b79d-195a4e2b13cd"],
+    "specialisationId": "e3cc9f3c-acd9-4042-bf83-14e2a1871e66",
+    "hospitalId": "390ada57-692a-40dd-b507-c4401f49d598",
     "verified": true
 }
 
@@ -215,7 +222,7 @@ POST http://localhost:9000/api/v1/patient/signup
 Content-Type: application/json
 
 {
-    "email":     "johndoeiv@gmail.com",      
+    "email":     "ellisjustice60@gmail.com",      
   	"full_name": "John Doe",
   	"password":  "5554321Acomid!"
 }
