@@ -5,10 +5,11 @@ import { initialisePaymentDTO, completePaymentDTO } from "../dto";
 export class PaymentRepository {
     private prisma: PrismaClient;
     private paystack: Paystack;
+    private readonly SECRET_KEY = <string>process.env.PAYSTACK_SECRET_KEY
 
     constructor() {
         this.prisma = new PrismaClient();
-        this.paystack = new Paystack("sk_test_03b42fc51c7f94c819ccf44959a2c75f613de312");
+        this.paystack = new Paystack(this.SECRET_KEY);
     }
 
     async initialise(email: string, amount: string){
