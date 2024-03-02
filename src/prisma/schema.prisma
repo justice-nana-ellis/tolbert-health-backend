@@ -30,6 +30,7 @@ model patient {
   city         String? 
   img_url      String?
   active       Boolean       @default(false)
+  payment      payment[]
   verified     Boolean       @default(false)
   access_level access?       @default(patient)
   createdAt    DateTime?     @default(now()) @map("created_at")
@@ -85,7 +86,7 @@ model hospital {
   street       String
   country      String
   createdAt    DateTime?      @default(now()) @map("created_at")
-  updatedAt    DateTime      @updatedAt @map("updated_at") 
+  updatedAt    DateTime       @updatedAt @map("updated_at") 
   practitioner practitioner[]
   appointment  appointment[]
   practitionerhospitalspecialisation practitionerhospitalspecialisation[]
@@ -139,7 +140,17 @@ model otp {
   email     String?
   otp_code  String
   createdAt DateTime? @default(now()) @map("created_at")
-  updatedAt DateTime? @default(now()) @updatedAt @map("updated_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+}
+
+model payment {
+  id                String @id @unique @default(uuid())
+  amount            String 
+  patient           patient      @relation(fields: [patientId], references: [id])
+  patientId         String
+  referenceId       String
+  createdAt         DateTime? @default(now()) @map("created_at")
+  updatedAt         DateTime? @updatedAt @map("updated_at")
 }
 
 enum access {

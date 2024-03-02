@@ -33,7 +33,7 @@ export class PatientController {
 
         const errorMessages = await getErrorMessages(plainToClass(signupPatientValidationDto, req.body));
      
-      if (errorMessages.length > 0) return res.status(400).json({
+      if (errorMessages.length > 0) return res.status(200).json({
         status: 'error',
         content: { message: errorMessages }, 
         timestamp: timestamp,
@@ -50,7 +50,7 @@ export class PatientController {
 
         const errorMessages = await getErrorMessages(plainToClass(signinPatientValidationDto, req.body));
     
-        if (errorMessages.length > 0) return res.status(400).json({
+        if (errorMessages.length > 0) return res.status(200).json({
           status: 'error',
           content: { message: errorMessages }, 
           timestamp: timestamp,
@@ -61,7 +61,7 @@ export class PatientController {
         res.cookie(`${response?.content?.id}`, response?.token, { httpOnly: true });
         res.json(response);
       } catch (error) {
-        return res.status(500).json({
+        return res.status(200).json({
           status: 'error',
           content: 'login failed' 
         });
@@ -77,7 +77,7 @@ export class PatientController {
         } 
         res.json(response);
       } catch (error) {
-        return res.status(500).json({
+        return res.status(200).json({
           status: 'error',
           content: 'login failed' 
         });
