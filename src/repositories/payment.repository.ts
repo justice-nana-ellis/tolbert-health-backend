@@ -1,4 +1,5 @@
 import { Paystack } from 'paystack-sdk';
+import superagent from 'superagent';
 import { PrismaClient } from "@prisma/client";
 import { initialisePaymentDTO, completePaymentDTO } from "../dto";
 
@@ -12,7 +13,8 @@ export class PaymentRepository {
         this.paystack = new Paystack(this.SECRET_KEY);
     }
 
-    async initialise(email: string, amount: string){
+    async initialise(email: string, newAmount: string){
+        const amount = newAmount.trimEnd().toString();
         return await this.paystack.transaction.initialize({
             email,
             amount
@@ -20,6 +22,10 @@ export class PaymentRepository {
     }
 
     async complete(paymentData: completePaymentDTO) {
+        //const { amount, patientId, } = paymentData
+
+        superagent
+
         // return this.prisma.service.update({
         //     where: {
         //         id: id
