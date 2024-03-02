@@ -194,7 +194,7 @@ export class PractitionerRepository {
           });
     }
 
-    async pending(limit: Number) {
+    async pending (limit: Number) {
         return this.prisma.practitioner.findMany({
             where: {
                 status: "pending"
@@ -205,5 +205,13 @@ export class PractitionerRepository {
 
     async count() {
         return this.prisma.practitioner.count();
+    }
+
+    async countPending() {
+        return this.prisma.practitioner.count({
+            where: {
+                status: "pending"
+            }
+        });
     }
 }

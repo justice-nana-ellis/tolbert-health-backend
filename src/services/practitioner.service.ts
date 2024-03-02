@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 import randomstring from 'randomstring';
 import { GenericRepository, PractitionerRepository } from "../repositories";
 import { signupPractitionerDTO, signupPractitionerResponseDTO, logoutPractitionerResponseDTO,
-         signinPractitionerDTO, signinPractitionerResponseDTO,otpDTO  } from '../dto'; 
+         signinPractitionerDTO, signinPractitionerResponseDTO,otpDTO, getAllPractitionerResponseDTO  } from '../dto'; 
 import { sendEmail, verifyEmailTemplate } from '../util';
 
 export class PractitionerService {
@@ -145,12 +145,14 @@ export class PractitionerService {
     async getAll(skip: number, take: number) {
         try {
             const response = await this.practitionerRepository.getallPractitioners(skip, take);
+            const total = await this.practitionerRepository.count();
             response.forEach(obj => {
                 //@ts-ignore
                 delete obj.password;
               });
-            return <signinPractitionerResponseDTO>{
+            return <getAllPractitionerResponseDTO>{
                 status: "success",
+                total: total,
                 content: response
             };
         } catch (error: any) {
@@ -174,12 +176,15 @@ export class PractitionerService {
     async pending(limit: number) {
         try {
             const response = await this.practitionerRepository.pending(limit);
+            const total = await this.practitionerRepository.countPending();
+            
             response.forEach(obj => {
                 //@ts-ignore
                 delete obj.password;
               });
-            return <signinPractitionerResponseDTO>{
+            return <getAllPractitionerResponseDTO>{
                 status: "success",
+                total: total,
                 content: response
             };
         } catch (error: any) {
