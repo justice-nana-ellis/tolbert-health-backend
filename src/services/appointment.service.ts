@@ -26,12 +26,17 @@ export class AppointmentService {
                   status: 'error',
                   content: { message: 'Title already Taken' }
                 };
-              } else if(error.code === 'P2003' && error.meta?.field_name?.includes('appointment_patientId_fkey')) {
+              } else if (error.code === 'P2025' && error.meta?.modelName?.includes('appointment') && error.meta?.cause?.includes('appointmentToservice')) {
+                return <appointmentResponseDTO>{ 
+                  status: 'error',
+                  content: { message: 'Service not found' }
+                };
+              } else if (error.code === 'P2025' && error.meta?.modelName?.includes('appointment') && error.meta?.cause?.includes('appointmentTopatient')) {
                 return <appointmentResponseDTO>{ 
                   status: 'error',
                   content: { message: 'Patient not found' }
                 };
-              } else if(error.code === 'P2003' && error.meta?.field_name?.includes('appointment_practitionerId_fkey')) {
+              } else if (error.code === 'P2025' && error.meta?.modelName?.includes('appointment') && error.meta?.cause?.includes('appointmentTopractitioner')) {
                 return <appointmentResponseDTO>{ 
                   status: 'error',
                   content: { message: 'Practitioner not found' }
