@@ -14,7 +14,7 @@ export class PaymentRepository {
     }
 
     async initialise(email: string, newAmount: string){
-        const amount = newAmount.trimEnd().toString();
+        const amount = Math.round(Number(newAmount.trimEnd())).toString();
         return await this.paystack.transaction.initialize({
             email,
             amount
