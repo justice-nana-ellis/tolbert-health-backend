@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 import randomstring from 'randomstring';
 import { PatientRepository, GenericRepository } from "../repositories";
 import { signupPatientDTO, signinPatientDTO, signinPatientResponseDTO,
-         logoutPatientResponseDTO, signupPatientResponseDTO, otpDTO  } from '../dto'; 
+         logoutPatientResponseDTO, signupPatientResponseDTO, otpDTO, getAllPatientResponseDTO  } from '../dto'; 
 import { sendEmail, verifyEmailTemplate } from '../util';
 
 export class PatientService {
@@ -132,12 +132,14 @@ export class PatientService {
     async getAll(skip: number, take: number) {
         try {
             const response = await this.patientRepository.getallPatients(skip, take); 
+            const total = await this.patientRepository.count();
             response.forEach(obj => {
                 //@ts-ignore
                 delete obj.password;
               });
-            return <signinPatientResponseDTO>{
+            return <getAllPatientResponseDTO>{
                 status: "success",
+                total: total,
                 content: response
             };
         } catch (error: any) {
