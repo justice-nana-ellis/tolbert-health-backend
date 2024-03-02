@@ -164,6 +164,7 @@ enum statuses {
   approved
   rejected
   pending
+  completed
 }
 
 enum indentity_card {
