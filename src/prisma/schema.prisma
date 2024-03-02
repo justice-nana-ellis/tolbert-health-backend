@@ -25,6 +25,7 @@ model patient {
   email        String        @unique
   full_name    String
   password     String
+  payment      payment[]
   verified     Boolean       @default(false)
   access_level access?       @default(patient)
   createdAt    DateTime?     @default(now()) @map("created_at")
@@ -98,6 +99,16 @@ model service {
   price     Float
   createdAt DateTime? @default(now()) @map("created_at")
   updatedAt DateTime? @default(now()) @updatedAt @map("updated_at")
+}
+
+model payment {
+  id                String @id @unique @default(uuid())
+  amount            String 
+  patient           patient      @relation(fields: [patientId], references: [id])
+  patientId         String
+  referenceId       String
+  createdAt         DateTime? @default(now()) @map("created_at")
+  updatedAt         DateTime? @default(now()) @updatedAt @map("updated_at")
 }
 
 enum access {
