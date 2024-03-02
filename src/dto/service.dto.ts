@@ -29,7 +29,7 @@ export class serviceValidationDto {
     @MinLength(3, { message: 'name must be at least 3 characters long' })
     name: string;
 
-    @IsNotEmpty({ message: 'name is a required field' })
+    @IsNotEmpty({ message: 'price is a required field' })
     @IsNumber({}, { message: 'price must be a number' })
     price: Number;
 }
