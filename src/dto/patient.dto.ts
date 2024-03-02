@@ -37,6 +37,15 @@ export interface logoutPatientResponseDTO {
     token?: string;
 }
 
+export interface getAllPatientResponseDTO {
+    status: string;
+    total?: number;
+    content?: any;
+    timestamp?: string;
+    verified?: boolean;
+    token?: string;
+}
+
 export class signupPatientValidationDto {
     constructor() {
         this.id = '';

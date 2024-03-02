@@ -56,6 +56,15 @@ export interface logoutPractitionerResponseDTO {
     token?: string;
 }
 
+export interface getAllPractitionerResponseDTO {
+    status: string;
+    total?: number;
+    content?: any;
+    timestamp?: string;
+    verified?: boolean;
+    token?: string;
+}
+
 enum indentity_card {
     GHANA_CARD = "GHANA_CARD",
     VOTER_ID = "VOTER_ID",
