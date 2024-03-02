@@ -1,19 +1,20 @@
 import nodemailer from "nodemailer";
-export const sendEmail = (template: string, to: string, subject: string) => {
+export const sendEmail = async(template: string, to: string, subject: string) => {
     const transporter = nodemailer.createTransport({
+        //@ts-ignore
         host: 'smtp.gmail.com',
-        port: 465,
+        port: '465',
         service: "gmail",
         auth: {
-            user: process.env.USER_EMAIL,
-            pass: process.env.USER_PASSWORD
+            user: "ellisjustice60.c9cemetery@gmail.com",
+            pass: "doam uovx uagj ymty"
         },
         tls: {
             rejectUnauthorized: false,
         },
     });
     const mailOptions = {
-        from: `Takomall <${process.env.USER_EMAIL}>`,
+        from: `Tolbert <${process.env.USER_EMAIL}>`,
         to,
         subject,
         html: template,

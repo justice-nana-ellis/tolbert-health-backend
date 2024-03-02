@@ -1,26 +1,26 @@
 import { PrismaClient } from "@prisma/client";
-import { hospitalDTO } from "../dto";
+import { otpDTO } from "../dto";
 
-export class HospitalRepository {
+export class GenericRepository {
     private prisma: PrismaClient;
 
     constructor() {
         this.prisma = new PrismaClient();
     }
 
-    async create(hospitalData: hospitalDTO){
-        return this.prisma.hospital.create({
+    async sendOTP(otpData: otpDTO) {
+        return this.prisma.otp.create({
             //@ts-ignore
-            data: hospitalData
+            data: otpData
         }); 
     }
 
-    async update(hospitalData: hospitalDTO, id: string) {
-        return this.prisma.hospital.update({
+    async update(otp: string, id: string) {
+        return this.prisma.otp.update({
             where: {
-                id: id
+                user_id: id
             }, data: {
-                name: hospitalData.name
+                otp_code: otp
             }
         }); 
     }

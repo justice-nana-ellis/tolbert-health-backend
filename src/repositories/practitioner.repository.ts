@@ -11,11 +11,22 @@ export class PractitionerRepository {
 
     async signup(practitionerData: signupPractitionerDTO) {
         return this.prisma.practitioner.create({
-        //@ts-ignore
-            data: practitionerData 
+            //@ts-ignore
+            data: practitionerData
         }); 
     }
 
+    async association(practitionerData: signupPractitionerDTO) {
+        return this.prisma.practitionerhospitalspecialisation.create({
+            //@ts-ignore
+            data: {
+                practitionerId: practitionerData.id,
+                hospitalId: practitionerData.hospitalId, 
+                specialisationId: practitionerData.specialisationId,
+            }
+        }); 
+    }
+    
     async signin(patientData: signinPractitionerDTO) {
         try {
             
@@ -37,6 +48,31 @@ export class PractitionerRepository {
             }
         }); 
     }
+
+    async getbyId(id: string) {
+        return this.prisma.practitioner.findUnique({
+            where: {
+                id: id
+            },
+            include: {
+                specialisation: {
+                    select: {
+                        id: true,
+                        name: true
+                    }
+                },
+                hospital: {
+                    select: {
+                        id: true,
+                        name: true,
+                        city: true,
+                        street: true,
+                        country: true
+                    }
+                },
+        },
+        }); 
+    }
     
     async getallPractitioners(skipped: number, taken: number): Promise<any[]> {
         const skip = Number(skipped)
@@ -53,86 +89,121 @@ export class PractitionerRepository {
                 pob: true,
                 img_url: true,
                 digital_address: true,
+                country: true,
                 contact: true,
                 status: true,
                 id_number: true,
+                active: true,
                 licence_number: true,
-                hospitals: true,
-                specialisations: true,
+                hospital: true,
+                specialisation: true,
                 password: false,
+                createdAt: true,
+                updatedAt: true,
             }
         });
     }
 
-    async getRandomPractitioners(count: number): Promise<any[]> {
+    async searchPractitioner(queryString: string, limit: Number) {
         return this.prisma.practitioner.findMany({
-            take: count, 
-            select: {
-                id: true,
-                full_name: true,
-                img_url: true
-            
-            },
-            orderBy: {
-                //@ts-ignore
-                _random: true 
-            }
-        });
-    }
-
-    async findPractitionersByName(name: string): Promise<any[]> {
-        return this.prisma.practitioner.findMany({
-            where: {
+          where: {
+            OR: [
+              {
                 full_name: {
-                    contains: name
+                    contains: queryString.toLowerCase(),
+                    mode: 'insensitive',
+                },
+              },
+              {
+                qualification: {
+                    contains: queryString.toLowerCase(),
+                    mode: 'insensitive',
+                },
+              },
+              {
+                email: {
+                    contains: queryString.toLowerCase(),
+                    mode: 'insensitive',
+                },
+              },
+              {
+                city: {
+                    contains: queryString.toLowerCase(),
+                    mode: 'insensitive',
+                },
+              },
+              {
+                country: {
+                    contains: queryString.toLowerCase(),
+                    mode: 'insensitive',
+                },
+              },
+              // Include a nested OR clause for practitionerhospitalspecialisation fields
+              {
+                practitionerhospitalspecialisation: {
+                  some: {
+                    OR: [
+                      {
+                        specialisation: {
+                          // No need for case-insensitive comparison here
+                          name: {
+                            contains: queryString.toLowerCase(),
+                            mode: 'insensitive',
+                          },
+                        },
+                      },
+                    ],
+                  }
+                },
+              },
+            ],
+          },
+          select: {
+            id: true,
+            full_name: true,
+            email: true,
+            city: true,
+            country: true,
+            img_url: true,
+            qualification: true,
+            active: false,
+            specialisation: {
+                select: {
+                    name:  true
                 }
             },
-            select: {
-                id: true,
-                full_name: true,
-                img_url: true
-            }
+            hospital: false,
+          },
+          take: Number(limit),
         });
     }
 
-    // async docInfo(practitioner: array) {
-    //     return this.prisma.practitioner.findUnique({
-    //         //@ts-ignore
-    //         where: {
-    //             //@ts-ignore
-    //             full_name: practitioner[0]
-    //         },
-    //         select: {
-    //             id: true,
-    //             full_name: true,
-    //             img_url: true
-    //         }
-    //     });
-    // }
-
-    async hospitalExists(hospitals: string[]) {
-        return this.prisma.hospital.findMany({
+    async hospitalExists(id: string) {
+        return this.prisma.hospital.findUnique({
             where: {
-              id: {
-                in: hospitals,
-              },
-            },
-            select: {
-              id: true,
-            },
+              id: id
+            }
           });
     }
 
-    async specialisationExists(specialisations: string[]) {
-        return this.prisma.specialisation.findMany({
+    async specialisationExists(id: string) {
+        return this.prisma.specialisation.findUnique({
             where: {
-              id: {
-                in: specialisations,
-              },
-            },
-            select: {
-              id: true,
-            },
+                id: id
+              }
           });
+    }
+
+    async pending(limit: Number) {
+        return this.prisma.practitioner.findMany({
+            where: {
+                status: "pending"
+            },
+            take: Number(limit)
+        });
+    }
+
+    async count() {
+        return this.prisma.practitioner.count();
     }
 }

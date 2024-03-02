@@ -76,7 +76,6 @@ export class SpecialisationService {
          }
           
       } catch (error: any) {
-          console.log(error);
           if (error.code === 'P2002' && error.meta?.modelName?.includes('specialisation')) {
               return <specialisationResponseDTO>{ 
                 status: 'error',

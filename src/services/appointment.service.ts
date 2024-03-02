@@ -11,15 +11,7 @@ export class AppointmentService {
 
     async create(appointmentData: appointmentDTO) {
         try {
-            //@ts-ignore
-            // const findDoc = await this.appointmentRepository.findDoc(appointmentData.practitionerId);  
-            // console.log(findDoc)
-            // if(findDoc === null) {
-            //     return <appointmentResponseDTO>{ 
-            //         status: 'error',
-            //         content: { message: 'Practitioner not Found' }
-            //       };
-            // }
+            
             const response = await this.appointmentRepository.create(appointmentData);  
             return <appointmentResponseDTO>{ 
                 status: 'successs',

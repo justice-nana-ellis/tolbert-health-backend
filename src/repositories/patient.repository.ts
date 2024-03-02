@@ -31,6 +31,14 @@ export class PatientRepository {
         }); 
     }
 
+    async getbyId(id: string) {
+        return this.prisma.patient.findUnique({
+            where: {
+                id: id
+            }
+        }); 
+    }
+
     async getallPatients(skipped: number, taken: number): Promise<any[]> {
         const skip = Number(skipped)
         const take = Number(taken)
@@ -42,8 +50,43 @@ export class PatientRepository {
                 //@ts-ignore
                 id: true,
                 full_name: true,
-                email: true
+                email: true,
+                active: true,
+                country: true,
+                createdAt: true,
+                updatedAt: true,
             }
         });
+    }
+
+    async searchPatient(queryString: string, limit: Number){
+        return this.prisma.patient.findMany({
+            where: {
+                OR: [
+                    {
+                        full_name: {
+                            contains: queryString.toLowerCase(),
+                            mode: 'insensitive',
+                        }
+                    }
+                ]
+            },
+            select: {
+                id: true,
+                full_name: true,
+                img_url: true,
+                country: true,
+                city: true,
+                zip: true,
+                access_level: true,
+                active: true,
+                verified: true
+            },
+            take: Number(limit)
+        });
+    }
+
+    async count() {
+        return this.prisma.patient.count();
     }
 }
