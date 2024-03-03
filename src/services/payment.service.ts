@@ -29,17 +29,24 @@ export class PaymentService {
     async verify (referenceId: string) {
         try {
             const verified:any = await this.paymentRepository.verify(referenceId);            
-            console.log(verified._body.data.status);
+            //console.log(verified._body.data.status);
             if (verified?._body?.data?.status === 'success') {
                 return <initialisePaymentResponseDTO>{ 
                     status: 'success',
                     content: verified
                 };                   
-            } else if (verified?._body?.data?.status === 'failed') {
+            } else if (verified?._body?.data?.status === 'failed' ) {
                 return <initialisePaymentResponseDTO>{ 
                     status: 'error',
                     content: {
                         "message": "Transaction verification failed"
+                    }
+                }; 
+            } else if (verified?._body?.data?.status === 'abandoned') {
+                return <initialisePaymentResponseDTO>{ 
+                    status: 'error',
+                    content: {
+                        "message": "Transaction abandoned - please proceed with payment"
                     }
                 }; 
             }
@@ -88,7 +95,14 @@ export class PaymentService {
                         "message": "Payment failed"
                     }
                 }; 
-            } 
+            } else if (verified?._body?.data?.status === 'abandoned') {
+                return <initialisePaymentResponseDTO>{ 
+                    status: 'error',
+                    content: {
+                        "message": "Transaction abandoned - please proceed with payment"
+                    }
+                }; 
+            }
         } catch (error: any) {
             //console.log(error);
             
