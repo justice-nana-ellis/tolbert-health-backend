@@ -28,6 +28,14 @@ export class PaymentService {
 
     async verify (referenceId: string) {
         try {
+            console.log(referenceId);
+            if(referenceId === '' || referenceId === undefined) return <initialisePaymentResponseDTO>{ 
+                status: 'error',
+                content: {
+                    "message": "Reference is required"
+                }
+            };
+            
             const verified:any = await this.paymentRepository.verify(referenceId);            
             //console.log(verified._body.data.status);
             if (verified?._body?.data?.status === 'success') {

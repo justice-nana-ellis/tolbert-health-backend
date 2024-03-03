@@ -1,6 +1,6 @@
 
 import express, { Request, Response } from 'express';
-import { initialisePaymentDTO, initialisePaymentValidationDto  } from '../dto';
+import { completePaymentValidationDto, initialisePaymentDTO, initialisePaymentValidationDto  } from '../dto';
 import { plainToClass } from 'class-transformer';
 import { PaymentService } from '../services';
 import { getErrorMessages } from '../util'; 
@@ -45,11 +45,12 @@ export class PaymentController {
 
     private async complete(req: Request, res: Response) {
         const paymentData = req.body;
-        //console.log(paymentData);
-        
-        //@ts-ignore
-        //const resp = await this.paymentService.verify(paymentData.referenceId);
-        //console.log(resp);
+        const errorMessages = await getErrorMessages(plainToClass(completePaymentValidationDto, req.body));
+        if (errorMessages.length > 0) return res.status(200).json({
+            status: 'error',
+            content: { message: errorMessages }, 
+            timestamp: timestamp,
+        });
 
         const response = await this.paymentService.complete(paymentData);
         

@@ -27,11 +27,10 @@ export interface completePaymentResponseDTO {
 
 export class completePaymentValidationDto {
     constructor() {
-        this.amount = 0;
+        this.amount = '';
         this.patientId = '';
         this.referenceId = '';
-        this.paymentDate = '';
-        this.PaidService = '';
+        this.serviceId = '';
     }
 
     @IsNotEmpty({ message: 'patientId is a required field' })
@@ -42,17 +41,13 @@ export class completePaymentValidationDto {
     @IsString({ message: 'referenceId must be a string' })
     referenceId: string;
 
-    @IsNotEmpty({ message: 'payment Date is a required field' })
-    @IsString({ message: 'payment Date must be a string' })
-    paymentDate: string;
-
     @IsNotEmpty({ message: 'paid service is a required field' })
     @IsString({ message: 'paid service must be a string' })
-    PaidService: string;
+    serviceId: string;
 
     @IsNotEmpty({ message: 'price is a required field' })
-    @IsNumber({}, { message: 'price must be a number' })
-    amount: Number;
+    @IsString({ message: 'paid service must be a string' })
+    amount: string;
 
 }
 
@@ -70,5 +65,4 @@ export class initialisePaymentValidationDto {
     @IsNotEmpty({ message: 'amount is a required field' })
     @IsString({ message: 'amount must be a number' })
     amount: string;
-
 }
