@@ -132,6 +132,7 @@ model service {
   createdAt DateTime? @default(now()) @map("created_at")
   updatedAt DateTime? @updatedAt @map("updated_at")
   appointment appointment[]
+  payment  payment[]
 }
 
 model otp {
@@ -149,6 +150,8 @@ model payment {
   patient           patient      @relation(fields: [patientId], references: [id])
   patientId         String
   referenceId       String
+  service           service      @relation(fields: [serviceId], references: [id])
+  serviceId         String
   createdAt         DateTime? @default(now()) @map("created_at")
   updatedAt         DateTime? @updatedAt @map("updated_at")
 }
@@ -165,6 +168,7 @@ enum statuses {
   rejected
   pending
   completed
+  postponed
 }
 
 enum indentity_card {

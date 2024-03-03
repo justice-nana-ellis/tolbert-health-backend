@@ -1,12 +1,12 @@
 
 import { PaymentRepository } from "../repositories";
-import { initialisePaymentDTO, initialisePaymentResponseDTO  } from '../dto'; 
+import { completePaymentDTO, completePaymentResponseDTO, initialisePaymentDTO, initialisePaymentResponseDTO  } from '../dto'; 
 
 export class PaymentService {
     private paymentRepository: PaymentRepository;
 
-    constructor() {
-        this.paymentRepository = new PaymentRepository();
+    constructor () {
+        this.paymentRepository = new PaymentRepository ();
     }
 
     async initialise (email: string, amount: string) {
@@ -22,38 +22,83 @@ export class PaymentService {
                     status: 'error',
                     content: { message: 'Internal server error' } 
                 };
-              } 
-        
+            } 
+        }
     }
 
-    // async update(hospitalData: hospitalDTO, id: string) {
-    //     try {
+    async verify (referenceId: string) {
+        try {
+            const verified:any = await this.paymentRepository.verify(referenceId);            
+            console.log(verified._body.data.status);
+            if (verified?._body?.data?.status === 'success') {
+                return <initialisePaymentResponseDTO>{ 
+                    status: 'success',
+                    content: verified
+                };                   
+            } else if (verified?._body?.data?.status === 'failed') {
+                return <initialisePaymentResponseDTO>{ 
+                    status: 'error',
+                    content: {
+                        "message": "Transaction verification failed"
+                    }
+                }; 
+            }
+        } catch (error: any) {      
+            if (error) {
+                return <initialisePaymentResponseDTO>{ 
+                    status: 'error',
+                    content: { message: 'Transaction verification failed' } 
+                };
+            } 
+        }
+    }
+
+    async complete (paymentData: completePaymentDTO) {
+        try {
+            //console.log(paymentData);
             
-    //         const response = await this.hospitalRepository.update(hospitalData, id);  
-    //         return <hospitalResponseDTO>{ 
-    //             status: 'success',
-    //             content: response
-    //         };
+            const verified : any = await this.paymentRepository.verify (paymentData.referenceId); 
+            //@ts-ignore
+            //console.log(verified._body.data.status);
+            //@ts-ignore
+            if (verified?._body?.data?.status === 'success') {
+                const patientExists = await this.paymentRepository.patientExists(paymentData.patientId);
+                if (patientExists === null)  return <completePaymentResponseDTO> {  
+                    status: 'success',
+                    content: { message: 'Patient not found' } 
+                };
+
+                //@ts-ignore
+                const serviceExists = await this.paymentRepository.serviceExists(paymentData.serviceId);
+                if (serviceExists === null)  return <completePaymentResponseDTO> {  
+                    status: 'success',
+                    content: { message: 'Service not found' } 
+                };
+                //console.log(patientExists, serviceExists);
+                await this.paymentRepository.create (paymentData)
+                //console.log('PAID', lof);
+                return <completePaymentResponseDTO> {  
+                    status: 'success',
+                    content: { message: 'Payment completed successfully' } 
+                };
+            } else if (verified?._body?.data?.status === 'failed') {
+                return <initialisePaymentResponseDTO>{ 
+                    status: 'error',
+                    content: {
+                        "message": "Payment failed"
+                    }
+                }; 
+            } 
+        } catch (error: any) {
+            //console.log(error);
             
-    //     } catch (error: any) {
-    //         if (error.code === 'P2002' && error.meta?.modelName?.includes('hospital')) {
-    //             return <hospitalResponseDTO>{ 
-    //               status: 'error',
-    //               content: { message: 'Name already Taken' }
-    //             };
-    //           } else if(error.code === 'P2025' && error.meta?.modelName?.includes('hospital')){
-    //             return <hospitalResponseDTO>{ 
-    //               status: 'error',
-    //               content: { message: 'Record not found' }
-    //             };
-    //           } else {
-    //             return <hospitalResponseDTO>{ 
-    //               status: 'error',
-    //               content: { message: 'Internal server error' } 
-    //             };
-    //           }
-    //     }
-        
+            if (error) {
+                return <completePaymentResponseDTO>{ 
+                  status: 'error',
+                  content: { message: 'Transaction failed' } 
+                };
+            }
+        }
     }
 
 }

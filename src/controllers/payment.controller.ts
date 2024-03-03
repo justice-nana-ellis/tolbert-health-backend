@@ -18,6 +18,8 @@ export class PaymentController {
     }
 
     private initializeRoutes() {
+        this.router.get(`${this.BASE_PATH}/payment/verify`, this.verify.bind(this));
+        this.router.post(`${this.BASE_PATH}/payment/complete`, this.complete.bind(this));
         this.router.post(`${this.BASE_PATH}/payment/initialize`, this.initialise.bind(this));
     }
 
@@ -35,19 +37,24 @@ export class PaymentController {
         res.json(response); 
     }
 
-    // private async update(req: Request, res: Response) {
-    //     const postData: initialisePaymentDTO = req.body;
-       
-    //     const errorMessages = await getErrorMessages(plainToClass(initialisePaymentValidationDto, req.body));
-    //     if (errorMessages.length > 0) return res.status(200).json({
-    //         status: 'error',
-    //         content: { message: errorMessages }, 
-    //         timestamp: timestamp,
-    //     });
+    private async verify(req: Request, res: Response) {
+        //@ts-ignore
+        const response = await this.paymentService.verify(req.query.reference);
+        res.json(response);
+    }
 
-    //     const response = await this.paymentService.initialise(postData.email, postData.amount);
-    //     res.json(response);
-    //}
+    private async complete(req: Request, res: Response) {
+        const paymentData = req.body;
+        //console.log(paymentData);
+        
+        //@ts-ignore
+        //const resp = await this.paymentService.verify(paymentData.referenceId);
+        //console.log(resp);
 
+        const response = await this.paymentService.complete(paymentData);
+        
 
+        //@ts-ignore
+        res.json(response);
+    }
 }

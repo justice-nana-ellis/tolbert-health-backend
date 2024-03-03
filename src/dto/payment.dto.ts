@@ -6,14 +6,20 @@ export interface initialisePaymentDTO {
 }
 
 export interface completePaymentDTO {
-    amount: Number;
-    patientId: String;
-    referenceId: String;
-    paymentDate: String;
-    PaidService: String;
+    amount: string;
+    patientId: string;
+    referenceId: string;
+    paymentDate: string;
+    service: string;
 }
 
 export interface initialisePaymentResponseDTO {
+    status: string;
+    content?: any;
+    timestamp?: string;
+}
+
+export interface completePaymentResponseDTO {
     status: string;
     content?: any;
     timestamp?: string;

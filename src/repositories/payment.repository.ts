@@ -21,38 +21,33 @@ export class PaymentRepository {
         });
     }
 
-    async complete(paymentData: completePaymentDTO) {
-        //const { amount, patientId, } = paymentData
-
-        superagent
-
-        // return this.prisma.service.update({
-        //     where: {
-        //         id: id
-        //     }, data: {
-        //         name: serviceData.name
-        //     }
-        // }); 
+    async verify(referenceId: string) {  
+        const url = `https://api.paystack.co/transaction/verify/${referenceId}`
+        return await superagent
+                        .get(url)
+                        .set('Authorization', `Bearer ${this.SECRET_KEY}`)  
+                        .set('Content-Type', 'application/json')
+                        .set('Cache-Control', 'no-cache');
     }
 
-    // async delete(id: string) {
-    //     return this.prisma.service.delete({
-    //         where: {
-    //             id: id
-    //         }
-    //     }); 
-    // }
+    async create(paymentData: completePaymentDTO) {
+        //@ts-ignore
+        return this.prisma.payment.create({ data: paymentData });
+    }
 
-    // async get() {
-    //     return this.prisma.service.findMany(); 
-    // }
+    async patientExists(id: string) {
+        return this.prisma.patient.findUnique({
+            where: {
+              id: id
+            }
+          });
+    }
 
-    // async getbyId(id: string) {
-    //     return this.prisma.service.findUnique({
-    //         where: {
-    //             id: id
-    //         }
-    //     }); 
-    // }
-
+    async serviceExists(id: string) {
+        return this.prisma.service.findUnique({
+            where: {
+              id: id
+            }
+          });
+    }
 }
