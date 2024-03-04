@@ -136,15 +136,18 @@ export class PatientRepository {
     }
 
     async countAppointment (id: string, status: string[]) {
+        
         return this.prisma.appointment.count({
             where: {
-                patientId: id,
+              patientId: id,
+              deleted: false,
+              //@ts-ignore
+              AND: {
                 status: {
-                    //@ts-ignore
-                    in: status,
+                  in: status,
                 },
-                deleted: false
-            }
-        });
+              },
+            },
+          });
     }
 }
