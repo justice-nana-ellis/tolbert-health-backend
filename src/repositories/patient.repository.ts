@@ -117,4 +117,17 @@ export class PatientRepository {
             }
         });
     }
+
+    async getAppointment (id: string, status: string, limit: number) {
+        return this.prisma.appointment.findMany({
+            where: {
+                patientId: id,
+                //@ts-ignore
+                status: `${status}`,
+                deleted: false
+            },
+            limit: limit
+        });
+    }
+
 }

@@ -2,7 +2,7 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import randomstring from 'randomstring';
-import { PatientRepository, GenericRepository } from "../repositories";
+import { PatientRepository, GenericRepository, AppointmentRepository } from "../repositories";
 import { signupPatientDTO, signinPatientDTO, signinPatientResponseDTO,
          logoutPatientResponseDTO, signupPatientResponseDTO, otpDTO, getAllPatientResponseDTO  } from '../dto'; 
 import { sendEmail, verifyEmailTemplate } from '../util';
@@ -215,6 +215,20 @@ export class PatientService {
                         "message": "Patient deleted successfully"
                     }
                 };
+            };
+        } catch (error: any) {
+            
+        }
+    }
+
+    async getAppointment(id: string, status: string, limit: number) {
+        try {
+            const response = await this.patientRepository.getAppointment(id, status, limit);
+            //@ts-ignore
+            //delete response?.password;
+            return <signinPatientResponseDTO>{
+                status: "success",
+                content: response
             };
         } catch (error: any) {
             

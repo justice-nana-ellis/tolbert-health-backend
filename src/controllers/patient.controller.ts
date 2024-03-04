@@ -19,6 +19,7 @@ export class PatientController {
     }
 
     private initializeRoutes() {
+        this.router.get(`${this.BASE_PATH}/patient/appointment`, this.appointment.bind(this));
         this.router.get(`${this.BASE_PATH}/patient/search`, this.search.bind(this));
         this.router.get(`${this.BASE_PATH}/patient/count`, this.count.bind(this));
         this.router.get(`${this.BASE_PATH}/patient`, this.getAll.bind(this));
@@ -102,17 +103,23 @@ export class PatientController {
 
     private async count(req: Request, res: Response) {
       const response = await this.patientService.count();
-      res.json(response);
+      res.status(200).json(response);
     }
 
     private async getbyId(req: Request, res: Response) {
       const response = await this.patientService.getbyId(req.params.id);
-      res.json(response);
+      res.status(200).json(response);
     }
 
     private async delete(req: Request, res: Response) {
       const response = await this.patientService.delete(req.params.id);
-      res.json(response);
+      res.status(200).json(response);
+    }
+
+    private async appointment(req: Request, res: Response) {
+      //@ts-ignore
+      const response = await this.patientService.getAppointment(req.query.id, req.query.status, req.query.limit);
+      res.status(200).json(response);
     }
 
 }

@@ -58,6 +58,8 @@ model practitioner {
   id_number        String
   qualification    String
   licence_number   String
+  certificates     String[]       @default([])
+  rating           Int?
   specialisation   specialisation? @relation(fields: [specialisationId], references: [id])
   specialisationId String?
   hospital         hospital?       @relation(fields: [hospitalId], references: [id])
@@ -159,7 +161,7 @@ model payment {
   referenceId       String
   service           service   @relation(fields: [serviceId], references: [id])
   serviceId         String
-  deleted      Boolean?   @default(false)
+  deleted           Boolean?   @default(false)
   createdAt         DateTime? @default(now()) @map("created_at")
   updatedAt         DateTime? @updatedAt @map("updated_at")
 }
