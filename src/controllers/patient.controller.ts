@@ -118,7 +118,7 @@ export class PatientController {
 
     private async appointment(req: Request, res: Response) {
       //@ts-ignore
-      const response = await this.patientService.getAppointment(req.body.id, req.body.status, req.query.skip, req.query.take);
+      const response = await this.patientService.getAppointment(req.body.patientId, req.body.status, req.query.skip, req.query.take);
       res.status(200).json(response);
     }
 

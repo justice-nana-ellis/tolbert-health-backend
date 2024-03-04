@@ -36,7 +36,7 @@ export class AppointmentController {
         });
 
         const response = await this.appointmentService.create(postData);
-        res.json(response); 
+        res.status(200).json(response); 
     }
 
     private async update(req: Request, res: Response) {
@@ -50,22 +50,22 @@ export class AppointmentController {
         });
 
         const response = await this.appointmentService.update(postData, req.params.id);
-        res.json(response);
+        res.status(200).json(response);
     }
 
     private async delete(req: Request, res: Response) {
         const response = await this.appointmentService.delete(req.params.id);
-        res.json(response);
+        res.status(200).json(response);
     }
 
     private async get(req: Request, res: Response) {
         const response = await this.appointmentService.get();
-        res.json(response);
+        res.status(200).json(response);
     }
 
     private async getbyId(req: Request, res: Response) {
         const response = await this.appointmentService.getbyId(req.params.id);
-        res.json(response);
+        res.status(200).json(response);
     }
 
 }

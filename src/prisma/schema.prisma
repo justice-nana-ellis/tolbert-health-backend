@@ -114,7 +114,6 @@ model appointment {
   id                String       @id @unique @default(uuid())
   title             String       @unique
   date              DateTime
-  time              DateTime
   practitioner      practitioner? @relation(fields: [practitionerId], references: [id])
   practitionerId    String?
   patient           patient?      @relation(fields: [patientId], references: [id])

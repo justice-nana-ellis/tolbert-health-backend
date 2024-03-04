@@ -28,7 +28,6 @@ export class appointmentValidationDto {
         this.id     =            '';
         this.title  =            '';
         this.date   =            '';
-        this.time   =            '';
         this.practitioner =      '';
         this.patient = '';
         this.service      =      '';
@@ -50,10 +49,6 @@ export class appointmentValidationDto {
     @IsNotEmpty({ message: 'Date is a required field' })
     @IsString({ message: 'Date must be a string' })
     date: string;
-
-    @IsNotEmpty({ message: 'Time is a required field' })
-    @IsString({ message: 'Time must be a string' })
-    time: string;
 
     @IsNotEmpty({ message: 'Practitioner is a required field' })
     //@IsString({ message: 'Practitioner must be a string' })
