@@ -232,4 +232,35 @@ export class PractitionerService {
             
         }
     }
+
+    async delete(id: string) {
+        try {
+            const patientExist = await this.practitionerRepository.getbyId (id);
+            if (patientExist === null) {
+                return <signinPractitionerResponseDTO> {
+                    status: "error",
+                    content: {
+                        "message": "Practitioner not found"
+                    }
+                } 
+            } else {
+                await this.practitionerRepository.delete (id) ;
+                return <signinPractitionerResponseDTO> {
+                    status: "success",
+                    content: {
+                        "message": "Practitioner deleted successfully"
+                    }
+                };
+            };
+        } catch (error: any) {
+            if (error) {
+                return <logoutPractitionerResponseDTO> {
+                    status: "error",
+                    content: {
+                        "message": "Internal server error"
+                    }
+                }
+            }
+        }
+    }
 }

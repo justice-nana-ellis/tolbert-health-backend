@@ -62,8 +62,6 @@ export class PatientService {
     async signin(patientData: signinPatientDTO) {
         try {
             const response: any = await this.patientRepository.signin(patientData); 
-            console.log(response);
-            
             if(response === null) { 
                 return <signinPatientResponseDTO>{
                     status: "error",
@@ -193,6 +191,30 @@ export class PatientService {
             return <signinPatientResponseDTO>{
                 status: "success",
                 content: response
+            };
+        } catch (error: any) {
+            
+        }
+    }
+
+    async delete(id: string) {
+        try {
+            const patientExist = await this.patientRepository.getbyId(id);
+            if (patientExist === null) {
+                return <signinPatientResponseDTO> {
+                    status: "error",
+                    content: {
+                        "message": "Patient not found"
+                    }
+                } 
+            } else {
+                await this.patientRepository.delete(id) ;
+                return <signinPatientResponseDTO> {
+                    status: "success",
+                    content: {
+                        "message": "Patient deleted successfully"
+                    }
+                };
             };
         } catch (error: any) {
             

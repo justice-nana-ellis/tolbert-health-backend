@@ -26,6 +26,7 @@ export class PatientController {
         this.router.post(`${this.BASE_PATH}/patient/signup`, this.signup.bind(this));
         this.router.post(`${this.BASE_PATH}/patient/signin`, this.signin.bind(this));
         this.router.post(`${this.BASE_PATH}/patient/logout/:id`, this.logout.bind(this));
+        this.router.delete(`${this.BASE_PATH}/patient/delete/:id`, this.delete.bind(this));
     }
 
     private async signup(req: Request, res: Response) {
@@ -106,6 +107,11 @@ export class PatientController {
 
     private async getbyId(req: Request, res: Response) {
       const response = await this.patientService.getbyId(req.params.id);
+      res.json(response);
+    }
+
+    private async delete(req: Request, res: Response) {
+      const response = await this.patientService.delete(req.params.id);
       res.json(response);
     }
 

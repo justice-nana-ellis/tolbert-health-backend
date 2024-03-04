@@ -26,7 +26,7 @@ export class PractitionerController {
         this.router.post(`${this.BASE_PATH}/practitioner/signup`, this.signup.bind(this));
         this.router.post(`${this.BASE_PATH}/practitioner/signin`, this.signin.bind(this));
         this.router.post(`${this.BASE_PATH}/practitioner/logout/:id`, this.logout.bind(this));
-        
+        this.router.delete(`${this.BASE_PATH}/practitioner/delete/:id`, this.delete.bind(this));
     }
   
     private async signup(req: Request, res: Response) {
@@ -117,6 +117,11 @@ export class PractitionerController {
 
     private async getbyid(req: Request, res: Response) {
       const response = await this.practitionerService.getbyId(req.params.id);
+      res.json(response);
+    }
+
+    private async delete(req: Request, res: Response) {
+      const response = await this.practitionerService.delete(req.params.id);
       res.json(response);
     }
 
