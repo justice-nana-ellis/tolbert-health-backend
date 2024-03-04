@@ -87,6 +87,13 @@ export class PractitionerService {
                         "message": "invalid credentials"
                     }
                 };
+            } else if (response.deleted === true) {
+                return <signinPractitionerResponseDTO>{
+                    status: "error",
+                    content: {
+                        "message": "Account deactivated - contact support"
+                    }
+                };
             }
            
             const match = await bcrypt.compare(patientData.password, response.password)

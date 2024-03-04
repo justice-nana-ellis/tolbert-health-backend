@@ -52,7 +52,8 @@ export class PractitionerRepository {
     async getbyId(id: string) {
         return this.prisma.practitioner.findUnique({
             where: {
-                id: id
+                id: id,
+                deleted: false
             },
             include: {
                 specialisation: {
@@ -78,9 +79,12 @@ export class PractitionerRepository {
         const skip = Number(skipped)
         const take = Number(taken)
         return this.prisma.practitioner.findMany({
+            where: {
+                deleted: false
+            },
             skip,
             //@ts-ignore
-             take,
+            take,
             select: {
                 //@ts-ignore
                 id: true,
@@ -107,6 +111,7 @@ export class PractitionerRepository {
     async searchPractitioner(queryString: string, limit: Number) {
         return this.prisma.practitioner.findMany({
           where: {
+            deleted: false,
             OR: [
               {
                 full_name: {
@@ -181,7 +186,8 @@ export class PractitionerRepository {
     async hospitalExists(id: string) {
         return this.prisma.hospital.findUnique({
             where: {
-              id: id
+              id: id,
+              deleted: false
             }
           });
     }
@@ -189,7 +195,8 @@ export class PractitionerRepository {
     async specialisationExists(id: string) {
         return this.prisma.specialisation.findUnique({
             where: {
-                id: id
+                id: id,
+                deleted: false
               }
           });
     }
@@ -197,20 +204,63 @@ export class PractitionerRepository {
     async pending (limit: Number) {
         return this.prisma.practitioner.findMany({
             where: {
-                status: "pending"
+                status: "pending",
+                deleted: false
             },
             take: Number(limit)
         });
     }
 
     async count() {
-        return this.prisma.practitioner.count();
-    }
-
-    async countPending() {
         return this.prisma.practitioner.count({
             where: {
-                status: "pending"
+                deleted: false
+            }
+        });
+    }
+
+    async countPending () {
+        return this.prisma.practitioner.count({
+            where: {
+                status: "pending",
+                deleted: false
+            }
+        });
+    }
+
+    async countDeleted () {
+        return this.prisma.practitioner.count({
+            where: {
+                deleted: true
+            }
+        });
+    }
+
+    async countApproved () {
+        return this.prisma.practitioner.count({
+            where: {
+                status: "approved",
+                deleted: false
+            }
+        });
+    }
+
+    async countRejected () {
+        return this.prisma.practitioner.count({
+            where: {
+                status: "rejected",
+                deleted: false
+            }
+        });
+    }
+
+    async delete (id: string) {
+        return this.prisma.practitioner.update({
+            where: {
+                id: id
+            },
+            data: {
+                deleted: true
             }
         });
     }

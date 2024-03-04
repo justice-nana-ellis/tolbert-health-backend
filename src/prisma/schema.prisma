@@ -16,6 +16,7 @@ model admin {
   password     String
   access_level access?   @default(admin)
   verified     Boolean   @default(false)
+  deleted      Boolean?  @default(false)
   createdAt    DateTime? @default(now()) @map("created_at")
   updatedAt    DateTime? @default(now()) @updatedAt @map("updated_at")
 }
@@ -32,6 +33,7 @@ model patient {
   active       Boolean       @default(false)
   payment      payment[]
   verified     Boolean       @default(false)
+  deleted      Boolean?      @default(false)
   access_level access?       @default(patient)
   createdAt    DateTime?     @default(now()) @map("created_at")
   updatedAt    DateTime?     @default(now()) @updatedAt @map("updated_at")
@@ -63,6 +65,7 @@ model practitioner {
   access_level     access?        @default(practitioner)
   active           Boolean        @default(false)
   verified         Boolean        @default(false)
+  deleted          Boolean?       @default(false)
   createdAt        DateTime?      @default(now()) @map("created_at")
   updatedAt        DateTime?      @updatedAt @map("updated_at")
   appointment      appointment[]
@@ -75,6 +78,7 @@ model specialisation {
   createdAt    DateTime      @default(now()) @map("created_at")
   updatedAt    DateTime      @updatedAt @map("updated_at")
   practitioner practitioner[]
+  deleted      Boolean?      @default(false)
   practitionerhospitalspecialisation practitionerhospitalspecialisation[]
 }
 
@@ -85,6 +89,7 @@ model hospital {
   zip          String
   street       String
   country      String
+  deleted      Boolean?   @default(false)
   createdAt    DateTime?      @default(now()) @map("created_at")
   updatedAt    DateTime       @updatedAt @map("updated_at") 
   practitioner practitioner[]
@@ -97,8 +102,8 @@ model practitionerhospitalspecialisation {
   practitioner     practitioner?  @relation(fields: [practitionerId], references: [id])
   hospitalId       String
   hospital         hospital?  @relation(fields: [hospitalId], references: [id])
-  specialisationId       String
-  specialisation         specialisation?  @relation(fields: [specialisationId], references: [id])
+  specialisationId String
+  specialisation   specialisation?  @relation(fields: [specialisationId], references: [id])
 
   @@id([practitionerId, hospitalId, specialisationId])
 }
@@ -112,13 +117,14 @@ model appointment {
   practitionerId    String?
   patient           patient?      @relation(fields: [patientId], references: [id])
   patientId         String?
-  hospital          hospital?      @relation(fields: [hospitalId], references: [id])
+  hospital          hospital?    @relation(fields: [hospitalId], references: [id])
   hospitalId        String?
-  service           service?      @relation(fields: [serviceId], references: [id])
+  service           service?     @relation(fields: [serviceId], references: [id])
   serviceId         String?
   comment           String
   tc                Boolean
   payment_completed Boolean
+  deleted           Boolean?     @default(false)
   status            statuses?    @default(pending)
   expiry            DateTime
   createdAt         DateTime?    @default(now()) @map("created_at")
@@ -145,13 +151,14 @@ model otp {
 }
 
 model payment {
-  id                String @id @unique @default(uuid())
+  id                String    @id @unique @default(uuid())
   amount            String 
-  patient           patient      @relation(fields: [patientId], references: [id])
+  patient           patient   @relation(fields: [patientId], references: [id])
   patientId         String
   referenceId       String
-  service           service      @relation(fields: [serviceId], references: [id])
+  service           service   @relation(fields: [serviceId], references: [id])
   serviceId         String
+  deleted      Boolean?   @default(false)
   createdAt         DateTime? @default(now()) @map("created_at")
   updatedAt         DateTime? @updatedAt @map("updated_at")
 }

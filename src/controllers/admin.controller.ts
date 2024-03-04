@@ -19,7 +19,7 @@ export class AdminController {
 
     private initializeRoutes() {
         this.router.get(`${this.BASE_PATH}/admin`, this.get.bind(this));
-        this.router.get(`${this.BASE_PATH}/appointment/:id`, this.getbyId.bind(this));
+        this.router.get(`${this.BASE_PATH}/admin/total`, this.total.bind(this));
         this.router.post(`${this.BASE_PATH}/admin/signup`, this.signup.bind(this));
         this.router.post(`${this.BASE_PATH}/admin/signin`, this.signin.bind(this));
         this.router.post(`${this.BASE_PATH}/admin/logout/:id`, this.logout.bind(this));
@@ -103,5 +103,10 @@ export class AdminController {
         const response = await this.adminService.getbyId(req.params.id);
         res.json(response);
     }
+
+    private async total(req: Request, res: Response) {
+      const response = await this.adminService.total();
+      res.json(response);
+  }
 
 }

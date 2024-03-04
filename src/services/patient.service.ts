@@ -62,11 +62,20 @@ export class PatientService {
     async signin(patientData: signinPatientDTO) {
         try {
             const response: any = await this.patientRepository.signin(patientData); 
+            console.log(response);
+            
             if(response === null) { 
                 return <signinPatientResponseDTO>{
                     status: "error",
                     content: {
                         "message": "invalid credentials"
+                    }
+                };
+            } else if (response.deleted === true) {
+                return <signinPatientResponseDTO>{
+                    status: "error",
+                    content: {
+                        "message": "Account deactivated - contact support"
                     }
                 };
             }

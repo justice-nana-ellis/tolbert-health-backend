@@ -2,12 +2,14 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import randomstring from 'randomstring';
-import { AdminRepository, GenericRepository } from "../repositories";
+import { AdminRepository, GenericRepository, PatientRepository, PractitionerRepository } from "../repositories";
 import { signupAdminDTO, signinAdminResponseDTO, logoutAdminResponseDTO,
          signupAdminResponseDTO, adminDTO, signinAdminDTO, otpDTO  } from '../dto'; 
 import { sendEmail, verifyEmailTemplate } from '../util';
 
 export class AdminService {
+    private practitionerRepository: PractitionerRepository = new PractitionerRepository;
+    private patientRepository: PatientRepository = new PatientRepository;
     private genericRepository: GenericRepository = new GenericRepository;
     private adminRepository: AdminRepository = new AdminRepository;
     private readonly SECRET_KEY = <string>process.env.SECRET_KEY
@@ -196,6 +198,39 @@ export class AdminService {
         } catch (error: any) {
             
         }
+    }
+
+    async total () {
+        try {
+            const totalPending = await this.practitionerRepository.countPending();
+            const totalDeleted = await this.practitionerRepository.countDeleted();
+            const totalApproved = await this.practitionerRepository.countApproved();
+            const totalRejected = await this.practitionerRepository.countRejected();
+            const totalPractitioners = await this.practitionerRepository.count();
+         
+            const _totalDeleted = await this.patientRepository.countDeleted();
+            const _totalPatients = await this.patientRepository.count();
+            return <signinAdminResponseDTO>{
+                status: "success",
+                content: {
+                    _patients: {
+                        total: _totalPatients,
+                        deleted: _totalDeleted
+                        
+                    },
+                    _Practitioners: {
+                        total: totalPractitioners,
+                        pending: totalPending,
+                        approved: totalApproved,
+                        rejected: totalRejected,
+                        deleted: totalDeleted
+                    }
+                }
+            };
+        } catch (error) {
+            
+        }
+        
     }
 
 }

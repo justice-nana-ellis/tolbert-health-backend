@@ -34,7 +34,8 @@ export class PatientRepository {
     async getbyId(id: string) {
         return this.prisma.patient.findUnique({
             where: {
-                id: id
+                id: id,
+                deleted: false
             }
         }); 
     }
@@ -43,6 +44,9 @@ export class PatientRepository {
         const skip = Number(skipped)
         const take = Number(taken)
         return this.prisma.patient.findMany({
+            where: {
+                deleted: false
+            },
             skip,
             //@ts-ignore
              take,
@@ -59,9 +63,10 @@ export class PatientRepository {
         });
     }
 
-    async searchPatient(queryString: string, limit: Number){
+    async searchPatient (queryString: string, limit: Number){
         return this.prisma.patient.findMany({
             where: {
+                deleted: false,
                 OR: [
                     {
                         full_name: {
@@ -86,7 +91,30 @@ export class PatientRepository {
         });
     }
 
-    async count() {
-        return this.prisma.patient.count();
+    async count () {
+        return this.prisma.patient.count({
+            where: {
+                deleted: false
+            }
+        });
+    }
+
+    async countDeleted () {
+        return this.prisma.patient.count({
+            where: {
+                deleted: true
+            }
+        });
+    }
+
+    async delete (id: string) {
+        return this.prisma.patient.update({
+            where: {
+                id: id
+            },
+            data: {
+                deleted: true
+            }
+        });
     }
 }
