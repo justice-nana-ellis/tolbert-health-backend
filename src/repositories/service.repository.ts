@@ -34,7 +34,11 @@ export class ServiceRepository {
     }
 
     async get() {
-        return this.prisma.service.findMany(); 
+        return this.prisma.service.findMany({
+            where: {
+                deleted: false
+            }
+        }); 
     }
 
     async getbyId(id: string) {

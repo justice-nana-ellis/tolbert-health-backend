@@ -32,9 +32,12 @@ export class AppointmentRepository {
     }
 
     async delete(id: string) {
-        return this.prisma.appointment.delete({
+        return this.prisma.appointment.update({
             where: {
                 id: id
+            },
+            data: {
+                deleted: true
             }
         }); 
     }
