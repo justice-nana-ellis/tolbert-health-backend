@@ -128,7 +128,7 @@ model appointment {
   payment_completed Boolean
   deleted           Boolean?     @default(false)
   status            statuses?    @default(pending)
-  expiry            DateTime
+  expiry            DateTime?
   createdAt         DateTime?    @default(now()) @map("created_at")
   updatedAt         DateTime?    @updatedAt @map("updated_at")
 }

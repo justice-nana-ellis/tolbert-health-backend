@@ -129,5 +129,4 @@ export class PatientRepository {
             take: Number(limit)
         });
     }
-
 }
