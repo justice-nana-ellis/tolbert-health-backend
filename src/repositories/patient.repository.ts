@@ -118,15 +118,33 @@ export class PatientRepository {
         });
     }
 
-    async getAppointment (id: string, status: string, limit: number) {
+    async getAppointment (id: string, status: string[], skipped: number, limit: number) {
+        const skip = Number(skipped)
+        const take = Number(limit)
         return this.prisma.appointment.findMany({
             where: {
                 patientId: id,
-                //@ts-ignore
-                status: status,
+                status: {
+                    //@ts-ignore
+                    in: status,
+                },
                 deleted: false
             },
-            take: Number(limit)
+            take: take,
+            skip: skip
+        });
+    }
+
+    async countAppointment (id: string, status: string[]) {
+        return this.prisma.appointment.count({
+            where: {
+                patientId: id,
+                status: {
+                    //@ts-ignore
+                    in: status,
+                },
+                deleted: false
+            }
         });
     }
 }

@@ -72,7 +72,7 @@ export class appointmentValidationDto {
     @IsString({ message: 'Comment must be a string' })
     comment: string;
 
-    @IsOptional({ message: 'TC is a required field' })
+    @IsOptional({ message: 'TC is a optional field' })
     @IsBoolean({ message: 'TC must be a boolean string' })
     tc: boolean = true;
 
@@ -85,7 +85,7 @@ export class appointmentValidationDto {
     @IsIn(['rejected', 'approved', 'pending'], { message: 'Status must be one of: rejected, approved, pending' })
     status: string;
 
-    @IsNotEmpty({ message: 'Expiry is a required field' })
+    @IsOptional({ message: 'Expiry is a required field' })
     @IsString({ message: 'Expiry must be a valid date string' })
     expiry: string;
 }

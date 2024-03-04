@@ -221,13 +221,14 @@ export class PatientService {
         }
     }
 
-    async getAppointment(id: string, status: string, limit: number) {
+    async getAppointment(id: string, status: string[], skip:number, take: number) {
         try {
-            console.log(id, status, limit);
-            
-            const response = await this.patientRepository.getAppointment(id, status, limit);
-            return <signinPatientResponseDTO>{
+            // console.log(id, status, skip, take);
+            const response = await this.patientRepository.getAppointment(id, status, skip, take);
+            const total = await this.patientRepository.countAppointment(id, status);
+            return <getAllPatientResponseDTO>{
                 status: "success",
+                total: total,
                 content: response
             };
         } catch (error: any) {
