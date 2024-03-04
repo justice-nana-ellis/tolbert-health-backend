@@ -8,6 +8,7 @@ export interface appointmentDTO {
     practitioner:    string;
     patient:         string;
     service:           string;
+    hospital:          string;
     comment:           string;
     tc:                Boolean
     payment_completed: Boolean

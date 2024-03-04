@@ -123,10 +123,10 @@ export class PatientRepository {
             where: {
                 patientId: id,
                 //@ts-ignore
-                status: `${status}`,
+                status: status,
                 deleted: false
             },
-            limit: limit
+            take: Number(limit)
         });
     }
 

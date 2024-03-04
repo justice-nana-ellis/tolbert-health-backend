@@ -223,9 +223,9 @@ export class PatientService {
 
     async getAppointment(id: string, status: string, limit: number) {
         try {
+            console.log(id, status, limit);
+            
             const response = await this.patientRepository.getAppointment(id, status, limit);
-            //@ts-ignore
-            //delete response?.password;
             return <signinPatientResponseDTO>{
                 status: "success",
                 content: response

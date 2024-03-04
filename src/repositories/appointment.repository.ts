@@ -17,7 +17,9 @@ export class AppointmentRepository {
                 patient: {
                     connect: { id: appointmentData.patient }},
                 service: {
-                        connect: { id: appointmentData.service }}
+                        connect: { id: appointmentData.service }},
+                hospital: {
+                            connect: { id: appointmentData.hospital }}
             }
         });
     }

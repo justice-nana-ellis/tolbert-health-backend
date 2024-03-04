@@ -11,7 +11,6 @@ export class AppointmentService {
 
     async create(appointmentData: appointmentDTO) {
         try {
-            
             const response = await this.appointmentRepository.create(appointmentData);  
             return <appointmentResponseDTO>{ 
                 status: 'successs',
@@ -19,8 +18,7 @@ export class AppointmentService {
             };
             
         } catch (error: any) {
-          console.log(error);
-          
+            console.log(error);
             if (error.code === 'P2002' && error.meta?.target?.includes('title')) {
                 return <appointmentResponseDTO>{ 
                   status: 'error',
