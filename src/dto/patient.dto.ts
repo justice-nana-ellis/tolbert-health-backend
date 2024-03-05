@@ -25,6 +25,7 @@ export interface signinPatientResponseDTO {
 }
 
 export interface signinPatientDTO {
+    otp?: string;
     email: string;
     password: string;
 }

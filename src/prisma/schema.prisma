@@ -146,8 +146,8 @@ model service {
 model otp {
   id        String    @id @unique @default(uuid())
   user_id   String    @unique
-  email     String?
-  otp_code  String
+  email     String    @unique
+  otp_code  String    
   createdAt DateTime? @default(now()) @map("created_at")
   updatedAt DateTime? @updatedAt @map("updated_at")
 }

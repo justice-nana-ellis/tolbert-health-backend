@@ -15,6 +15,14 @@ export class GenericRepository {
         }); 
     }
 
+    async verifyOtpEmail(email: string) {    
+        return this.prisma.otp.findUnique({
+            where: {
+                email: email
+            }
+        }); 
+    }
+
     async update(otp: string, id: string) {
         return this.prisma.otp.update({
             where: {
