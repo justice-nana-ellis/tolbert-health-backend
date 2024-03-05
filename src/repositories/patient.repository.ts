@@ -118,6 +118,21 @@ export class PatientRepository {
         });
     }
 
+    async updateVerification (email: string) {
+        const exist = await this.prisma.patient.findUnique({
+            where: { email }
+        })
+        if (exist !== null) {
+            return this.prisma.patient.update({
+                where: { email },
+                data: {
+                    verified: true,
+                    active: true
+                }
+            });
+        }
+    }
+
     async getAppointment (id: string, status: string[], skipped: number, limit: number) {
         const skip = Number(skipped)
         const take = Number(limit)

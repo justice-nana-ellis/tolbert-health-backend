@@ -23,10 +23,10 @@ export class GenericRepository {
         }); 
     }
 
-    async update(otp: string, id: string) {
+    async update(email: string, otp: string) {
         return this.prisma.otp.update({
             where: {
-                user_id: id
+                email: email
             }, data: {
                 otp_code: otp
             }

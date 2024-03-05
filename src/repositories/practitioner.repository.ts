@@ -264,4 +264,19 @@ export class PractitionerRepository {
             }
         });
     }
+
+    async updateVerification (email: string) {
+        const exist = await this.prisma.practitioner.findUnique({
+            where: { email }
+        })
+        if (exist !== null) {
+            return this.prisma.practitioner.update({
+                where: { email },
+                data: {
+                    verified: true,
+                    active: true
+                }
+            });
+        }
+    }
 }

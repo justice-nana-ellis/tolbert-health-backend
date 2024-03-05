@@ -2,10 +2,11 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import randomstring from 'randomstring';
-import { PatientRepository, GenericRepository, AppointmentRepository } from "../repositories";
+import { sendEmail, verifyEmailTemplate } from '../util';
+import { PatientRepository, GenericRepository } from "../repositories";
 import { signupPatientDTO, signinPatientDTO, signinPatientResponseDTO,
          logoutPatientResponseDTO, signupPatientResponseDTO, otpDTO, getAllPatientResponseDTO  } from '../dto'; 
-import { sendEmail, verifyEmailTemplate } from '../util';
+
 
 export class PatientService {
     private patientRepository: PatientRepository;

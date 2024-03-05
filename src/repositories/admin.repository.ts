@@ -60,6 +60,21 @@ export class AdminRepository {
                 status: status
             }
         }); 
-        
+    }
+
+    async updateVerification (email: string) {
+        const exist = await this.prisma.admin.findUnique({
+            where: { email }
+        })
+        if (exist !== null) {
+            return this.prisma.admin.update({
+                where: { email },
+                data: {
+                    verified: true,
+                    //@ts-ignore
+                    active: true
+                }
+            });
+        }
     }
 }

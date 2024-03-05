@@ -35,11 +35,11 @@ export class PatientController {
 
         const errorMessages = await getErrorMessages(plainToClass(signupPatientValidationDto, req.body));
      
-      if (errorMessages.length > 0) return res.status(200).json({
-        status: 'error',
-        content: { message: errorMessages }, 
-        timestamp: timestamp,
-      });
+        if (errorMessages.length > 0) return res.status(200).json({
+          status: 'error',
+          content: { message: errorMessages }, 
+          timestamp: timestamp,
+        });
 
         const response = await this.patientService.signup(postData);
         res.json(response);
