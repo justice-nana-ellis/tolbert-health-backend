@@ -20,6 +20,7 @@ export interface adminDTO {
 export interface signupAdminResponseDTO {
     status: string;
     content?: any;
+    total?: number;
     timestamp?: string;
     verified?: boolean;
 }

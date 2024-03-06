@@ -19,6 +19,7 @@ export interface appointmentDTO {
 export interface appointmentResponseDTO {
     status: string;
     content?: any;
+    total?: number;
     timestamp?: string;
     verified?: boolean;
 }

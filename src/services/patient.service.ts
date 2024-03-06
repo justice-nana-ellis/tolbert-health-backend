@@ -110,6 +110,32 @@ export class PatientService {
         }
     }
 
+    async update(patientData: signupPatientDTO, id: string) {
+        try {
+            const patientExist = await this.patientRepository.getbyId(id);
+            if (patientExist === null) {
+                return <signinPatientResponseDTO> {
+                    status: "error",
+                    content: {
+                        "message": "Record not found"
+                    }
+                } 
+            }
+            const response = await this.patientRepository.update(patientData, id);
+            return <getAllPatientResponseDTO> {
+                status: "success",
+                content: response
+            };
+        } catch (error) {
+            if (error) {
+                return <signupPatientResponseDTO>{ 
+                    status: 'error',
+                    content: { message: 'Internal server error' } 
+                }
+            }
+        }
+    }
+
     async logout(id: string) {
         try {
             const response = await this.patientRepository.logout(id)
@@ -139,13 +165,9 @@ export class PatientService {
 
     async getAll(skip: number, take: number) {
         try {
-            const response = await this.patientRepository.getallPatients(skip, take); 
-            const total = await this.patientRepository.count();
-            response.forEach(obj => {
-                //@ts-ignore
-                delete obj.password;
-              });
-            return <getAllPatientResponseDTO>{
+            const response = await this.patientRepository.getallPatients (skip, take); 
+            const total = await this.patientRepository.count ();
+            return <getAllPatientResponseDTO> {
                 status: "success",
                 total: total,
                 content: response

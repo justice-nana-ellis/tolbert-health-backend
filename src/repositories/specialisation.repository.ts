@@ -33,8 +33,21 @@ export class SpecialisationRepository {
         }); 
     }
 
-    async get() {
-        return this.prisma.specialisation.findMany(); 
+    async get(skip: number, take: number) {
+        return this.prisma.specialisation.findMany({
+            skip: Number(skip), take: Number(take),
+            orderBy: {
+                updatedAt: 'desc' 
+            },
+        }); 
+    }
+
+    async count () {
+        return this.prisma.specialisation.count({
+            where: {
+                deleted: false
+            }
+        });
     }
 
     async getbyId(id: string) {

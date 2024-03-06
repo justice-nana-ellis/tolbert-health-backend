@@ -35,6 +35,18 @@ export class PaymentRepository {
         return this.prisma.payment.create({ data: paymentData });
     }
 
+    async get(skip: number, take: number) {
+        return this.prisma.payment.findMany({
+            where: {
+                deleted: false
+            },
+            skip: Number(skip), take: Number(take),
+            orderBy: {
+                updatedAt: 'desc' 
+            }
+        }); 
+    }
+
     async patientExists(id: string) {
         return this.prisma.patient.findUnique({
             where: {
@@ -48,6 +60,15 @@ export class PaymentRepository {
             where: {
               id: id
             }
-          });
+        });
     }
+
+    async count () {
+        return this.prisma.payment.count({
+            where: {
+                deleted: false
+            }
+        });
+    }
+
 }

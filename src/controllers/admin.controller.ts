@@ -95,7 +95,8 @@ export class AdminController {
     }
 
     private async get(req: Request, res: Response) {
-        const response = await this.adminService.get();
+        //@ts-ignore
+        const response = await this.adminService.get(req.query.skip, req.query.take);
         res.json(response);
     }
 

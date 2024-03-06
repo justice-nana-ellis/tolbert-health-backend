@@ -33,8 +33,21 @@ export class HospitalRepository {
         }); 
     }
 
-    async get() {
-        return this.prisma.hospital.findMany(); 
+    async get(skip: number, take: number) {
+        return this.prisma.hospital.findMany({
+            skip: Number(skip), take: Number(take),
+            orderBy: {
+                updatedAt: 'desc' 
+            }
+        }); 
+    }
+
+    async count () {
+        return this.prisma.hospital.count({
+            where: {
+                deleted: false
+            }
+        });
     }
 
     async getbyId(id: string) {

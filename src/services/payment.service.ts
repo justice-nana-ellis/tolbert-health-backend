@@ -28,18 +28,16 @@ export class PaymentService {
 
     async verify (referenceId: string) {
         try {
-            console.log(referenceId);
             if(referenceId === '' || referenceId === undefined) return <initialisePaymentResponseDTO>{ 
                 status: 'error',
                 content: {
                     "message": "Reference is required"
                 }
             };
-            
             const verified:any = await this.paymentRepository.verify(referenceId);            
             //console.log(verified._body.data.status);
             if (verified?._body?.data?.status === 'success') {
-                return <initialisePaymentResponseDTO>{ 
+                return <initialisePaymentResponseDTO> { 
                     status: 'success',
                     content: verified
                 };                   
@@ -68,10 +66,49 @@ export class PaymentService {
         }
     }
 
+    async get (skip: number, take: number) {
+        try {
+            const payment = await this.paymentRepository.get(skip, take);
+            const total = await this.paymentRepository.count (); 
+            return <initialisePaymentResponseDTO> { 
+                status: 'success',
+                total: total,
+                content: payment
+            }; 
+        } catch (error) {
+            if (error) {
+                return {
+                    status: "error",
+                    content: {
+                        "message": "Internal server error"
+                    }
+                }
+            }
+        }
+    }
+
+    async create (data: any) {
+        try {
+            const payment = await this.paymentRepository.create(data);
+            return <initialisePaymentResponseDTO> { 
+                status: 'success',
+                content: payment
+            }; 
+        } catch (error) {
+            if (error) {
+                return {
+                    status: "error",
+                    content: {
+                        "message": "Internal server error"
+                    }
+                }
+            }
+        }
+    }
+
     async complete (paymentData: completePaymentDTO) {
         try {
             //console.log(paymentData);
-            
             const verified : any = await this.paymentRepository.verify (paymentData.referenceId); 
             //@ts-ignore
             //console.log(verified._body.data.status);
@@ -112,8 +149,6 @@ export class PaymentService {
                 }; 
             }
         } catch (error: any) {
-            //console.log(error);
-            
             if (error) {
                 return <completePaymentResponseDTO>{ 
                   status: 'error',

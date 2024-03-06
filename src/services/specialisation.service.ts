@@ -96,15 +96,15 @@ export class SpecialisationService {
       
     }
 
-    async get() {
+    async get(skip: number, take: number) {
       try {
-
-          const response = await this.specialisationRepository.get();  
-          return <specialisationResponseDTO>{ 
+          const response = await this.specialisationRepository.get (skip, take); 
+          const total = await this.specialisationRepository.count ();  
+          return <specialisationResponseDTO> { 
               status: 'success',
+              total: total,
               content: response
           };
-
       } catch (error: any) {
           if (error.code === 'P2002' && error.meta?.modelName?.includes('hospital')) {
               return <specialisationResponseDTO>{ 
@@ -128,7 +128,6 @@ export class SpecialisationService {
 
     async getbyId(id: string) {
       try {
-          
           const response = await this.specialisationRepository.getbyId(id); 
           if (response === null) {
             let response:[] = []

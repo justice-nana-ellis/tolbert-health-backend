@@ -33,12 +33,24 @@ export class ServiceRepository {
         }); 
     }
 
-    async get() {
+    async get(skip: number, take: number) {
         return this.prisma.service.findMany({
             where: {
                 deleted: false
-            }
+            },
+            skip: Number(skip), take: Number(take),
+            orderBy: {
+                updatedAt: 'desc' 
+            },
         }); 
+    }
+
+    async count () {
+        return this.prisma.service.count({
+            where: {
+                deleted: false
+            }
+        });
     }
 
     async getbyId(id: string) {

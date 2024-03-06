@@ -34,21 +34,18 @@ export class SpecialisationController {
             content: { message: errorMessages }, 
             timestamp: timestamp,
         });
-
         const response = await this.specialisationService.create(postData);
         res.json(response); 
     }
 
     private async update(req: Request, res: Response) {
         const postData: specialisationDTO = req.body;
-       
         const errorMessages = await getErrorMessages(plainToClass(specialisationValidationDto, req.body));
         if (errorMessages.length > 0) return res.status(400).json({
             status: 'error',
             content: { message: errorMessages }, 
             timestamp: timestamp,
         });
-
         const response = await this.specialisationService.update(postData, req.params.id);
         res.json(response);
     }
@@ -59,7 +56,8 @@ export class SpecialisationController {
     }
 
     private async get(req: Request, res: Response) {
-        const response = await this.specialisationService.get();
+        //@ts-ignore
+        const response = await this.specialisationService.get(req.query.skip, req.query.take);
         res.json(response);
     }
 

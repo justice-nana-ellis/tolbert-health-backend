@@ -96,12 +96,13 @@ export class ServiceService {
       
     }
 
-    async get() {
+    async get(skip: number, take: number) {
       try {
-
-          const response = await this.serviceRepository.get();  
-          return <serviceResponseDTO>{ 
+          const response = await this.serviceRepository.get(skip, take); 
+          const total = await this.serviceRepository.count (); 
+          return <serviceResponseDTO> { 
               status: 'success',
+              total: total,
               content: response
           };
 

@@ -59,7 +59,8 @@ export class HospitalController {
     }
 
     private async get(req: Request, res: Response) {
-        const response = await this.hospitalService.get();
+        //@ts-ignore
+        const response = await this.hospitalService.get(req.query.skip, req.query.take);
         res.json(response);
     }
 

@@ -120,12 +120,13 @@ export class AppointmentService {
       
     }
 
-    async get() {
+    async get(skip: number, take: number) {
       try {
-
-          const response = await this.appointmentRepository.get();  
-          return <appointmentResponseDTO>{ 
+          const response = await this.appointmentRepository.get (skip, take);  
+          const total = await this.appointmentRepository.count ();
+          return <appointmentResponseDTO> { 
               status: 'success',
+              total: total,
               content: response
           };
 

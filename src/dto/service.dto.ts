@@ -9,6 +9,7 @@ export interface serviceDTO {
 export interface serviceResponseDTO {
     status: string;
     content?: any;
+    total?: number;
     timestamp?: string;
     verified?: boolean;
 }

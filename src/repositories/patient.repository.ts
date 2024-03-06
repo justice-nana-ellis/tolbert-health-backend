@@ -23,6 +23,15 @@ export class PatientRepository {
         }); 
     }
 
+    async update (patientData: signupPatientDTO, id: string) {
+        return this.prisma.patient.update({
+            where: {
+                id: id,
+            },
+            data: patientData
+        })
+    }
+
     async logout(id: string) {
         return this.prisma.patient.findUnique({
             where: {
@@ -40,16 +49,11 @@ export class PatientRepository {
         }); 
     }
 
-    async getallPatients(skipped: number, taken: number): Promise<any[]> {
-        const skip = Number(skipped)
-        const take = Number(taken)
+    async getallPatients(skip: number, take: number) {
         return this.prisma.patient.findMany({
             where: {
                 deleted: false
             },
-            skip,
-            //@ts-ignore
-             take,
             select: {
                 //@ts-ignore
                 id: true,
@@ -59,6 +63,10 @@ export class PatientRepository {
                 country: true,
                 createdAt: true,
                 updatedAt: true,
+            },
+            skip: Number(skip), take: Number(take),
+            orderBy: {
+                updatedAt: 'desc' 
             }
         });
     }

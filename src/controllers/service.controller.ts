@@ -59,7 +59,8 @@ export class ServiceController {
     }
 
     private async get(req: Request, res: Response) {
-        const response = await this.serviceService.get();
+        //@ts-ignore
+        const response = await this.serviceService.get(req.query.skip, req.query.take);
         res.json(response);
     }
 

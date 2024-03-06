@@ -96,12 +96,13 @@ export class HospitalService {
       
     }
 
-    async get() {
+    async get (skip: number, take: number) {
       try {
-
-          const response = await this.hospitalRepository.get();  
-          return <hospitalResponseDTO>{ 
+          const response = await this.hospitalRepository.get (skip, take); 
+          const total = await this.hospitalRepository.count ();  
+          return <hospitalResponseDTO> { 
               status: 'success',
+              total: total,
               content: response
           };
 

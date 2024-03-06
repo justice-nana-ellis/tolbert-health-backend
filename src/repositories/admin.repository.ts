@@ -38,8 +38,23 @@ export class AdminRepository {
         }); 
     }
 
-    async get() {
-        return this.prisma.admin.findMany(); 
+    async get(skip: number, take: number) {
+        return this.prisma.admin.findMany({
+            skip: Number(skip), take: Number(take),
+            orderBy: {
+                updatedAt: 'desc' 
+            },
+            select: {
+                id: true,
+                email: true,
+                full_name: true,
+                access_level: true,
+                verified: true,
+                deleted: true,
+                createdAt: true,
+                updatedAt: true
+            }
+        }); 
     }
 
     async getbyId(id: string) {
@@ -48,6 +63,14 @@ export class AdminRepository {
                 id: id
             }
         }); 
+    }
+
+    async count () {
+        return this.prisma.admin.count({
+            where: {
+                deleted: false
+            }
+        });
     }
 
     async changeStatus(id: string, status: string) {

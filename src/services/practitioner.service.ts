@@ -74,7 +74,32 @@ export class PractitionerService {
                 };
               }
         }
-        
+    }
+
+    async update(practitionerData: signupPractitionerDTO, id: string) {
+        try {
+            const practitionerExist = await this.practitionerRepository.getbyId (id);
+            if (practitionerExist === null) {
+                return <signinPractitionerResponseDTO> {
+                    status: "error",
+                    content: {
+                        "message": "Record not found"
+                    }
+                } 
+            }
+            const response = await this.practitionerRepository.update(practitionerData, id);
+            return <signupPractitionerResponseDTO> {
+                status: "success",
+                content: response
+            };
+        } catch (error) {
+            if (error) {
+                return <signupPractitionerResponseDTO>{ 
+                    status: 'error',
+                    content: { message: 'Internal server error' } 
+                }
+            }
+        }
     }
 
     async signin(patientData: signinPractitionerDTO) {
@@ -180,11 +205,10 @@ export class PractitionerService {
         }
     }
 
-    async pending(limit: number) {
+    async pending(skip: number, take: number) {
         try {
-            const response = await this.practitionerRepository.pending(limit);
+            const response = await this.practitionerRepository.pending(skip, take);
             const total = await this.practitionerRepository.countPending();
-            
             response.forEach(obj => {
                 //@ts-ignore
                 delete obj.password;
@@ -235,8 +259,8 @@ export class PractitionerService {
 
     async delete(id: string) {
         try {
-            const patientExist = await this.practitionerRepository.getbyId (id);
-            if (patientExist === null) {
+            const practitionerExist = await this.practitionerRepository.getbyId (id);
+            if (practitionerExist === null) {
                 return <signinPractitionerResponseDTO> {
                     status: "error",
                     content: {

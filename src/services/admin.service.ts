@@ -129,16 +129,13 @@ export class AdminService {
         }
     }
 
-    async get() {
+    async get(skip: number, take: number) {
         try {
-            const response = await this.adminRepository.get();
-            //@ts-ignore
-            // response.forEach(obj => {
-            //     //@ts-ignore
-            //     delete obj.password;
-            //   });
+            const response = await this.adminRepository.get (skip, take);
+            const total = await this.adminRepository.count ();
             return <signinAdminResponseDTO>{
                 status: "success",
+                total: total,
                 content: response
             };
         } catch (error: any) {

@@ -25,6 +25,7 @@ export class PractitionerController {
         this.router.get(`${this.BASE_PATH}/practitioner/:id`, this.getbyid.bind(this));
         this.router.post(`${this.BASE_PATH}/practitioner/signup`, this.signup.bind(this));
         this.router.post(`${this.BASE_PATH}/practitioner/signin`, this.signin.bind(this));
+        this.router.patch(`${this.BASE_PATH}/practitioner/:id`, this.update.bind(this));
         this.router.post(`${this.BASE_PATH}/practitioner/logout/:id`, this.logout.bind(this));
         this.router.delete(`${this.BASE_PATH}/practitioner/delete/:id`, this.delete.bind(this));
     }
@@ -50,6 +51,27 @@ export class PractitionerController {
       }
     }
 
+    private async update(req: Request, res: Response) {
+      try {
+        const postData = req.body;
+        const errorMessages = await getErrorMessages(plainToClass(signupPractitionerValidationDto, req.body));
+        if (errorMessages.length > 0) return res.status(200).json({
+          status: 'error',
+          content: { message: errorMessages }, 
+          timestamp: timestamp,
+        });
+        const response = await this.practitionerService.update (postData, req.params.id); 
+        res.status(200).json(response);
+      } catch (error) {
+        return res.status(200).json({
+          status: 'error',
+          content: {
+            "message": "Internal server error"
+          } 
+        });
+      }
+    }
+    
     private async signin(req: Request, res: Response) {
       try {
         const postData: signinPractitionerDTO = req.body;
@@ -106,7 +128,7 @@ export class PractitionerController {
 
     private async pending(req: Request, res: Response) {
       //@ts-ignore
-      const response = await this.practitionerService.pending(req.query.limit);
+      const response = await this.practitionerService.pending(req.query.skip, req.query.take);
       res.json(response);
     }
 

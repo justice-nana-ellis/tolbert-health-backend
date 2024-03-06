@@ -8,6 +8,7 @@ export interface specialisationDTO {
 export interface specialisationResponseDTO {
     status: string;
     content?: any;
+    total?: number;
     timestamp?: string;
     verified?: boolean;
 }

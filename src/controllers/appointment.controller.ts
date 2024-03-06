@@ -41,14 +41,12 @@ export class AppointmentController {
 
     private async update(req: Request, res: Response) {
         const postData: appointmentDTO = req.body;
-       
         const errorMessages = await getErrorMessages(plainToClass(appointmentValidationDto, req.body));
         if (errorMessages.length > 0) return res.status(400).json({
             status: 'error',
             content: { message: errorMessages }, 
             timestamp: timestamp,
         });
-
         const response = await this.appointmentService.update(postData, req.params.id);
         res.status(200).json(response);
     }
@@ -59,7 +57,8 @@ export class AppointmentController {
     }
 
     private async get(req: Request, res: Response) {
-        const response = await this.appointmentService.get();
+        //@ts-ignore
+        const response = await this.appointmentService.get(req.query.skip, req.query.take);
         res.status(200).json(response);
     }
 

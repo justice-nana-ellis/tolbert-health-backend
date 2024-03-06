@@ -16,12 +16,14 @@ export interface completePaymentDTO {
 export interface initialisePaymentResponseDTO {
     status: string;
     content?: any;
+    total?: number;
     timestamp?: string;
 }
 
 export interface completePaymentResponseDTO {
     status: string;
     content?: any;
+    total?: number;
     timestamp?: string;
 }
 

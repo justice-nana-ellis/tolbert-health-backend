@@ -12,6 +12,7 @@ export interface hospitalDTO {
 export interface hospitalResponseDTO {
     status: string;
     content?: any;
+    total?: number;
     timestamp?: string;
     verified?: boolean;
 }

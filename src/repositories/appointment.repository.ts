@@ -44,8 +44,21 @@ export class AppointmentRepository {
         }); 
     }
 
-    async get() {
-        return this.prisma.appointment.findMany(); 
+    async get(skip: number, take: number) {
+        return this.prisma.appointment.findMany({
+            skip: Number(skip), take: Number(take),
+            orderBy: {
+                updatedAt: 'desc' 
+            }
+        }); 
+    }
+
+    async count () {
+        return this.prisma.appointment.count({
+            where: {
+                deleted: false
+            }
+        });
     }
 
     async getbyId(id: string) {

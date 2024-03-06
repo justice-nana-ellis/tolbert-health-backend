@@ -9,6 +9,8 @@ export class PractitionerRepository {
         this.prisma = new PrismaClient();
     }
 
+
+
     async signup(practitionerData: signupPractitionerDTO) {
         return this.prisma.practitioner.create({
             //@ts-ignore
@@ -39,6 +41,16 @@ export class PractitionerRepository {
             
         }
         
+    }
+
+    async update (practitionerData: signupPractitionerDTO, id: string) {
+        return this.prisma.practitioner.update({
+            where: {
+                id: id,
+            },
+            //@ts-ignore
+            data: practitionerData
+        })
     }
 
     async logout(id: string) {
@@ -75,16 +87,11 @@ export class PractitionerRepository {
         }); 
     }
     
-    async getallPractitioners(skipped: number, taken: number): Promise<any[]> {
-        const skip = Number(skipped)
-        const take = Number(taken)
+    async getallPractitioners(skip: number, take: number) {
         return this.prisma.practitioner.findMany({
             where: {
                 deleted: false
             },
-            skip,
-            //@ts-ignore
-            take,
             select: {
                 //@ts-ignore
                 id: true,
@@ -99,12 +106,17 @@ export class PractitionerRepository {
                 id_number: true,
                 active: true,
                 licence_number: true,
+                certificates: true,
                 hospital: true,
                 specialisation: true,
                 password: false,
                 createdAt: true,
                 updatedAt: true,
-            }
+            },
+            skip: Number(skip), take: Number(take),
+            orderBy: {
+                updatedAt: 'desc' 
+            },
         });
     }
 
@@ -201,13 +213,16 @@ export class PractitionerRepository {
           });
     }
 
-    async pending (limit: Number) {
+    async pending (skip: Number, take: number) {
         return this.prisma.practitioner.findMany({
             where: {
                 status: "pending",
                 deleted: false
             },
-            take: Number(limit)
+            skip: Number(skip), take: Number(take),
+            orderBy: {
+                updatedAt: 'desc' 
+            }
         });
     }
 
