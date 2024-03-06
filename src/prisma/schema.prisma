@@ -123,7 +123,7 @@ model appointment {
   service           service?     @relation(fields: [serviceId], references: [id])
   serviceId         String?
   comment           String
-  tc                Boolean
+  tc                Boolean?     @default(false)
   payment_completed Boolean
   deleted           Boolean?     @default(false)
   status            statuses?    @default(pending)
