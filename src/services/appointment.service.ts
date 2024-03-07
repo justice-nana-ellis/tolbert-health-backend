@@ -32,8 +32,6 @@ export class AppointmentService {
             };
             
         } catch (error: any) {
-          console.log(error);
-          
             if (error.code === 'P2002' && error.meta?.target?.includes('title')) {
                 return <appointmentResponseDTO>{ 
                   status: 'error',
@@ -72,6 +70,8 @@ export class AppointmentService {
                 content: response
             };
         } catch (error: any) {
+          console.log(error);
+          
             if (error.code === 'P2002' && error.meta?.target?.includes('title')) {
               return <appointmentResponseDTO>{ 
                 status: 'error',
@@ -87,7 +87,7 @@ export class AppointmentService {
                 status: 'error',
                 content: { message: 'Practitioner not found' }
               };
-            } else if(error.code === 'P2025' && error.meta?.cause?.includes('Record to update not found')) {
+            } else if(error.code === 'P2025' && error.meta.modelName ==='appointment') {
               return <appointmentResponseDTO>{ 
                 status: 'error',
                 content: { message: 'Record not found' }

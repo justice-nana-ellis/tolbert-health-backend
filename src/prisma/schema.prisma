@@ -95,7 +95,6 @@ model hospital {
   createdAt    DateTime?      @default(now()) @map("created_at")
   updatedAt    DateTime       @updatedAt @map("updated_at") 
   practitioner practitioner[]
-  appointment  appointment[]
   practitionerhospitalspecialisation practitionerhospitalspecialisation[]
 }
 
@@ -114,12 +113,11 @@ model appointment {
   id                String       @id @unique @default(uuid())
   title             String       @unique
   date              DateTime
+  time              String?
   practitioner      practitioner? @relation(fields: [practitionerId], references: [id])
   practitionerId    String?
   patient           patient?      @relation(fields: [patientId], references: [id])
   patientId         String?
-  hospital          hospital?    @relation(fields: [hospitalId], references: [id])
-  hospitalId        String?
   service           service?     @relation(fields: [serviceId], references: [id])
   serviceId         String?
   comment           String
