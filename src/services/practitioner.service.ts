@@ -79,6 +79,8 @@ export class PractitionerService {
     async update(practitionerData: signupPractitionerDTO, id: string) {
         try {
             const practitionerExist = await this.practitionerRepository.getbyId (id);
+            const salt = await bcrypt.genSalt(10);
+            const hash = await bcrypt.hash(practitionerData.password, salt);
             if (practitionerExist === null) {
                 return <signinPractitionerResponseDTO> {
                     status: "error",
@@ -87,7 +89,9 @@ export class PractitionerService {
                     }
                 } 
             }
-            const response = await this.practitionerRepository.update(practitionerData, id);
+            const response = await this.practitionerRepository.update({ ...practitionerData, password: hash, dob: practitionerData.dob.split('T')[0],}, id);
+            //@ts-ignore
+            delete response?.password
             return <signupPractitionerResponseDTO> {
                 status: "success",
                 content: response

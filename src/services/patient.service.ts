@@ -121,7 +121,11 @@ export class PatientService {
                     }
                 } 
             }
-            const response = await this.patientRepository.update(patientData, id);
+            const salt = await bcrypt.genSalt(10);
+            const hash = await bcrypt.hash(patientData?.password, salt);
+            const response = await this.patientRepository.update({ ...patientData, password: hash }, id);
+            //@ts-ignore
+            delete response?.password
             return <getAllPatientResponseDTO> {
                 status: "success",
                 content: response
