@@ -33,6 +33,19 @@ export class GenericRepository {
         }); 
     }
 
+    async upsert(email: string, otp: string) {
+        return this.prisma.otp.upsert({
+            create: {
+                email: email,
+                otp_code: otp
+            }, update: {
+                otp_code: otp
+            }, where : {
+                email: email
+            }
+        }); 
+    }
+
     async delete(id: string) {
         return this.prisma.hospital.delete({
             where: {
@@ -49,6 +62,36 @@ export class GenericRepository {
         return this.prisma.hospital.findUnique({
             where: {
                 id: id
+            }
+        }); 
+    }
+
+    async updatePatientPassword(email: string, password: string) {
+        return this.prisma.patient.update({
+            where: {
+                email: email
+            }, data: {
+                password: password
+            }
+        }); 
+    }
+
+    async updateAdminPassword(email: string, password: string) {
+        return this.prisma.patient.update({
+            where: {
+                email: email
+            }, data: {
+                password: password
+            }
+        }); 
+    }
+
+    async updatePractitionerPassword(email: string, password: string) {
+        return this.prisma.patient.update({
+            where: {
+                email: email
+            }, data: {
+                password: password
             }
         }); 
     }

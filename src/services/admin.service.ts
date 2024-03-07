@@ -5,7 +5,7 @@ import randomstring from 'randomstring';
 import { AdminRepository, GenericRepository, PatientRepository, PractitionerRepository } from "../repositories";
 import { signupAdminDTO, signinAdminResponseDTO, logoutAdminResponseDTO,
          signupAdminResponseDTO, adminDTO, signinAdminDTO, otpDTO  } from '../dto'; 
-import { sendEmail, verifyEmailTemplate } from '../util';
+import { sendEmail, verifyEmailTemplate, courierMessage } from '../util';
 
 export class AdminService {
     private practitionerRepository: PractitionerRepository = new PractitionerRepository;
@@ -133,6 +133,7 @@ export class AdminService {
         try {
             const response = await this.adminRepository.get (skip, take);
             const total = await this.adminRepository.count ();
+            
             return <signinAdminResponseDTO>{
                 status: "success",
                 total: total,

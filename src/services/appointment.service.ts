@@ -1,17 +1,31 @@
 
-import { AppointmentRepository } from "../repositories";
-import { appointmentResponseDTO, appointmentDTO  } from '../dto'; 
+import { AppointmentRepository, PractitionerRepository } from "../repositories";
+import { appointmentResponseDTO, appointmentDTO  } from '../dto';
+import { courierMessage } from "../util"; 
 
 export class AppointmentService {
     private appointmentRepository: AppointmentRepository;
+    private practitionerRepository: PractitionerRepository;
 
     constructor() {
         this.appointmentRepository = new AppointmentRepository();
+        this.appointmentRepository = new AppointmentRepository();
+        this.practitionerRepository = new PractitionerRepository(); 
     }
 
     async create(appointmentData: appointmentDTO) {
         try {
-            const response = await this.appointmentRepository.create(appointmentData);  
+            const response = await this.appointmentRepository.create(appointmentData);
+            //@ts-ignore
+            const practitioner = await this.practitionerRepository.getbyId(response.practitionerId)
+            //@ts-ignore
+            if(response.status === 'success') {
+                const userId = response.patientId;
+                const title = "Appointment Notification"
+                const body = `you have booked an appointment with ${practitioner?.full_name}`
+                //@ts-ignore
+                courierMessage( userId, title, body)
+            }  
             return <appointmentResponseDTO>{ 
                 status: 'successs',
                 content: response

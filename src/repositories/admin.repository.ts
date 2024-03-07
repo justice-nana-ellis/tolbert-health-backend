@@ -100,4 +100,13 @@ export class AdminRepository {
             });
         }
     }
+
+    async update (adminData: signinAdminDTO, id: string) {
+        return this.prisma.patient.update({
+            where: {
+                id: id,
+            },
+            data: adminData
+        })
+    }
 }
