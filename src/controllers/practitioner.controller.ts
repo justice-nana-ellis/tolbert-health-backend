@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express';
 import { signupPractitionerDTO, signupPractitionerValidationDto, signinPractitionerValidationDto,
-         signinPractitionerDTO  } from '../dto'
+         signinPractitionerDTO,  
+         updatePractitionerValidationDto} from '../dto'
 import { PractitionerService } from '../services/practitioner.service';
 import { getErrorMessages } from '../util'; 
 import { plainToClass } from 'class-transformer';
@@ -54,7 +55,7 @@ export class PractitionerController {
     private async update(req: Request, res: Response) {
       try {
         const postData = req.body;
-        const errorMessages = await getErrorMessages(plainToClass(signupPractitionerValidationDto, req.body));
+        const errorMessages = await getErrorMessages(plainToClass(updatePractitionerValidationDto, req.body));
         if (errorMessages.length > 0) return res.status(200).json({
           status: 'error',
           content: { message: errorMessages }, 

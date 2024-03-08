@@ -166,6 +166,93 @@ export class signupPractitionerValidationDto {
     verified: boolean = false;
 }
 
+export class updatePractitionerValidationDto {
+
+    constructor() {
+        this.id = '';
+        this.email = '';
+        this.full_name = '';
+        this.dob = '';
+        this.pob = '';
+        this.digital_address = '';
+        this.contact = '';
+        this.id_type = '';
+        this.id_number = '';
+        this.status = '';
+        this.qualification = '';
+        this.licence_number = '';
+        this.specialisation = '';
+        this.hospital = '';
+        this.appointments = [];
+        this.verified;
+    }
+
+    //@IsUUID('4')
+    @IsOptional()
+    id: string;
+
+    @IsNotEmpty({ message: 'Email is a required field' })
+    @IsString({ message: 'Email must be a string' })
+    @IsEmail({}, { message: 'Invalid email format' })
+    email: string;
+
+    @IsNotEmpty({ message: 'full_name is a required field' })
+    @IsString({ message: 'full_name must be a string' })
+    @MinLength(3, { message: 'full_name must be at least 3 characters long' })
+    full_name: string;
+
+    @IsString({ message: 'Date of Birth must be a string' })
+    @IsNotEmpty({ message: 'Date of Birth is a required field' })
+    dob: string;
+
+    @IsString({ message: 'Place of Birth must be a string' })
+    @IsNotEmpty({ message: 'Place of Birth is a required field' })
+    pob: string;
+
+    @IsString({ message: 'Digital Address must be a string' })
+    @IsNotEmpty({ message: 'Digital Address is a required field' })
+    digital_address: string;
+
+    @IsString({ message: 'Contact must be a string' })
+    @IsNotEmpty({ message: 'Contact is a required field' })
+    contact: string;
+
+    @IsString({ message: 'ID Type must be a string' })
+    @IsNotEmpty({ message: 'ID Type is a required field' })
+    @IsIn(['ghana_card', 'voter_id', 'passport', 'driving_license'], { message: 'ID Type must be one of: ghana_card, voter_id, passport, or driving_license' })
+    id_type: string;
+
+    @IsString({ message: 'ID Number must be a string' })
+    @IsNotEmpty({ message: 'ID Number is a required field' })
+    @MinLength(5, { message: 'ID Number must be at least 5 characters long' })
+    id_number: string;
+
+    //@IsString({ message: 'Status must be a string' })
+    //@IsNotEmpty({ message: 'Status is a required field' })
+    //@IsIn(['rejected', 'approved', 'pending'], { message: 'Status must be one of: rejected, approved, or pending' })
+    status: string;
+
+    @IsString({ message: 'Qualification must be a string' })
+    @IsNotEmpty({ message: 'Qualification is a required field' })
+    qualification: string;
+
+    @IsString({ message: 'Licence Number must be a string' })
+    @IsNotEmpty({ message: 'Licence Number is a required field' })
+    licence_number: string;
+
+    @IsOptional()
+    specialisation: string;
+
+    @IsOptional()
+    hospital: string;
+
+    @IsOptional()
+    appointments: string[];
+
+    @IsOptional()
+    verified: boolean = false;
+}
+
 export class signinPractitionerValidationDto {
     constructor() {
         this.email = '';
