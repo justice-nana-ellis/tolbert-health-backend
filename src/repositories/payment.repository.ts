@@ -40,6 +40,27 @@ export class PaymentRepository {
             where: {
                 deleted: false
             },
+            include: {
+                patient: {
+                    select: {
+                        id: true,
+                        email: true,
+                        full_name: true,
+                        country: true,
+                        img_url: true,
+                        zip: true,
+                        city: true
+
+                    }
+                },
+                service: {
+                    select: {
+                        id: true,
+                        name: true,
+                        price: true,
+                    }
+                }
+            },
             skip: Number(skip), take: Number(take),
             orderBy: {
                 updatedAt: 'desc' 
