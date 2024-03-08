@@ -19,9 +19,7 @@ export class HospitalRepository {
         return this.prisma.hospital.update({
             where: {
                 id: id
-            }, data: {
-                name: hospitalData.name
-            }
+            }, data: hospitalData
         }); 
     }
 

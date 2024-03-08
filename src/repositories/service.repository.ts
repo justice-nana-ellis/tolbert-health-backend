@@ -20,7 +20,9 @@ export class ServiceRepository {
             where: {
                 id: id
             }, data: {
-                name: serviceData.name
+                name: serviceData.name,
+                //@ts-ignore
+                price: serviceData.price
             }
         }); 
     }
