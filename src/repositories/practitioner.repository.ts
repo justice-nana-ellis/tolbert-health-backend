@@ -80,7 +80,6 @@ export class PractitionerRepository {
         return this.prisma.practitioner.findUnique({
             where: {
                 id: id,
-                deleted: false
             },
             include: {
                 specialisation: {

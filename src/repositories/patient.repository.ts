@@ -43,8 +43,7 @@ export class PatientRepository {
     async getbyId(id: string) {
         return this.prisma.patient.findUnique({
             where: {
-                id: id,
-                deleted: false
+                id: id
             }
         }); 
     }
