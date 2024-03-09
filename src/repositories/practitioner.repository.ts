@@ -119,6 +119,7 @@ export class PractitionerRepository {
                 id_number: true,
                 id_type: true,
                 active: true,
+                deleted: true,
                 licence_number: true,
                 certificates: true,
                 hospital: true,

@@ -58,6 +58,7 @@ export class PatientRepository {
                 email: true,
                 country: true,
                 active: true,
+                deleted: true,
                 createdAt: true,
                 updatedAt: true,
             },
