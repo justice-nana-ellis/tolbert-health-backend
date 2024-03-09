@@ -69,19 +69,16 @@ export class PaymentService {
     async get (skip: number, take: number) {
         try {
             const payment = await this.paymentRepository.get(skip, take);
-            const records = await this.paymentRepository.allRecords();
+            // const records = await this.paymentRepository.allRecords();
             
-            let totalAmount: number = 0;
-            records.forEach(amount => {
-                totalAmount += +amount.amount;
-            });
+            // let totalAmount: number = 0;
+            // records.forEach(amount => {
+            //     totalAmount += +amount.amount;
+            // });
             const total = await this.paymentRepository.count (); 
             return <initialisePaymentResponseDTO> { 
                 status: 'success',
-                total: {
-                    records: total,
-                    amount: totalAmount
-                },
+                total: total,
                 content: payment
             }; 
         } catch (error) {

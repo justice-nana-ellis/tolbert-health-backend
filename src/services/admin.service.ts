@@ -2,7 +2,7 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import randomstring from 'randomstring';
-import { AdminRepository, GenericRepository, PatientRepository, PractitionerRepository } from "../repositories";
+import { AdminRepository, GenericRepository, PatientRepository, PractitionerRepository, PaymentRepository } from "../repositories";
 import { signupAdminDTO, signinAdminResponseDTO, logoutAdminResponseDTO,
          signupAdminResponseDTO, adminDTO, signinAdminDTO, otpDTO  } from '../dto'; 
 import { sendEmail, verifyEmailTemplate, courierMessage, errorHandler } from '../util';
@@ -11,6 +11,7 @@ export class AdminService {
     private practitionerRepository: PractitionerRepository = new PractitionerRepository;
     private patientRepository: PatientRepository = new PatientRepository;
     private genericRepository: GenericRepository = new GenericRepository;
+    private paymentRepository: PaymentRepository = new PaymentRepository;
     private adminRepository: AdminRepository = new AdminRepository;
     private readonly SECRET_KEY = <string>process.env.SECRET_KEY;
 
@@ -220,6 +221,14 @@ export class AdminService {
          
             const _totalDeleted = await this.patientRepository.countDeleted();
             const _totalPatients = await this.patientRepository.count();
+
+            const records = await this.paymentRepository.allRecords();
+            let countRecords = 0;
+            let totalAmount: number = 0;
+            records.forEach(amount => {
+                totalAmount += +amount.amount;
+                countRecords ++;
+            });
             return <signinAdminResponseDTO>{
                 status: "success",
                 content: {
@@ -234,6 +243,10 @@ export class AdminService {
                         approved: totalApproved,
                         rejected: totalRejected,
                         deleted: totalDeleted
+                    },
+                    _payments: {
+                        total: countRecords,
+                        amount: totalAmount
                     }
                 }
             };
