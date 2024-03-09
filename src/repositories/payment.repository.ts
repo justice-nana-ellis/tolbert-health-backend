@@ -68,6 +68,26 @@ export class PaymentRepository {
         }); 
     }
 
+    async allRecords() {
+        return this.prisma.payment.findMany({
+            where: {
+                deleted: false
+            },
+            include: {
+                service: {
+                    select: {
+                        id: true,
+                        name: true,
+                        price: true,
+                    }
+                }
+            },
+            orderBy: {
+                updatedAt: 'desc' 
+            }
+        }); 
+    }
+
     async patientExists(id: string) {
         return this.prisma.patient.findUnique({
             where: {

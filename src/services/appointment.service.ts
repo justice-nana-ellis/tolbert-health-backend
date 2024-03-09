@@ -28,8 +28,7 @@ export class AppointmentService {
             return <appointmentResponseDTO>{ 
                 status: 'successs',
                 content: response
-            };
-            
+            }; 
         } catch (error: any) {
             if (error.code === 'P2002' && error.meta?.target?.includes('title')) {
                 return <appointmentResponseDTO>{ 

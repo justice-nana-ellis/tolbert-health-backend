@@ -16,7 +16,7 @@ export interface completePaymentDTO {
 export interface initialisePaymentResponseDTO {
     status: string;
     content?: any;
-    total?: number;
+    total?: any;
     timestamp?: string;
 }
 
