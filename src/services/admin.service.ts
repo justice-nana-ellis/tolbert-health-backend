@@ -110,6 +110,7 @@ export class AdminService {
     async update(patientData: signinAdminDTO, id: string) {
         try {
             const response: any = await this.adminRepository.update(patientData, id);
+            delete response.password;
             return <signinAdminResponseDTO> {
                 status: "success",
                 content: response

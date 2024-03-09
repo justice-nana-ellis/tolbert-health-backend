@@ -51,9 +51,6 @@ export class PatientRepository {
 
     async getallPatients(skip: number, take: number) {
         return this.prisma.patient.findMany({
-            where: {
-                deleted: false
-            },
             select: {
                 //@ts-ignore
                 id: true,

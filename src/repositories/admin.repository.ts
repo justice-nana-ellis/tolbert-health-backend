@@ -102,7 +102,7 @@ export class AdminRepository {
     }
 
     async update (adminData: signinAdminDTO, id: string) {
-        return this.prisma.patient.update({
+        return this.prisma.admin.update({
             where: {
                 id: id,
             },

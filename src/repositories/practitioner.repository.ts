@@ -104,9 +104,6 @@ export class PractitionerRepository {
     
     async getallPractitioners(skip: number, take: number) {
         return this.prisma.practitioner.findMany({
-            where: {
-                deleted: false
-            },
             select: {
                 //@ts-ignore
                 id: true,
