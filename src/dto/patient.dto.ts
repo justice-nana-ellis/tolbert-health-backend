@@ -18,7 +18,7 @@ export interface signupPatientResponseDTO {
 
 export interface signinPatientResponseDTO {
     status:     string;
-    code?:      string;
+    code?:      number;
     content?:   any;
     timestamp?: string;
     verified?:  boolean;

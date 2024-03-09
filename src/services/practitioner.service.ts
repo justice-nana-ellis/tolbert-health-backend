@@ -114,15 +114,23 @@ export class PractitionerService {
                         "message": "invalid credentials"
                     }
                 };
-            } else if (response.deleted === true) {
+            } else if (response?.active === false) {
                 return <signinPractitionerResponseDTO>{
                     status: "error",
+                    code: 181,
+                    content: {
+                        "message": "Email verification required"
+                    }
+                };
+            } else if (response?.deleted === false) {
+                return <signinPractitionerResponseDTO> {
+                    status: "error",
+                    code: 601,
                     content: {
                         "message": "Account deactivated - contact support"
                     }
                 };
             }
-           
             const match = await bcrypt.compare(patientData.password, response.password)
             if(match) {
                 const payload = {

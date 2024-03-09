@@ -15,7 +15,7 @@ export class PatientRepository {
         }); 
     }
 
-    async signin(patientData: signinPatientDTO) {    
+    async signin(patientData: signinPatientDTO) { 
         return this.prisma.patient.findUnique({
             where: {
                 email: patientData.email

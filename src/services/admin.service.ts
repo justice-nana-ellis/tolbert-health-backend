@@ -70,14 +70,29 @@ export class AdminService {
         try {
             const response: any = await this.adminRepository.signin(patientData); 
             if(response === null) { 
-                return <signinAdminResponseDTO>{
+                return <signinAdminResponseDTO> {
                     status: "error",
                     content: {
                         "message": "invalid credentials"
                     }
                 };
+            } else if (response.active === false) {
+                return <signinAdminResponseDTO> {
+                    status: "error",
+                    code: 181,
+                    content: {
+                        "message": "Email verification required"
+                    }
+                };
+            } else if (response.deleted === false) {
+                return <signinAdminResponseDTO> {
+                    status: "error",
+                    code: 601,
+                    content: {
+                        "message": "Account deactivated - contact support"
+                    }
+                };
             }
-           
             const match = await bcrypt.compare(patientData.password, response.password)
             if(match) {
                 //-- jwt
