@@ -5,7 +5,7 @@ import randomstring from 'randomstring';
 import { GenericRepository, PractitionerRepository } from "../repositories";
 import { signupPractitionerDTO, signupPractitionerResponseDTO, logoutPractitionerResponseDTO,
          signinPractitionerDTO, signinPractitionerResponseDTO,otpDTO, getAllPractitionerResponseDTO  } from '../dto'; 
-import { sendEmail, verifyEmailTemplate } from '../util';
+import { errorHandler, sendEmail, verifyEmailTemplate } from '../util';
 
 export class PractitionerService {
     private practitionerRepository: PractitionerRepository;
@@ -79,8 +79,6 @@ export class PractitionerService {
     async update(practitionerData: signupPractitionerDTO, id: string) {
         try {
             const practitionerExist = await this.practitionerRepository.getbyId (id);
-            // const salt = await bcrypt.genSalt(10);
-            // const hash = await bcrypt.hash(practitionerData.password, salt);
             if (practitionerExist === null) {
                 return <signinPractitionerResponseDTO> {
                     status: "error",
@@ -97,8 +95,6 @@ export class PractitionerService {
                 content: response
             };
         } catch (error) {
-            console.log(error);
-            
             if (error) {
                 return <signupPractitionerResponseDTO>{ 
                     status: 'error',
@@ -129,7 +125,6 @@ export class PractitionerService {
            
             const match = await bcrypt.compare(patientData.password, response.password)
             if(match) {
-                //-- jwt
                 const payload = {
                     "iss": `TOLBERT_HEALTH_SERVICE`,
                     "id": `${response?.id}`,
@@ -208,6 +203,18 @@ export class PractitionerService {
             };
         } catch (error: any) {
               
+        }
+    }
+
+    async top5 () {
+        try {
+            const response = await this.practitionerRepository.top5 ();
+            return <signinPractitionerResponseDTO> {
+                status: "success",
+                content: response
+            };
+        } catch (error: any) {
+              errorHandler(error);
         }
     }
 

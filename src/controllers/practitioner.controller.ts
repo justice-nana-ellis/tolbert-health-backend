@@ -22,6 +22,7 @@ export class PractitionerController {
         this.router.get(`${this.BASE_PATH}/practitioner/pending`, this.pending.bind(this));
         this.router.get(`${this.BASE_PATH}/practitioner/search`, this.search.bind(this));
         this.router.get(`${this.BASE_PATH}/practitioner/count`, this.count.bind(this));
+        this.router.get(`${this.BASE_PATH}/practitioner/top`, this.top5.bind(this));
         this.router.get(`${this.BASE_PATH}/practitioner/`, this.getAll.bind(this));
         this.router.get(`${this.BASE_PATH}/practitioner/:id`, this.getbyid.bind(this));
         this.router.post(`${this.BASE_PATH}/practitioner/signup`, this.signup.bind(this));
@@ -135,6 +136,11 @@ export class PractitionerController {
 
     private async count(req: Request, res: Response) {
       const response = await this.practitionerService.count();
+      res.json(response);
+    }
+
+    private async top5 (req: Request, res: Response) {
+      const response = await this.practitionerService.top5();
       res.json(response);
     }
 

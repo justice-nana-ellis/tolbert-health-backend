@@ -122,11 +122,11 @@ export class PractitionerRepository {
                 licence_number: true,
                 certificates: true,
                 hospital: true,
+                longitude: true,
+                latitude: true,
                 specialisation: true,
                 qualification: true,
                 password: false,
-                createdAt: true,
-                updatedAt: true,
             },
             skip: Number(skip), take: Number(take),
             orderBy: {
@@ -135,10 +135,42 @@ export class PractitionerRepository {
         });
     }
 
+    async top5 () {
+        const totalCount = await this.prisma.practitioner.count(); 
+        const randomSkip = Math.floor(Math.random() * (totalCount - 5)); 
+        return this.prisma.practitioner.findMany({
+            select: {
+                //@ts-ignore
+                id: true,
+                full_name: true,
+                email: true,
+                dob: true,
+                pob: true,
+                img_url: true,
+                digital_address: true,
+                country: true,
+                contact: true,
+                status: true,
+                id_number: true,
+                id_type: true,
+                active: true,
+                licence_number: true,
+                longitude: true,
+                latitude: true,
+                password: false,
+            },
+            skip: randomSkip,
+            take: 5,
+            orderBy: {
+                updatedAt: 'desc' 
+            },
+        });
+    }    
+
     async searchPractitioner(queryString: string, limit: Number) {
         return this.prisma.practitioner.findMany({
           where: {
-            deleted: false,
+            //deleted: false,
             OR: [
               {
                 full_name: {
@@ -170,14 +202,12 @@ export class PractitionerRepository {
                     mode: 'insensitive',
                 },
               },
-              // Include a nested OR clause for practitionerhospitalspecialisation fields
               {
                 practitionerhospitalspecialisation: {
                   some: {
                     OR: [
                       {
                         specialisation: {
-                          // No need for case-insensitive comparison here
                           name: {
                             contains: queryString.toLowerCase(),
                             mode: 'insensitive',
@@ -194,17 +224,28 @@ export class PractitionerRepository {
             id: true,
             full_name: true,
             email: true,
+            rating: true,
             city: true,
             country: true,
             img_url: true,
             qualification: true,
             active: false,
+            longitude: true,
+            latitude: true,
             specialisation: {
                 select: {
                     name:  true
                 }
             },
-            hospital: false,
+            hospital: {
+                select: {
+                    name:  true,
+                    city: true,
+                    zip: true,
+                    street: true,
+                    country: true,
+                }
+            },
           },
           take: Number(limit),
         });

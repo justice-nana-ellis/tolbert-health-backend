@@ -60,6 +60,8 @@ model practitioner {
   licence_number   String
   certificates     String[]       @default([])
   rating           Int?
+  longitude        String?
+  latitude         String?
   specialisation   specialisation? @relation(fields: [specialisationId], references: [id])
   specialisationId String?
   hospital         hospital?       @relation(fields: [hospitalId], references: [id])
