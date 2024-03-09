@@ -21,7 +21,7 @@ export class AppointmentService {
             //@ts-ignore
             if(response) {
                 const title = "Appointment Notification"
-                const body = `you have booked an appointment with ${practitioner?.full_name}`
+                const body = `appointment booked with ${practitioner?.full_name}`
                 //@ts-ignore
                 await courierMessage(response.patientId, title, body);
             }  
@@ -57,8 +57,7 @@ export class AppointmentService {
                   content: { message: 'Internal server error' } 
                 };
               }
-        }
-        
+        } 
     }
 
     async update(appointmentData: appointmentDTO, id: string) {
@@ -96,12 +95,10 @@ export class AppointmentService {
               };
             }
         }
-        
     }
 
     async delete(id: string) {
       try {
-        
           await this.appointmentRepository.delete(id);  
           return <appointmentResponseDTO> {
             status: "success",
@@ -159,12 +156,10 @@ export class AppointmentService {
               };
             }
       }
-      
     }
 
     async getbyId(id: string) {
       try {
-          
           const response = await this.appointmentRepository.getbyId(id);  
           if (response === null) {
             let response:[] = []
@@ -196,6 +191,5 @@ export class AppointmentService {
               };
             }
       }
-      
     }
 }

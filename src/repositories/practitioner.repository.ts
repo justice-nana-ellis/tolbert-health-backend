@@ -47,7 +47,24 @@ export class PractitionerRepository {
                 id: id,
             },
             //@ts-ignore
-            data: practitionerData
+            data: practitionerData,
+            include: {
+                specialisation: {
+                    select: {
+                        id: true,
+                        name: true
+                    }
+                },
+                hospital: {
+                    select: {
+                        id: true,
+                        name: true,
+                        city: true,
+                        street: true,
+                        country: true
+                    }
+                },
+        },
         })
     }
 

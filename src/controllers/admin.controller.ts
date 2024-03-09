@@ -23,6 +23,7 @@ export class AdminController {
         this.router.post(`${this.BASE_PATH}/admin/signup`, this.signup.bind(this));
         this.router.post(`${this.BASE_PATH}/admin/signin`, this.signin.bind(this));
         this.router.post(`${this.BASE_PATH}/admin/logout/:id`, this.logout.bind(this));
+        this.router.patch(`${this.BASE_PATH}/admin/:id`, this.update.bind(this));
         this.router.post(`${this.BASE_PATH}/admin/status/:id`, this.changeStatus.bind(this));
         this.router.post(`${this.BASE_PATH}/admin/signup`, this.signup.bind(this));
     }
@@ -70,6 +71,11 @@ export class AdminController {
           }
         });
       }
+    }
+
+    private async update(req: Request, res: Response) {
+      const response = await this.adminService.update(req.body, req.params.id);
+      res.json(response);
     }
 
     private async logout(req: Request, res: Response) {

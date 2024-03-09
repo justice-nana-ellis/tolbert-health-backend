@@ -169,7 +169,22 @@ export class PatientRepository {
                         id: true,
                         email: true,
                         full_name: true,
-                        img_url: true
+                        img_url: true,
+                        specialisation: {
+                            select: {
+                                id: true,
+                                name: true,
+                            }
+                        },
+                        hospital: {
+                            select: {
+                                id: true,
+                                name: true,
+                                city: true,
+                                street: true,
+                                country: true,
+                            }
+                        },
                     }
                 },
                 service: {

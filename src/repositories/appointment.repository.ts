@@ -36,7 +36,9 @@ export class AppointmentRepository {
                         id: true,
                         email: true,
                         full_name: true,
-                        img_url: true
+                        img_url: true,
+                        specialisation: true,
+                        hospital: true,
                     }
                 },
                 service: {

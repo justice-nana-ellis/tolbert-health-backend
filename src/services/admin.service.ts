@@ -5,14 +5,14 @@ import randomstring from 'randomstring';
 import { AdminRepository, GenericRepository, PatientRepository, PractitionerRepository } from "../repositories";
 import { signupAdminDTO, signinAdminResponseDTO, logoutAdminResponseDTO,
          signupAdminResponseDTO, adminDTO, signinAdminDTO, otpDTO  } from '../dto'; 
-import { sendEmail, verifyEmailTemplate, courierMessage } from '../util';
+import { sendEmail, verifyEmailTemplate, courierMessage, errorHandler } from '../util';
 
 export class AdminService {
     private practitionerRepository: PractitionerRepository = new PractitionerRepository;
     private patientRepository: PatientRepository = new PatientRepository;
     private genericRepository: GenericRepository = new GenericRepository;
     private adminRepository: AdminRepository = new AdminRepository;
-    private readonly SECRET_KEY = <string>process.env.SECRET_KEY
+    private readonly SECRET_KEY = <string>process.env.SECRET_KEY;
 
     constructor() {
         this.adminRepository = new AdminRepository();
@@ -107,6 +107,18 @@ export class AdminService {
         }
     }
 
+    async update(patientData: signinAdminDTO, id: string) {
+        try {
+            const response: any = await this.adminRepository.update(patientData, id);
+            return <signinAdminResponseDTO> {
+                status: "success",
+                content: response
+            };
+        } catch (error) {
+            errorHandler(error);
+        } 
+    }
+
     async logout(id: string) {
         try {
             const response = await this.adminRepository.logout(id);
@@ -184,10 +196,9 @@ export class AdminService {
     async changeStatus(id: string, status: string) {
         try {
             const response = await this.adminRepository.changeStatus(id, status);
-            
             //@ts-ignore
             delete response.password;
-            return <signinAdminResponseDTO>{
+            return <signinAdminResponseDTO> {
                 status: "success",
                 content: {
                     message: `Status changed successfully`
