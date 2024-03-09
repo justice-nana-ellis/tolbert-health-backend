@@ -76,6 +76,29 @@ export class signupPatientValidationDto {
     password: string;
 }
 
+export class updatePatientValidationDto {
+    constructor() {
+        this.id = '';
+        this.email = '';
+        this.full_name = '';
+    }
+
+    //@IsUUID('4')
+    @IsOptional()
+    id: string;
+
+    @IsNotEmpty({ message: 'Email is a required field' })
+    @IsString({ message: 'Email must be a string' })
+    @IsEmail({}, { message: 'Invalid email format' })
+    email: string;
+
+    @IsNotEmpty({ message: 'full_name is a required field' })
+    @IsString({ message: 'full_name must be a string' })
+    @MinLength(3, { message: 'full_name must be at least 3 characters long' })
+    full_name: string;
+
+}
+
 export class signinPatientValidationDto {
     constructor() {
         this.email = '';

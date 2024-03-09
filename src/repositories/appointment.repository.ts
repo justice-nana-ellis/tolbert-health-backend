@@ -18,6 +18,34 @@ export class AppointmentRepository {
                     connect: { id: appointmentData.patient }},
                 service: {
                     connect: { id: appointmentData.service }}
+            },
+            select: {
+                id: true,
+                title: true,
+                date: true,
+                time: true,
+                comment: true,
+                tc: true,
+                payment_completed: true,
+                deleted: true,
+                status: true,
+                expiry: true,
+                patientId: true,
+                practitioner: {
+                    select: {
+                        id: true,
+                        email: true,
+                        full_name: true,
+                        img_url: true
+                    }
+                },
+                service: {
+                    select: {
+                        id: true,
+                        name: true,
+                        price: true
+                    }
+                }
             }
         });
     }

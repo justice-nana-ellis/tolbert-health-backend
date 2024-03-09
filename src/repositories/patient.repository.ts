@@ -142,8 +142,8 @@ export class PatientRepository {
     }
 
     async getAppointment (id: string, status: string[], skipped: number, limit: number) {
-        const skip = Number(skipped)
-        const take = Number(limit)
+        const skip = Number(skipped);
+        const take = Number(limit);
         return this.prisma.appointment.findMany({
             where: {
                 patientId: id,
@@ -152,6 +152,33 @@ export class PatientRepository {
                     in: status,
                 },
                 deleted: false
+            },
+            select: {
+                id: true,
+                title: true,
+                date: true,
+                time: true,
+                comment: true,
+                tc: true,
+                payment_completed: true,
+                deleted: true,
+                status: true,
+                expiry: true,
+                practitioner: {
+                    select: {
+                        id: true,
+                        email: true,
+                        full_name: true,
+                        img_url: true
+                    }
+                },
+                service: {
+                    select: {
+                        id: true,
+                        name: true,
+                        price: true
+                    }
+                }
             },
             take: take,
             skip: skip

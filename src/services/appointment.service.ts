@@ -17,14 +17,13 @@ export class AppointmentService {
         try {
             const response = await this.appointmentRepository.create(appointmentData);
             //@ts-ignore
-            const practitioner = await this.practitionerRepository.getbyId(response.practitionerId)
+            const practitioner = await this.practitionerRepository.getbyId(response.practitioner.id);
             //@ts-ignore
-            if(response.status === 'success') {
-                const userId = response.patientId;
+            if(response) {
                 const title = "Appointment Notification"
                 const body = `you have booked an appointment with ${practitioner?.full_name}`
                 //@ts-ignore
-                courierMessage( userId, title, body)
+                await courierMessage(response.patientId, title, body);
             }  
             return <appointmentResponseDTO>{ 
                 status: 'successs',

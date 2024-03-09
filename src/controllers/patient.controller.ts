@@ -1,7 +1,8 @@
 
 import express, { Request, Response } from 'express';
 import { signupPatientDTO, signinPatientDTO, signupPatientValidationDto,
-         signinPatientValidationDto  } from '../dto';
+         signinPatientValidationDto,  
+         updatePatientValidationDto} from '../dto';
 import { plainToClass } from 'class-transformer';
 import { PatientService } from '../services';
 import { getErrorMessages } from '../util'; 
@@ -77,7 +78,7 @@ export class PatientController {
     private async update(req: Request, res: Response) {
       try {
         const postData: signupPatientDTO = req.body;
-        const errorMessages = await getErrorMessages(plainToClass(signupPatientValidationDto, req.body));
+        const errorMessages = await getErrorMessages(plainToClass(updatePatientValidationDto, req.body));
         if (errorMessages.length > 0) return res.status(200).json({
           status: 'error',
           content: { message: errorMessages }, 
