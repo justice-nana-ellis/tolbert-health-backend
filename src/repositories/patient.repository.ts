@@ -72,7 +72,7 @@ export class PatientRepository {
         return this.prisma.patient.findMany({
             where: {
                 deleted: false,
-                OR: [
+                AND: [
                     {
                         full_name: {
                             contains: queryString.toLowerCase(),
@@ -90,7 +90,8 @@ export class PatientRepository {
                 zip: true,
                 access_level: true,
                 active: true,
-                verified: true
+                verified: true,
+                deleted: true
             },
             take: Number(limit)
         });

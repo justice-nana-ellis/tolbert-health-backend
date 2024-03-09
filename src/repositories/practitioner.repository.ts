@@ -170,8 +170,8 @@ export class PractitionerRepository {
     async searchPractitioner(queryString: string, limit: Number) {
         return this.prisma.practitioner.findMany({
           where: {
-            //deleted: false,
-            OR: [
+            deleted: false,
+            AND: [
               {
                 full_name: {
                     contains: queryString.toLowerCase(),

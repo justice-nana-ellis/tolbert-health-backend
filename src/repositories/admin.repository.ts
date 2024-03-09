@@ -66,11 +66,7 @@ export class AdminRepository {
     }
 
     async count () {
-        return this.prisma.admin.count({
-            where: {
-                deleted: false
-            }
-        });
+        return this.prisma.admin.count();
     }
 
     async changeStatus(id: string, status: string) {
