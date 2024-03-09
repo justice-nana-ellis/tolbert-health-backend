@@ -23,7 +23,7 @@ const PORT = parseInt(<string>process.env.PORT);
     
     app.listen(PORT, () => {
         //console.clear();
-        console.log(`🚀 Server Running @ Port ${PORT} ⚡`);
+        console.log(`🚀 Server Running @ Port ${PORT} ⚡\n`);
     });
 
 })();

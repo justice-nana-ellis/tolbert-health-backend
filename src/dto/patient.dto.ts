@@ -17,11 +17,12 @@ export interface signupPatientResponseDTO {
 }
 
 export interface signinPatientResponseDTO {
-    status: string;
-    content?: any;
+    status:     string;
+    code?:      string;
+    content?:   any;
     timestamp?: string;
-    verified?: boolean;
-    token?: string;
+    verified?:  boolean;
+    token?:     string;
 }
 
 export interface signinPatientDTO {

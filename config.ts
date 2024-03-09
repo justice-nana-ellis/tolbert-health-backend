@@ -5,8 +5,8 @@ export const db = async() => {
     try {
         await prisma.$connect();
         console.log('🔌 Database connected..');
-    } catch (ex) {
-        console.log('Error connecting to Database: ', ex);
+    } catch (error) {
+        console.log('\n🚧 Database Connection Error.. \n');
     }    
 }
 

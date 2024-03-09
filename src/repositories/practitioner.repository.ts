@@ -171,7 +171,7 @@ export class PractitionerRepository {
         return this.prisma.practitioner.findMany({
           where: {
             deleted: false,
-            AND: [
+            OR: [
               {
                 full_name: {
                     contains: queryString.toLowerCase(),
@@ -230,6 +230,7 @@ export class PractitionerRepository {
             img_url: true,
             qualification: true,
             active: false,
+            deleted: true,
             longitude: true,
             latitude: true,
             specialisation: {

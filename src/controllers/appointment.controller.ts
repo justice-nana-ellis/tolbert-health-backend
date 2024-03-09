@@ -19,7 +19,7 @@ export class AppointmentController {
 
     private initializeRoutes() {
         this.router.post(`${this.BASE_PATH}/appointment`, this.create.bind(this));
-        this.router.patch(`${this.BASE_PATH}/appointment/:id`, this.update.bind(this));
+        this.router.post(`${this.BASE_PATH}/appointment/:id`, this.update.bind(this));
         this.router.delete(`${this.BASE_PATH}/appointment/:id`, this.delete.bind(this));
         this.router.get(`${this.BASE_PATH}/appointment`, this.get.bind(this));
         this.router.get(`${this.BASE_PATH}/appointment/:id`, this.getbyId.bind(this));

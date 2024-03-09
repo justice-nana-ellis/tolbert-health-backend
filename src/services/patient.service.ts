@@ -63,6 +63,8 @@ export class PatientService {
     async signin(patientData: signinPatientDTO) {
         try {
             const response: any = await this.patientRepository.signin(patientData); 
+            console.log(response);
+            
             if(response === null) { 
                 return <signinPatientResponseDTO>{
                     status: "error",
