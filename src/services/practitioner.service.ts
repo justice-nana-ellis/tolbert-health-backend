@@ -308,4 +308,23 @@ export class PractitionerService {
             }
         }
     }
+
+    async appointments(id: string, status: string[], skip: number, take: number) {
+        try {
+            const response = await this.practitionerRepository.getAppointment(id, status, skip, take);
+            return <signinPractitionerResponseDTO>{
+                status: "success",
+                content: response
+            };
+        } catch (error) {
+            if (error) {
+                return <logoutPractitionerResponseDTO> {
+                    status: "error",
+                    content: {
+                        "message": "Internal server error"
+                    }
+                }
+            }
+        }
+    }
 }

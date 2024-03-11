@@ -351,4 +351,64 @@ export class PractitionerRepository {
             });
         }
     }
+
+    async getAppointment (id: string, status: string[], skipped: number, limit: number) {
+        const skip = Number(skipped);
+        const take = Number(limit);
+        return this.prisma.appointment.findMany({
+            where: {
+                practitionerId: id,
+                // status: {
+                //     //@ts-ignore
+                //     in: status,
+                // },
+                //deleted: false
+            },
+            // select: {
+            //     id: true,
+            //     title: true,
+            //     date: true,
+            //     time: true,
+            //     comment: true,
+            //     tc: true,
+            //     payment_completed: true,
+            //     deleted: true,
+            //     status: true,
+            //     expiry: true,
+            //     patient: {
+            //         select: {
+            //             id: true,
+            //             full_name: true,
+            //             email: true,
+            //             img_url: true,
+            //             zip: true,
+            //             country: true,
+            //         }
+            //     },
+            //     practitioner: {
+            //         select: {
+            //             id: true,
+            //             email: true,
+            //             full_name: true,
+            //             img_url: true,
+            //             specialisation: {
+            //                 select: {
+            //                     id: true,
+            //                     name: true,
+            //                 }
+            //             }
+            //         }
+            //     },
+            //     service: {
+            //         select: {
+            //             id: true,
+            //             name: true,
+            //             price: true
+            //         }
+            //     }
+            //},
+            take: take,
+            skip: skip
+        });
+    }
 }

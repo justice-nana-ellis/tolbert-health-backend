@@ -5,7 +5,7 @@ import randomstring from 'randomstring';
 import { AdminRepository, GenericRepository, PatientRepository, PractitionerRepository, PaymentRepository } from "../repositories";
 import { signupAdminDTO, signinAdminResponseDTO, logoutAdminResponseDTO,
          signupAdminResponseDTO, adminDTO, signinAdminDTO, otpDTO  } from '../dto'; 
-import { sendEmail, verifyEmailTemplate, courierMessage, errorHandler } from '../util';
+import { sendEmail, verifyEmailTemplate, courierMessage, errorHandler, statusChangedEmailTemplate } from '../util';
 
 export class AdminService {
     private practitionerRepository: PractitionerRepository = new PractitionerRepository;
@@ -212,7 +212,10 @@ export class AdminService {
 
     async changeStatus(id: string, status: string) {
         try {
+            const practitioners = await this.practitionerRepository.getbyId(id);
             const response = await this.adminRepository.changeStatus(id, status);
+            //@ts-ignore
+            sendEmail(statusChangedEmailTemplate(practitioners?.full_name.split(' ')[1], status), response.email, `Status Updated`);
             //@ts-ignore
             delete response.password;
             return <signinAdminResponseDTO> {

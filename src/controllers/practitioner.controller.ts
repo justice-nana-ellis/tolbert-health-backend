@@ -25,6 +25,7 @@ export class PractitionerController {
         this.router.get(`${this.BASE_PATH}/practitioner/top`, this.top5.bind(this));
         this.router.get(`${this.BASE_PATH}/practitioner/`, this.getAll.bind(this));
         this.router.get(`${this.BASE_PATH}/practitioner/:id`, this.getbyid.bind(this));
+        this.router.get(`${this.BASE_PATH}/practitioner/appointment`, this.appointment.bind(this));
         this.router.post(`${this.BASE_PATH}/practitioner/signup`, this.signup.bind(this));
         this.router.post(`${this.BASE_PATH}/practitioner/signin`, this.signin.bind(this));
         this.router.patch(`${this.BASE_PATH}/practitioner/:id`, this.update.bind(this));
@@ -151,6 +152,13 @@ export class PractitionerController {
 
     private async delete(req: Request, res: Response) {
       const response = await this.practitionerService.delete(req.params.id);
+      res.json(response);
+    }
+
+    private async appointment(req: Request, res: Response) {
+      const { practitionerId, status } = req.body;
+      //@ts-ignore
+      const response = await this.practitionerService.appointments(practitionerId, status, req.query.skip, req.query.take);
       res.json(response);
     }
 
