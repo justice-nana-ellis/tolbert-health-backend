@@ -84,7 +84,7 @@ export class AdminService {
                         "message": "Email verification required"
                     }
                 };
-            } else if (response.deleted === false) {
+            } else if (response.deleted === true) {
                 return <signinAdminResponseDTO> {
                     status: "error",
                     code: 601,
