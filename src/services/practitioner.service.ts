@@ -122,7 +122,7 @@ export class PractitionerService {
                         "message": "Email verification required"
                     }
                 };
-            } else if (response?.deleted === false) {
+            } else if (response?.deleted === true) {
                 return <signinPractitionerResponseDTO> {
                     status: "error",
                     code: 601,
