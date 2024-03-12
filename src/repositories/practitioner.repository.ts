@@ -12,7 +12,7 @@ export class PractitionerRepository {
     async signup(practitionerData: signupPractitionerDTO) {
         return this.prisma.practitioner.create({
             //@ts-ignore
-            data: practitionerData
+            data: { ...practitionerData, email: practitionerData.email.trim(), password: practitionerData.password.trim() }
         }); 
     }
 
@@ -27,12 +27,11 @@ export class PractitionerRepository {
         }); 
     }
     
-    async signin(patientData: signinPractitionerDTO) {
+    async signin(practitionerData: signinPractitionerDTO) {
         try {
-            
             return this.prisma.practitioner.findUnique({
                 where: {
-                    email: patientData.email
+                    email: practitionerData.email
                 }
             });
         } catch (error: any) {
@@ -352,61 +351,60 @@ export class PractitionerRepository {
         }
     }
 
-    async getAppointment (id: string, status: string[], skipped: number, limit: number) {
+    async getAppointment(id: string, status: string[], skipped: number, limit: number) {
         const skip = Number(skipped);
         const take = Number(limit);
         return this.prisma.appointment.findMany({
             where: {
-                practitionerId: id,
-                // status: {
-                //     //@ts-ignore
-                //     in: status,
-                // },
-                //deleted: false
+                patientId: id,
+                status: {
+                    //@ts-ignore
+                    in: status,
+                },
+                deleted: false
             },
-            // select: {
-            //     id: true,
-            //     title: true,
-            //     date: true,
-            //     time: true,
-            //     comment: true,
-            //     tc: true,
-            //     payment_completed: true,
-            //     deleted: true,
-            //     status: true,
-            //     expiry: true,
-            //     patient: {
-            //         select: {
-            //             id: true,
-            //             full_name: true,
-            //             email: true,
-            //             img_url: true,
-            //             zip: true,
-            //             country: true,
-            //         }
-            //     },
-            //     practitioner: {
-            //         select: {
-            //             id: true,
-            //             email: true,
-            //             full_name: true,
-            //             img_url: true,
-            //             specialisation: {
-            //                 select: {
-            //                     id: true,
-            //                     name: true,
-            //                 }
-            //             }
-            //         }
-            //     },
-            //     service: {
-            //         select: {
-            //             id: true,
-            //             name: true,
-            //             price: true
-            //         }
-            //     }
-            //},
+            select: {
+                id: true,
+                title: true,
+                date: true,
+                time: true,
+                comment: true,
+                tc: true,
+                payment_completed: true,
+                deleted: true,
+                status: true,
+                expiry: true,
+                practitioner: {
+                    select: {
+                        id: true,
+                        email: true,
+                        full_name: true,
+                        img_url: true,
+                        specialisation: {
+                            select: {
+                                id: true,
+                                name: true,
+                            }
+                        },
+                        hospital: {
+                            select: {
+                                id: true,
+                                name: true,
+                                city: true,
+                                street: true,
+                                country: true,
+                            }
+                        },
+                    }
+                },
+                service: {
+                    select: {
+                        id: true,
+                        name: true,
+                        price: true
+                    }
+                }
+            },
             take: take,
             skip: skip
         });

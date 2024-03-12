@@ -156,10 +156,9 @@ export class PractitionerController {
     }
 
     private async appointment(req: Request, res: Response) {
-      const { practitionerId, status } = req.body;
       //@ts-ignore
-      const response = await this.practitionerService.appointments(practitionerId, status, req.query.skip, req.query.take);
-      res.json(response);
+      const response = await this.practitionerService.getAppointment(req.body.patientId, req.body.status, req.query.skip, req.query.take);
+      res.status(200).json(response);
     }
 
 }

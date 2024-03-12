@@ -5,11 +5,12 @@ const seed = async() => {
   try {
       await db();
       const admin = await prisma.admin.create({
+        data: {
             access_level: 'super_admin',
             full_name: 'Inventory',
             email: 'inventory.@tolberthealth.com',
             password: '$2b$10$wQItRcbkIlREABuuvnnCJ.FmuQ8/wnM7zykNy0DsYZL6YUx5V3V6O' //-Admin@123!
-      });
+  }});
       console.log('Seeded admin: ', admin);
   } catch (ex) {
       console.error('Error during seeding: ', ex);

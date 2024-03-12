@@ -26,16 +26,16 @@ export class AppointmentService {
             
             //@ts-ignore
             if(response) {
-             
                 const title = "Appointment Notification"
                 const body = `appointment booked with ${practitioner?.full_name}`
                 //@ts-ignore
                 await courierMessage(response.patientId, title, body);
                 // - practitioner 
                 const title_ = "Appointment Notification"
-                const body_ = `appointment booked by ${patient?.full_name}`
+                const body_ = `${patient?.full_name} has booked an appointment with you 🩺💊`
+                console.log(practitioner?.id);
                 //@ts-ignore
-                await courierMessage(response?.practitionerId, title_, body_);
+                await courierMessage(practitioner?.id, title_, body_);
             }  
             return <appointmentResponseDTO>{ 
                 status: 'successs',

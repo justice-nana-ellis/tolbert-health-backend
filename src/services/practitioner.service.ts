@@ -2,13 +2,14 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import randomstring from 'randomstring';
-import { GenericRepository, PractitionerRepository } from "../repositories";
+import { GenericRepository, PractitionerRepository, PatientRepository } from "../repositories";
 import { signupPractitionerDTO, signupPractitionerResponseDTO, logoutPractitionerResponseDTO,
          signinPractitionerDTO, signinPractitionerResponseDTO,otpDTO, getAllPractitionerResponseDTO  } from '../dto'; 
 import { errorHandler, sendEmail, verifyEmailTemplate } from '../util';
 
 export class PractitionerService {
     private practitionerRepository: PractitionerRepository;
+    private patientRepository: PatientRepository;
     private genericRepository: GenericRepository;
     private readonly SECRET_KEY = <string>process.env.SECRET_KEY
     
@@ -16,6 +17,7 @@ export class PractitionerService {
     constructor() {
         this.practitionerRepository = new PractitionerRepository();
         this.genericRepository = new GenericRepository();
+        this.patientRepository = new PatientRepository();
     }
 
     async signup(practitionerData: signupPractitionerDTO) {
@@ -62,6 +64,8 @@ export class PractitionerService {
                 };
             }
         } catch (error: any) {
+            console.log(error);
+            
             if (error.code === 'P2002' && error.meta?.target?.includes('email')) {
                 return <signupPractitionerResponseDTO>{ 
                   status: 'error',
@@ -104,9 +108,11 @@ export class PractitionerService {
         }
     }
 
-    async signin(patientData: signinPractitionerDTO) {
+    async signin(practitionerData: signinPractitionerDTO) {
         try {
-            const response: any = await this.practitionerRepository.signin(patientData); 
+            const response: any = await this.practitionerRepository.signin(practitionerData); 
+            console.log(response);
+            
             if(response === null) { 
                 return <signinPractitionerResponseDTO>{
                     status: "error",
@@ -131,7 +137,7 @@ export class PractitionerService {
                     }
                 };
             }
-            const match = await bcrypt.compare(patientData.password, response.password)
+            const match = await bcrypt.compare(practitionerData.password, response.password)
             if(match) {
                 const payload = {
                     "iss": `TOLBERT_HEALTH_SERVICE`,
@@ -309,22 +315,19 @@ export class PractitionerService {
         }
     }
 
-    async appointments(id: string, status: string[], skip: number, take: number) {
+    async getAppointment(id: string, status: string[], skip:number, take: number) {
         try {
             const response = await this.practitionerRepository.getAppointment(id, status, skip, take);
-            return <signinPractitionerResponseDTO>{
+            console.log(response);
+            
+            //const total = await this.patientRepository.countAppointment(id, status);
+            return {
                 status: "success",
+                //total: total,
                 content: response
             };
-        } catch (error) {
-            if (error) {
-                return <logoutPractitionerResponseDTO> {
-                    status: "error",
-                    content: {
-                        "message": "Internal server error"
-                    }
-                }
-            }
+        } catch (error: any) {
+            
         }
     }
 }
