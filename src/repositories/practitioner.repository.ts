@@ -223,17 +223,25 @@ export class PractitionerRepository {
             id: true,
             full_name: true,
             email: true,
+            dob: true,
             rating: true,
             city: true,
             country: true,
             img_url: true,
+            id_type: true,
+            id_number: true,
             qualification: true,
-            active: false,
+            active: true,
+            verified: true,
             deleted: true,
             longitude: true,
             latitude: true,
+            access_level: true,
+            licence_number: true,
+            certificates: true,
             specialisation: {
                 select: {
+                    id: true,
                     name:  true
                 }
             },
@@ -246,6 +254,8 @@ export class PractitionerRepository {
                     country: true,
                 }
             },
+            createdAt: true,
+            updatedAt: true,
           },
           take: Number(limit),
         });
