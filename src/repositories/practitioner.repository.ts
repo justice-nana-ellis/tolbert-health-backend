@@ -394,8 +394,6 @@ export class PractitionerRepository {
                         full_name: true,
                         email: true,
                         country: true,
-                        active: true,
-                        deleted: true,
                     }
                 },
                 service: {
