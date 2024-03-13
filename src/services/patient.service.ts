@@ -259,8 +259,6 @@ export class PatientService {
         try {
             const response = await this.patientRepository.getPatientAppointment(id, status, skip, take);
             const total = await this.patientRepository.countAppointment(id, status);
-            console.log(response);
-            
             return <getAllPatientResponseDTO>{
                 status: "success",
                 total: total,
@@ -274,8 +272,6 @@ export class PatientService {
     async verifyOtp(email: string, otp: string) {
         try {
             const response = await this.genericRepository.verifyOtpEmail(email);
-            console.log(response);
-            
         } catch (error) {
             
         }
