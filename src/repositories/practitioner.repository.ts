@@ -396,9 +396,6 @@ export class PractitionerRepository {
                         country: true,
                         active: true,
                         deleted: true,
-                        access_level: true,
-                        createdAt: true,
-                        updatedAt: true,
                     }
                 },
                 service: {
