@@ -20,7 +20,7 @@ export class PatientController {
     }
 
     private initializeRoutes() {
-        this.router.get(`${this.BASE_PATH}/patient/appointment`, this.appointment.bind(this));
+        this.router.get(`${this.BASE_PATH}/patient/appointment`, this.patientAppointment.bind(this));
         this.router.get(`${this.BASE_PATH}/patient/search`, this.search.bind(this));
         this.router.get(`${this.BASE_PATH}/patient/count`, this.count.bind(this));
         this.router.get(`${this.BASE_PATH}/patient`, this.getAll.bind(this));
@@ -139,9 +139,9 @@ export class PatientController {
       res.status(200).json(response);
     }
 
-    private async appointment(req: Request, res: Response) {
+    private async patientAppointment(req: Request, res: Response) {
       //@ts-ignore
-      const response = await this.patientService.getAppointment(req.body.patientId, req.body.status, req.query.skip, req.query.take);
+      const response = await this.patientService.get(req.body.patientId, req.body.status, req.query.skip, req.query.take);
       res.status(200).json(response);
     }
 

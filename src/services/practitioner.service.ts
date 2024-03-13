@@ -315,19 +315,22 @@ export class PractitionerService {
         }
     }
 
-    async getAppointment(id: string, status: string[], skip:number, take: number) {
+    async appointment(id: string, status: string[], skip: number, take: number) {
         try {
-            const response = await this.practitionerRepository.getAppointment(id, status, skip, take);
-            console.log(response);
-            
-            //const total = await this.patientRepository.countAppointment(id, status);
+            const response = await this.practitionerRepository.getPractitionerAppointment(id, status, skip, take);
             return {
                 status: "success",
-                //total: total,
                 content: response
             };
         } catch (error: any) {
-            
+            if (error) {
+                return <logoutPractitionerResponseDTO> {
+                    status: "error",
+                    content: {
+                        "message": "Internal server error"
+                    }
+                }
+            }
         }
     }
 }

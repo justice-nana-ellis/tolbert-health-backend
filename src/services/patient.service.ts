@@ -257,8 +257,10 @@ export class PatientService {
 
     async getAppointment(id: string, status: string[], skip:number, take: number) {
         try {
-            const response = await this.patientRepository.getAppointment(id, status, skip, take);
+            const response = await this.patientRepository.getPatientAppointment(id, status, skip, take);
             const total = await this.patientRepository.countAppointment(id, status);
+            console.log(response);
+            
             return <getAllPatientResponseDTO>{
                 status: "success",
                 total: total,

@@ -361,12 +361,12 @@ export class PractitionerRepository {
         }
     }
 
-    async getAppointment(id: string, status: string[], skipped: number, limit: number) {
+    async getPractitionerAppointment (id: string, status: string[], skipped: number, limit: number) {
         const skip = Number(skipped);
         const take = Number(limit);
         return this.prisma.appointment.findMany({
             where: {
-                patientId: id,
+                practitionerId: id,
                 status: {
                     //@ts-ignore
                     in: status,
@@ -384,6 +384,7 @@ export class PractitionerRepository {
                 deleted: true,
                 status: true,
                 expiry: true,
+                patientId: true,
                 practitioner: {
                     select: {
                         id: true,

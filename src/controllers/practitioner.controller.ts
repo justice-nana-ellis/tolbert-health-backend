@@ -25,7 +25,7 @@ export class PractitionerController {
         this.router.get(`${this.BASE_PATH}/practitioner/top`, this.top5.bind(this));
         this.router.get(`${this.BASE_PATH}/practitioner/`, this.getAll.bind(this));
         this.router.get(`${this.BASE_PATH}/practitioner/:id`, this.getbyid.bind(this));
-        this.router.get(`${this.BASE_PATH}/practitioner/appointment`, this.appointment.bind(this));
+        this.router.post(`${this.BASE_PATH}/practitioner/appointment`, this.appointment.bind(this));
         this.router.post(`${this.BASE_PATH}/practitioner/signup`, this.signup.bind(this));
         this.router.post(`${this.BASE_PATH}/practitioner/signin`, this.signin.bind(this));
         this.router.patch(`${this.BASE_PATH}/practitioner/:id`, this.update.bind(this));
@@ -157,7 +157,7 @@ export class PractitionerController {
 
     private async appointment(req: Request, res: Response) {
       //@ts-ignore
-      const response = await this.practitionerService.getAppointment(req.body.patientId, req.body.status, req.query.skip, req.query.take);
+      const response = await this.practitionerService.appointment(req.body.practitionerId, req.body.status, req.query.skip, req.query.take);
       res.status(200).json(response);
     }
 
