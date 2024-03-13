@@ -387,27 +387,18 @@ export class PractitionerRepository {
                 status: true,
                 expiry: true,
                 patientId: true,
-                practitioner: {
+                practitionerId: true,
+                patient: {
                     select: {
                         id: true,
-                        email: true,
                         full_name: true,
-                        img_url: true,
-                        specialisation: {
-                            select: {
-                                id: true,
-                                name: true,
-                            }
-                        },
-                        hospital: {
-                            select: {
-                                id: true,
-                                name: true,
-                                city: true,
-                                street: true,
-                                country: true,
-                            }
-                        },
+                        email: true,
+                        country: true,
+                        active: true,
+                        deleted: true,
+                        access_level: true,
+                        createdAt: true,
+                        updatedAt: true,
                     }
                 },
                 service: {
