@@ -202,7 +202,10 @@ export class PatientRepository {
                 }
             },
             take: take,
-            skip: skip
+            skip: skip,
+            orderBy: {
+                updatedAt: 'desc' 
+            }
         });
     }
 

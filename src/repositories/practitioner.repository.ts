@@ -410,7 +410,10 @@ export class PractitionerRepository {
                 }
             },
             take: take,
-            skip: skip
+            skip: skip,
+            orderBy: {
+                updatedAt: 'desc' 
+            }
         });
     }
 }
