@@ -29,6 +29,7 @@ model patient {
   country      String?
   zip          String?
   city         String? 
+  contact      String?
   img_url      String?
   active       Boolean       @default(false)
   payment      payment[]

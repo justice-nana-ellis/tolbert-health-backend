@@ -395,6 +395,7 @@ export class PractitionerRepository {
                         email: true,
                         country: true,
                         img_url: true,
+                        contact: true
                     }
                 },
                 service: {
