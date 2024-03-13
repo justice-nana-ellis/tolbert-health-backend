@@ -28,7 +28,7 @@ export class PractitionerController {
         this.router.post(`${this.BASE_PATH}/practitioner/appointment`, this.appointment.bind(this));
         this.router.post(`${this.BASE_PATH}/practitioner/signup`, this.signup.bind(this));
         this.router.post(`${this.BASE_PATH}/practitioner/signin`, this.signin.bind(this));
-        this.router.patch(`${this.BASE_PATH}/practitioner/:id`, this.update.bind(this));
+        this.router.post(`${this.BASE_PATH}/practitioner/:id`, this.update.bind(this));
         this.router.post(`${this.BASE_PATH}/practitioner/logout/:id`, this.logout.bind(this));
         this.router.delete(`${this.BASE_PATH}/practitioner/delete/:id`, this.delete.bind(this));
     }
