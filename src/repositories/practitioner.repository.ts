@@ -241,6 +241,14 @@ export class PractitionerRepository {
             access_level: true,
             licence_number: true,
             certificates: true,
+            service: {
+                select: {
+                    id: true,
+                    name: true,
+                    price: true,
+                    practitionerId: true
+                }
+            },
             specialisation: {
                 select: {
                     id: true,
