@@ -28,7 +28,7 @@ model patient {
   password     String
   country      String?
   zip          String?
-  city         String? 
+  city         String?
   contact      String?
   img_url      String?
   active       Boolean       @default(false)
@@ -42,128 +42,153 @@ model patient {
 }
 
 model practitioner {
-  id               String         @id @unique @default(uuid())
-  email            String         @unique
-  full_name        String
-  password         String
-  dob              String
-  pob              String
-  country          String?
-  zip              String?
-  city             String?  
-  img_url          String
-  digital_address  String
-  contact          String
-  id_type          indentity_card @default(ghana_card)
-  status           statuses?      @default(pending)
-  id_number        String
-  qualification    String
-  licence_number   String
-  certificates     String[]       @default([])
-  rating           Int?
-  longitude        String?
-  latitude         String?
-  specialisation   specialisation? @relation(fields: [specialisationId], references: [id])
-  specialisationId String?
-  hospital         hospital?       @relation(fields: [hospitalId], references: [id])
-  hospitalId       String?
-  access_level     access?        @default(practitioner)
-  active           Boolean        @default(false)
-  verified         Boolean        @default(false)
-  deleted          Boolean?       @default(false)
-  createdAt        DateTime?      @default(now()) @map("created_at")
-  updatedAt        DateTime?      @updatedAt @map("updated_at")
-  appointment      appointment[]
+  id                                 String                               @id @unique @default(uuid())
+  email                              String                               @unique
+  full_name                          String
+  password                           String
+  dob                                String
+  pob                                String
+  country                            String?
+  zip                                String?
+  city                               String?
+  img_url                            String
+  digital_address                    String
+  contact                            String
+  id_type                            indentity_card                       @default(ghana_card)
+  status                             statuses?                            @default(pending)
+  id_number                          String
+  qualification                      String
+  licence_number                     String
+  certificates                       String[]                             @default([])
+  rating                             Int?
+  longitude                          String?
+  latitude                           String?
+  specialisation                     specialisation?                      @relation(fields: [specialisationId], references: [id])
+  specialisationId                   String?
+  hospital                           hospital?                            @relation(fields: [hospitalId], references: [id])
+  hospitalId                         String?
+  access_level                       access?                              @default(practitioner)
+  active                             Boolean                              @default(false)
+  verified                           Boolean                              @default(false)
+  deleted                            Boolean?                             @default(false)
+  createdAt                          DateTime?                            @default(now()) @map("created_at")
+  updatedAt                          DateTime?                            @updatedAt @map("updated_at")
+  service                            service[]
+  appointment                        appointment[]
   practitionerhospitalspecialisation practitionerhospitalspecialisation[]
+  WorkingHours                       WorkingHours[]
 }
 
 model specialisation {
-  id           String        @id @unique @default(uuid())
-  name         String        @unique
-  createdAt    DateTime      @default(now()) @map("created_at")
-  updatedAt    DateTime      @updatedAt @map("updated_at")
-  practitioner practitioner[]
-  deleted      Boolean?      @default(false)
+  id                                 String                               @id @unique @default(uuid())
+  name                               String                               @unique
+  createdAt                          DateTime                             @default(now()) @map("created_at")
+  updatedAt                          DateTime                             @updatedAt @map("updated_at")
+  practitioner                       practitioner[]
+  deleted                            Boolean?                             @default(false)
   practitionerhospitalspecialisation practitionerhospitalspecialisation[]
 }
 
 model hospital {
-  id           String         @id @unique @default(uuid())
-  name         String         @unique
-  city         String
-  zip          String
-  street       String
-  country      String
-  deleted      Boolean?   @default(false)
-  createdAt    DateTime?      @default(now()) @map("created_at")
-  updatedAt    DateTime       @updatedAt @map("updated_at") 
-  practitioner practitioner[]
+  id                                 String                               @id @unique @default(uuid())
+  name                               String                               @unique
+  city                               String
+  zip                                String
+  street                             String
+  country                            String
+  deleted                            Boolean?                             @default(false)
+  createdAt                          DateTime?                            @default(now()) @map("created_at")
+  updatedAt                          DateTime                             @updatedAt @map("updated_at")
+  practitioner                       practitioner[]
   practitionerhospitalspecialisation practitionerhospitalspecialisation[]
 }
 
 model practitionerhospitalspecialisation {
   practitionerId   String
-  practitioner     practitioner?  @relation(fields: [practitionerId], references: [id])
+  practitioner     practitioner?   @relation(fields: [practitionerId], references: [id])
   hospitalId       String
-  hospital         hospital?  @relation(fields: [hospitalId], references: [id])
+  hospital         hospital?       @relation(fields: [hospitalId], references: [id])
   specialisationId String
-  specialisation   specialisation?  @relation(fields: [specialisationId], references: [id])
+  specialisation   specialisation? @relation(fields: [specialisationId], references: [id])
 
   @@id([practitionerId, hospitalId, specialisationId])
 }
 
 model appointment {
-  id                String       @id @unique @default(uuid())
-  title             String       
+  id                String        @id @unique @default(uuid())
+  title             String
   date              DateTime
   time              String?
   practitioner      practitioner? @relation(fields: [practitionerId], references: [id])
   practitionerId    String?
   patient           patient?      @relation(fields: [patientId], references: [id])
   patientId         String?
-  service           service?     @relation(fields: [serviceId], references: [id])
+  service           service?      @relation(fields: [serviceId], references: [id])
   serviceId         String?
   comment           String
-  tc                Boolean?     @default(false)
+  tc                Boolean?      @default(false)
   payment_completed Boolean
-  deleted           Boolean?     @default(false)
-  status            statuses?    @default(pending)
-  expiry            DateTime?     
-  createdAt         DateTime?    @default(now()) @map("created_at")
-  updatedAt         DateTime?    @updatedAt @map("updated_at")
+  deleted           Boolean?      @default(false)
+  status            statuses?     @default(pending)
+  expiry            DateTime?
+  createdAt         DateTime?     @default(now()) @map("created_at")
+  updatedAt         DateTime?     @updatedAt @map("updated_at")
 }
 
 model service {
-  id        String    @id @unique @default(uuid())
-  name      String    @unique
-  price     Float
-  deleted   Boolean?  @default(false)
-  createdAt DateTime? @default(now()) @map("created_at")
-  updatedAt DateTime? @updatedAt @map("updated_at")
-  appointment appointment[]
-  payment  payment[]
+  id             String        @id @unique @default(uuid())
+  name           String        @unique
+  price          Float
+  deleted        Boolean?      @default(false)
+  createdAt      DateTime?     @default(now()) @map("created_at")
+  updatedAt      DateTime?     @updatedAt @map("updated_at")
+  practitioner   practitioner? @relation(fields: [practitionerId], references: [id])
+  practitionerId String?
+  appointment    appointment[]
+  payment        payment[]
 }
+
+model WorkingHours {
+  id             String        @id @default(uuid())
+  day            days          @default(monday)
+  available      Boolean       @default(true)
+  practitioner   practitioner? @relation(fields: [practitionerId], references: [id])
+  practitionerId String?
+  startTime      DateTime      @default(now()) @db.Time
+  closeTime      DateTime      @default(now()) @db.Time
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+}
+
+// model PractitionerSchedule {
+//   id String
+//   workingDay     WorkingDay? @relation(fields: [workingDayIdId], references: [id])
+//   assignedAt     DateTime    @default(now())
+//   doctorsId      String
+//   doctor         Doctor?     @relation(fields: [doctorsId], references: [doctorsId])
+//   @@id([workingDayIdId, doctorsId])
+// }
 
 model otp {
   id        String    @id @unique @default(uuid())
   user_id   String?   @unique
   email     String    @unique
-  otp_code  String    
+  otp_code  String
   createdAt DateTime? @default(now()) @map("created_at")
   updatedAt DateTime? @updatedAt @map("updated_at")
 }
 
 model payment {
-  id                String    @id @unique @default(uuid())
-  amount            String 
-  patient           patient   @relation(fields: [patientId], references: [id])
-  patientId         String
-  referenceId       String
-  service           service   @relation(fields: [serviceId], references: [id])
-  serviceId         String
-  deleted           Boolean?   @default(false)
-  createdAt         DateTime? @default(now()) @map("created_at")
-  updatedAt         DateTime? @updatedAt @map("updated_at")
+  id          String    @id @unique @default(uuid())
+  amount      String
+  patient     patient   @relation(fields: [patientId], references: [id])
+  patientId   String
+  referenceId String
+  service     service   @relation(fields: [serviceId], references: [id])
+  serviceId   String
+  deleted     Boolean?  @default(false)
+  createdAt   DateTime? @default(now()) @map("created_at")
+  updatedAt   DateTime? @updatedAt @map("updated_at")
 }
 
 enum access {

@@ -1,6 +1,7 @@
 
 import { ServiceRepository } from "../repositories";
 import { serviceResponseDTO, serviceDTO  } from '../dto'; 
+import { errorHandler } from "../util";
 
 export class ServiceService {
     private serviceRepository: ServiceRepository;
@@ -11,25 +12,26 @@ export class ServiceService {
 
     async create(serviceData: serviceDTO) {
         try {
-            
-            const response = await this.serviceRepository.create(serviceData);  
-            return <serviceResponseDTO>{ 
-                status: 'success',
-                content: response
-            };
-            
-        } catch (error: any) {
-            if (error.code === 'P2002' && error.meta?.target?.includes('name')) {
-                return <serviceResponseDTO>{ 
-                  status: 'error',
-                  content: { message: 'Name already Taken' }
-                };
-              } else {
-                return <serviceResponseDTO>{ 
-                  status: 'error',
-                  content: { message: 'Internal server error' } 
-                };
+          const practitionerExistence = await this.serviceRepository.findPractitioner(serviceData.practitionerId);
+          if (practitionerExistence === null) {
+            return <serviceResponseDTO> { 
+              status: 'error',
+              code: 606,
+              content: {
+                "message": "Practitioner not found"
               }
+            }
+          }
+          const response = await this.serviceRepository.create(serviceData);  
+          return <serviceResponseDTO> { 
+              status: 'success',
+              content: response
+          };
+        } catch (error: any) {
+          return <serviceResponseDTO>{ 
+            status: 'error',
+            content: { message: 'Internal server error' } 
+          };
         }
         
     }
