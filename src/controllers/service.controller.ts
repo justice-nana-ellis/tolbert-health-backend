@@ -23,6 +23,7 @@ export class ServiceController {
         this.router.delete(`${this.BASE_PATH}/service/:id`, this.delete.bind(this));
         this.router.get(`${this.BASE_PATH}/service`, this.get.bind(this));
         this.router.get(`${this.BASE_PATH}/service/:id`, this.getbyId.bind(this));
+        this.router.get(`${this.BASE_PATH}/service/practitioner/:id`, this.practitionerService.bind(this));
     }
 
     private async create(req: Request, res: Response) {
@@ -66,6 +67,11 @@ export class ServiceController {
 
     private async getbyId(req: Request, res: Response) {
         const response = await this.serviceService.getbyId(req.params.id);
+        res.json(response);
+    }
+
+    private async practitionerService(req: Request, res: Response) {
+        const response = await this.serviceService.getPractitionerService(req.params.id);
         res.json(response);
     }
 

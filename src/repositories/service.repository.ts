@@ -72,4 +72,13 @@ export class ServiceRepository {
           });
     }
 
+    async getPractitionerServices(id: string) {
+        return this.prisma.service.findMany({
+            where: {
+                practitionerId: id,
+                deleted: false
+            }
+        }); 
+    }
+
 }
