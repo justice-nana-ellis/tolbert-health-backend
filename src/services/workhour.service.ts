@@ -179,7 +179,7 @@ export class WorkHourService {
 
     async getPractitionerWorkhours(practitionerId: string) {
       try {
-          const practitionerExistence = await this.workHourRepository.getpractitionerWorkhours(practitionerId);
+          const practitionerExistence = await this.serviceRepository.findPractitioner(practitionerId);
           if (practitionerExistence === null) {
             return <workHourResponseDTO> { 
               status: 'error',
@@ -189,7 +189,7 @@ export class WorkHourService {
               }
             }
           }
-          const response = await this.serviceRepository.getPractitionerServices(practitionerId);  
+          const response = await this.workHourRepository.getpractitionerWorkhours(practitionerId);  
           if (response === null) {
                 let response:[] = []
                 return <workHourResponseDTO> { 
