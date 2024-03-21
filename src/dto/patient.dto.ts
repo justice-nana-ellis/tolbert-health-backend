@@ -7,6 +7,9 @@ export interface signupPatientDTO {
     full_name: string;
     password: string;
     verified?: boolean;
+    location?: string;
+    latitude?: string;
+    longitude?: string;
 }
 
 export interface signupPatientResponseDTO {
@@ -54,11 +57,22 @@ export class signupPatientValidationDto {
         this.email = '';
         this.full_name = '';
         this.password = '';
+        this.location = '';
+        this.latitude = '';
+        this.longitude = '';
     }
 
-    //@IsUUID('4')
     @IsOptional()
     id: string;
+
+    @IsOptional()
+    location: string;
+
+    @IsOptional()
+    latitude: string;
+
+    @IsOptional()
+    longitude: string;
 
     @IsNotEmpty({ message: 'Email is a required field' })
     @IsString({ message: 'Email must be a string' })

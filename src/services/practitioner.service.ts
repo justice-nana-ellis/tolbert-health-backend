@@ -272,7 +272,11 @@ export class PractitionerService {
 
     async getbyId(id: string) {
         try {
+            console.log(id);
+            
             const response = await this.practitionerRepository.getbyId(id);
+            console.log(response);
+            
             //@ts-ignore
             delete response?.password
             return <signinPractitionerResponseDTO>{
@@ -280,6 +284,7 @@ export class PractitionerService {
                 content: response
             };
         } catch (error: any) {
+            console.log(error);
             
         }
     }

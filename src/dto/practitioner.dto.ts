@@ -8,6 +8,9 @@ export interface signupPractitionerDTO {
     dob:       string;
     pob:       string;
     img_url:   string;
+    location:  string;
+    longitude: number;
+    latitude:  number;
     digital_address: string;
     contact:         string;
     id_type:         indentity_card;     
@@ -81,6 +84,9 @@ export class signupPractitionerValidationDto {
         this.password = '';
         this.dob = '';
         this.pob = '';
+        this.location = '';
+        this.longitude =  '';
+        this.latitude =  '';
         this.digital_address = '';
         this.contact = '';
         this.id_type = '';
@@ -94,9 +100,17 @@ export class signupPractitionerValidationDto {
         this.verified;
     }
 
-    //@IsUUID('4')
     @IsOptional()
     id: string;
+
+    @IsOptional()
+    location: string;
+
+    @IsOptional()
+    longitude: string;
+
+    @IsOptional()
+    latitude: string;
 
     @IsNotEmpty({ message: 'Email is a required field' })
     @IsString({ message: 'Email must be a string' })
@@ -174,11 +188,14 @@ export class updatePractitionerValidationDto {
         this.full_name = '';
         this.dob = '';
         this.pob = '';
+        this.location = '';
         this.digital_address = '';
         this.contact = '';
         this.id_type = '';
         this.id_number = '';
         this.status = '';
+        this.longitude =  '';
+        this.latitude =  '';
         this.qualification = '';
         this.licence_number = '';
         this.specialisation = '';
@@ -187,9 +204,17 @@ export class updatePractitionerValidationDto {
         this.verified;
     }
 
-    //@IsUUID('4')
     @IsOptional()
     id: string;
+
+    @IsOptional()
+    location: string;
+
+    @IsOptional()
+    longitude: string;
+
+    @IsOptional()
+    latitude: string
 
     @IsNotEmpty({ message: 'Email is a required field' })
     @IsString({ message: 'Email must be a string' })

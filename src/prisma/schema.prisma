@@ -31,6 +31,9 @@ model patient {
   city         String?
   contact      String?
   img_url      String?
+  location     String?
+  longitude    String?
+  latitude     String?
   active       Boolean       @default(false)
   payment      payment[]
   verified     Boolean       @default(false)
@@ -51,7 +54,8 @@ model practitioner {
   country                            String?
   zip                                String?
   city                               String?
-  img_url                            String
+  location                           String?
+  img_url                            String?
   digital_address                    String
   contact                            String
   id_type                            indentity_card                       @default(ghana_card)
