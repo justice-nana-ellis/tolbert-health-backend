@@ -63,7 +63,7 @@ export class ServiceRepository {
         }); 
     }
 
-    async findPractitioner(id: string) {
+    async findPractitioner(id: string | undefined) {
         return this.prisma.practitioner.findUnique({
             where: {
               id: id,

@@ -76,7 +76,7 @@ model practitioner {
   service                            service[]
   appointment                        appointment[]
   practitionerhospitalspecialisation practitionerhospitalspecialisation[]
-  WorkingHours                       WorkingHours[]
+  workhours                          workhours[]
 }
 
 model specialisation {
@@ -148,26 +148,17 @@ model service {
   payment        payment[]
 }
 
-model WorkingHours {
+model workhours {
   id             String        @id @default(uuid())
   day            days          @default(monday)
   available      Boolean       @default(true)
   practitioner   practitioner? @relation(fields: [practitionerId], references: [id])
   practitionerId String?
-  startTime      DateTime      @default(now()) @db.Time
-  closeTime      DateTime      @default(now()) @db.Time
-  createdAt      DateTime      @default(now())
-  updatedAt      DateTime      @updatedAt
+  startTime      String        @default("06:00:00")
+  closeTime      String        @default("04:00:00")  
+  createdAt      DateTime?     @default(now()) @map("created_at")
+  updatedAt      DateTime?     @updatedAt @map("updated_at")
 }
-
-// model PractitionerSchedule {
-//   id String
-//   workingDay     WorkingDay? @relation(fields: [workingDayIdId], references: [id])
-//   assignedAt     DateTime    @default(now())
-//   doctorsId      String
-//   doctor         Doctor?     @relation(fields: [doctorsId], references: [doctorsId])
-//   @@id([workingDayIdId, doctorsId])
-// }
 
 model otp {
   id        String    @id @unique @default(uuid())

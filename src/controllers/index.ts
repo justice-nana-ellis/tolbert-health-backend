@@ -4,6 +4,7 @@ import { HospitalController } from './hospital.controller';
 import { PatientController } from './patient.controller';
 import { PaymentController } from './payment.controller';
 import { AdminController } from './admin.controller';
+import { WorkHourController } from './workhour.controller';
 import { GenericController } from './generic.controller';
 import { ServiceController } from './service.controller';
 import { AppointmentController } from './appointment.controller';
@@ -19,6 +20,7 @@ export const controllers = [
     new PaymentController(),
     new GenericController(),
     new AdminController(),
+    new WorkHourController(),
     // initialize other controllers
 
 ];

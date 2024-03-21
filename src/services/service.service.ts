@@ -198,8 +198,6 @@ export class ServiceService {
               content: response
           };
       } catch (error: any) {
-        console.log(error);
-        
            if(error.code === 'P2025' && error.meta?.modelName?.includes('service')){
               return <serviceResponseDTO>{ 
                 status: 'error',

@@ -6,5 +6,6 @@ export * from './hospital.dto';
 export * from './payment.dto';
 export * from './generic.dto';
 export * from './admin.dto';
+export * from './workhour.dto';
 export * from './appointment.dto';
 export * from './specialisation.dto'
