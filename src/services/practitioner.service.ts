@@ -343,12 +343,6 @@ export class PractitionerService {
 
     async nearestPractitioner(lat: number, long: number, skip: number, take: number) {
         try {
-            //console.log("LATITUDE", typeof +lat);
-            //console.log("LONGITUDE", Long);
-            //let distance = [];
-            //console.log(skip);
-            //console.log(take);
-            
             skip = Number(skip);
             take = Number(take);
             const practitioners = await this.practitionerRepository.get();
@@ -362,17 +356,9 @@ export class PractitionerService {
             //@ts-ignore
             pract_dist.sort((a, b) => a.distance - b.distance);
             const closest_Pract = pract_dist.slice(skip, skip + take);
-            console.log(closest_Pract);
-            // pract_dist.sort((a, b) => a.dist - b.dist);
-            // practitioners.forEach((practitioner) => {
-            //     //@ts-ignore
-            //     console.log(haversineDistance(+lat, +long, +practitioner.latitude, +practitioner.longitude))
-
-            // })
-            
             return {
                 status: "success",
-                //content: closest_Pract
+                content: closest_Pract
             };
         } catch (error: any) {
             if (error) {
