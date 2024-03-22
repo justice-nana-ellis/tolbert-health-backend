@@ -96,6 +96,13 @@ export class PractitionerRepository {
                         country: true
                     }
                 },
+                service: {
+                    select: {
+                        id: true,
+                        name: true,
+                        price: true,
+                    }
+                }
         },
         }); 
     }
