@@ -134,6 +134,28 @@ export class PractitionerRepository {
         });
     }
 
+    async get() {
+        return this.prisma.practitioner.findMany({
+            where: { deleted: false },
+            select: {
+                //@ts-ignore
+                id: true,
+                full_name: true,
+                email: true,
+                img_url: true,
+                digital_address: true,
+                country: true,
+                contact: true,
+                location: true,
+                longitude: true,
+                latitude: true
+            },
+            orderBy: {
+                updatedAt: 'desc' 
+            },
+        });
+    }
+
     async top5 () {
         const totalCount = await this.prisma.practitioner.count(); 
         const randomSkip = Math.floor(Math.random() * (totalCount - 5)); 

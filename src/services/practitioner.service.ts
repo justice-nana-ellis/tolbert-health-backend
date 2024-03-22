@@ -5,7 +5,7 @@ import randomstring from 'randomstring';
 import { GenericRepository, PractitionerRepository, PatientRepository } from "../repositories";
 import { signupPractitionerDTO, signupPractitionerResponseDTO, logoutPractitionerResponseDTO,
          signinPractitionerDTO, signinPractitionerResponseDTO,otpDTO, getAllPractitionerResponseDTO  } from '../dto'; 
-import { errorHandler, sendEmail, verifyEmailTemplate } from '../util';
+import { errorHandler, haversineDistance, sendEmail, verifyEmailTemplate } from '../util';
 
 export class PractitionerService {
     private practitionerRepository: PractitionerRepository;
@@ -272,11 +272,7 @@ export class PractitionerService {
 
     async getbyId(id: string) {
         try {
-            console.log(id);
-            
             const response = await this.practitionerRepository.getbyId(id);
-            console.log(response);
-            
             //@ts-ignore
             delete response?.password
             return <signinPractitionerResponseDTO>{
@@ -284,8 +280,14 @@ export class PractitionerService {
                 content: response
             };
         } catch (error: any) {
-            console.log(error);
-            
+            if (error) {
+                return <logoutPractitionerResponseDTO> {
+                    status: "error",
+                    content: {
+                        "message": "Internal server error"
+                    }
+                }
+            }
         }
     }
 
@@ -326,6 +328,51 @@ export class PractitionerService {
             return {
                 status: "success",
                 content: response
+            };
+        } catch (error: any) {
+            if (error) {
+                return <logoutPractitionerResponseDTO> {
+                    status: "error",
+                    content: {
+                        "message": "Internal server error"
+                    }
+                }
+            }
+        }
+    }
+
+    async nearestPractitioner(lat: number, long: number, skip: number, take: number) {
+        try {
+            //console.log("LATITUDE", typeof +lat);
+            //console.log("LONGITUDE", Long);
+            //let distance = [];
+            //console.log(skip);
+            //console.log(take);
+            
+            skip = Number(skip);
+            take = Number(take);
+            const practitioners = await this.practitionerRepository.get();
+            const pract_dist = practitioners.map(practitioner => {
+                //@ts-ignore
+                const dist = haversineDistance(+lat, +long, +practitioner.latitude, +practitioner.longitude);
+                //@ts-ignore
+                practitioner.distance = dist
+                return practitioner;
+            });
+            //@ts-ignore
+            pract_dist.sort((a, b) => a.distance - b.distance);
+            const closest_Pract = pract_dist.slice(skip, skip + take);
+            console.log(closest_Pract);
+            // pract_dist.sort((a, b) => a.dist - b.dist);
+            // practitioners.forEach((practitioner) => {
+            //     //@ts-ignore
+            //     console.log(haversineDistance(+lat, +long, +practitioner.latitude, +practitioner.longitude))
+
+            // })
+            
+            return {
+                status: "success",
+                //content: closest_Pract
             };
         } catch (error: any) {
             if (error) {

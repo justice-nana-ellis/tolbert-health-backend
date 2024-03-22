@@ -19,6 +19,7 @@ export class PractitionerController {
     }
 
     private initializeRoutes() {
+        this.router.get(`${this.BASE_PATH}/practitioner/nearest`, this.nearestPractitioner.bind(this));
         this.router.get(`${this.BASE_PATH}/practitioner/pending`, this.pending.bind(this));
         this.router.get(`${this.BASE_PATH}/practitioner/search`, this.search.bind(this));
         this.router.get(`${this.BASE_PATH}/practitioner/count`, this.count.bind(this));
@@ -32,7 +33,7 @@ export class PractitionerController {
         this.router.post(`${this.BASE_PATH}/practitioner/logout/:id`, this.logout.bind(this));
         this.router.delete(`${this.BASE_PATH}/practitioner/delete/:id`, this.delete.bind(this));
     }
-  
+    
     private async signup(req: Request, res: Response) {
       try {
         const postData = req.body;
@@ -161,4 +162,9 @@ export class PractitionerController {
       res.status(200).json(response);
     }
 
+    private async nearestPractitioner(req: Request, res: Response) {
+      //@ts-ignore
+      const response = await this.practitionerService.nearestPractitioner(req.body.patientlatitude, req.body.patientlongitude, req.query.skip, req.query.take);
+      res.status(200).json(response);
+    }
 }
