@@ -11,6 +11,7 @@ export interface signupPractitionerDTO {
     location:  string;
     longitude: number;
     latitude:  number;
+    summary?:  string;
     digital_address: string;
     contact:         string;
     id_type:         indentity_card;     
@@ -98,10 +99,14 @@ export class signupPractitionerValidationDto {
         this.hospital = '';
         this.appointments = [];
         this.verified;
+        this.summary = '';
     }
 
     @IsOptional()
     id: string;
+
+    @IsOptional()
+    summary: string;
 
     @IsOptional()
     location: string;
@@ -202,10 +207,14 @@ export class updatePractitionerValidationDto {
         this.hospital = '';
         this.appointments = [];
         this.verified;
+        this.summary = '';
     }
 
     @IsOptional()
     id: string;
+
+    @IsOptional()
+    summary: string;
 
     @IsOptional()
     location: string;

@@ -56,6 +56,7 @@ model practitioner {
   city                               String?
   location                           String?
   img_url                            String?
+  summary                            String?
   digital_address                    String
   contact                            String
   id_type                            indentity_card                       @default(ghana_card)

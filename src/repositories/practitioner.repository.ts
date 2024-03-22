@@ -63,6 +63,13 @@ export class PractitionerRepository {
                         country: true
                     }
                 },
+                service: {
+                    select: {
+                        id: true,
+                        name: true,
+                        price: true,
+                    }
+                }
         },
         })
     }
@@ -125,6 +132,7 @@ export class PractitionerRepository {
                 id_type: true,
                 active: true,
                 deleted: true,
+                summary: true,
                 licence_number: true,
                 certificates: true,
                 hospital: true,
@@ -150,6 +158,7 @@ export class PractitionerRepository {
                 full_name: true,
                 email: true,
                 img_url: true,
+                summary: true,
                 digital_address: true,
                 country: true,
                 contact: true,
@@ -174,6 +183,7 @@ export class PractitionerRepository {
                 email: true,
                 dob: true,
                 pob: true,
+                summary: true,
                 img_url: true,
                 digital_address: true,
                 country: true,
@@ -260,6 +270,7 @@ export class PractitionerRepository {
             img_url: true,
             id_type: true,
             id_number: true,
+            summary: true,
             qualification: true,
             active: true,
             status: true,
