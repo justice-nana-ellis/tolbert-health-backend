@@ -341,24 +341,24 @@ export class PractitionerService {
         }
     }
 
-    async nearestPractitioner(lat: number, long: number, skip: number, take: number) {
+    async nearestPractitioner(lat: number, long: number, distance: number, skip: number, take: number) {
         try {
             skip = Number(skip);
             take = Number(take);
             const practitioners = await this.practitionerRepository.get();
-            const pract_dist = practitioners.map(practitioner => {
+            const pract_dist = practitioners.filter(practitioner => {
                 //@ts-ignore
                 const dist = haversineDistance(+lat, +long, +practitioner.latitude, +practitioner.longitude);
                 //@ts-ignore
                 practitioner.distance = dist
-                return practitioner;
+                //@ts-ignore 
+                return dist <= distance;
             });
             //@ts-ignore
-            pract_dist.sort((a, b) => a.distance - b.distance);
-            const closest_Pract = pract_dist.slice(skip, skip + take);
+            pract_dist.sort((a, b) => a.distance - b.distance);   
             return {
                 status: "success",
-                content: closest_Pract
+                content: pract_dist.slice(skip, skip + take)
             };
         } catch (error: any) {
             if (error) {

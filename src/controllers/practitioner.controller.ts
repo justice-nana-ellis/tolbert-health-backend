@@ -164,7 +164,7 @@ export class PractitionerController {
 
     private async nearestPractitioner(req: Request, res: Response) {
       //@ts-ignore
-      const response = await this.practitionerService.nearestPractitioner(req.body.patientlatitude, req.body.patientlongitude, req.query.skip, req.query.take);
+      const response = await this.practitionerService.nearestPractitioner(req.body.patientlatitude, req.body.patientlongitude,  req.body.distance, req.query.skip, req.query.take);
       res.status(200).json(response);
     }
 }
