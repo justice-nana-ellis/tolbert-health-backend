@@ -102,6 +102,22 @@ export class PaymentRepository {
               patientId: id,
               deleted: false
             },
+            include: {
+                service: {
+                    select: {
+                        id: true,
+                        name: true,
+                        practitioner: {
+                            select: {
+                                id: true,
+                                full_name: true,
+                                email: true,
+                                img_url: true,
+                            }
+                        }
+                    }
+                }
+            },
             orderBy: {
                 updatedAt: 'desc' 
             }
