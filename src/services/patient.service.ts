@@ -3,12 +3,13 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import randomstring from 'randomstring';
 import { sendEmail, verifyEmailTemplate } from '../util';
-import { PatientRepository, GenericRepository } from "../repositories";
+import { PatientRepository, GenericRepository, PaymentRepository } from "../repositories";
 import { signupPatientDTO, signinPatientDTO, signinPatientResponseDTO,
          logoutPatientResponseDTO, signupPatientResponseDTO, otpDTO, getAllPatientResponseDTO  } from '../dto'; 
 
 
 export class PatientService {
+    private paymentRepository: PaymentRepository;
     private patientRepository: PatientRepository;
     private genericRepository: GenericRepository;
     private readonly SECRET_KEY = <string>process.env.SECRET_KEY;
@@ -16,6 +17,7 @@ export class PatientService {
     constructor() {
         this.patientRepository = new PatientRepository();
         this.genericRepository = new GenericRepository();
+        this.paymentRepository = new PaymentRepository();
     }
 
     async signup(patientData: signupPatientDTO) {
@@ -272,6 +274,27 @@ export class PatientService {
     async verifyOtp(email: string, otp: string) {
         try {
             const response = await this.genericRepository.verifyOtpEmail(email);
+        } catch (error) {
+            
+        }
+    }
+
+    async getPatientPayment(id: string) {
+        try {
+            const patientExist = await this.paymentRepository.patientExists(id);
+            if (patientExist === null) {
+                return <getAllPatientResponseDTO> {
+                    status: "success",
+                    content: {
+                        "message": "Record not found"
+                    }
+                };
+            }
+            const response = await this.paymentRepository.getPatientPayment(id);
+            return <getAllPatientResponseDTO> {
+                status: "success",
+                content: response
+            };
         } catch (error) {
             
         }
