@@ -77,7 +77,7 @@ export class GenericRepository {
     }
 
     async updateAdminPassword(email: string, password: string) {
-        return this.prisma.patient.update({
+        return this.prisma.admin.update({
             where: {
                 email: email
             }, data: {
@@ -87,7 +87,7 @@ export class GenericRepository {
     }
 
     async updatePractitionerPassword(email: string, password: string) {
-        return this.prisma.patient.update({
+        return this.prisma.practitioner.update({
             where: {
                 email: email
             }, data: {
